@@ -1,0 +1,431 @@
+
+
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- / Layout page -->
+        <div class="layout-page">
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
+              
+              </div>
+                
+                <!--/ Total Revenue -->
+                <!-- area de trabalho -->
+                <div>
+                  <div class="row">
+                  <div class="col-12">
+                  <div class="card mb-3">
+                    <h5 class="card-header" align="center">Saidas</h5>
+                    <div class="card-body row">
+                      <div align="left">
+                        <label class="form-label">
+                          <h5>Filtros:</h5>
+                        </label>
+                      </div>
+                      <div class=" col-4 mb-3">
+                        <label for="exampleFormControlSelect1" class="form-label">Data Inicio:</label>
+                        <input type="date" name="" class="form-control">
+                        </br>
+                        <label for="exampleFormControlSelect1" class="form-label">Estagio:</label>
+                        <select class="form-select">
+                          <option value="">Todas</option>
+                          <option value="">Atualização Pendente</option>
+                          <option value="">Aprovação Pendente</option>
+                          <option value="">Envio de Documentos Pendente</option>
+                          <option value="">Pagamento Pendente</option>
+                          <option value="">Paga</option>
+                          <option value="">Paga sem Aprovação</option>
+                          <option value="">Paga sem Aprovação Admin</option>
+                        </select>
+                        
+                       
+                        </br>
+                        <label for="exampleFormControlSelect1" class="form-label">Fonte Pagante:</label>
+                        <select class="form-select">
+                          <?php foreach($this->view->tb_fontes as $index_fonte => $tb_fontes) { ?>
+
+                          <option value="<?= $index_fonte['nome_fonte'] ?>"><?= $tb_fontes['nome_fonte'] ?></option>
+
+                          <?php } ?>
+                        </select>
+                        </br>
+                        <div class="mb-1" align="left">
+                          <label class="form-label">
+                            <button class="btn btn-primary">Aplicar Filtro</button>
+                          </label>
+                        </div>
+                        
+                      </div>
+
+                      <div class="col-4 mb-3">
+                        <label for="exampleFormControlSelect1" class="form-label">Data Final:</label>
+                        <input type="date" name="" class="form-control" id="teste">
+                        
+                        </br>
+                        <label for="exampleFormControlSelect1" class="form-label">Origem:</label>
+                        <select class="form-select">
+                          <?php foreach($this->view->tb_origens as $index_origens => $tb_origens) { ?>
+
+                          <option value="<?= $tb_origens['nome_origem'] ?>"><?= $tb_origens['nome_origem'] ?></option>
+
+                          <?php } ?>
+                        </select>
+                        </br>
+
+                      </div>
+                      <div class="col-4 mb-3">
+                        <label for="exampleFormControlSelect1" class="form-label">Excluidas</label>
+                        <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
+                          <option value="">NÃO</option>
+                          <option value="1">SIM</option>
+                          </select>
+
+                        </br>
+                        <label for="exampleFormControlSelect1" class="form-label">Forma Pag:</label>
+                        <select class="form-select">
+                        <?php foreach($this->view->tb_pagamentos as $index_pagamento => $tb_pagamentos) { ?>
+
+                          <option value="<?= $tb_pagamentos['nome_formapagamento'] ?>"><?= $tb_pagamentos['nome_formapagamento'] ?></option>
+
+                        <?php } ?>
+                        </select>
+                        </br>
+
+                      </div>
+                    </div>
+                    <!-- botoes ação origens -->
+                    <div class="row card-body">
+                      <div class="col-4">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_saida">Adicionar Saida
+                        </button>
+                      </div>
+                    </div>
+                 
+                    <!-- inicio Tabela -->
+                   
+                    <!-- Table with Header - Footer -->
+                        <div class="card">
+                          <h5 class="card-header">Lista de Saidas</h5>
+                          <div class="table-responsive text-nowrap">
+                            <table class="table table-striped ">
+                              <thead>
+                                <tr>
+                                  <th>Data</th>
+                                  <th>Conta</th>
+                                  <th>Origem</th>
+                                  <th>Fonte<br>Pg</th>
+                                  <th>Forma<br>Pg</th>
+                                  <th>Valor</th>
+                                  <th>Estagio</th>
+                                  <th>Meta</th>
+                                  <th>Ações</th>
+                                </tr>
+                              </thead>
+                              <tbody >
+                                  
+                                  <?php foreach($this->view->tb_saidas as $index => $tb_saidas) { ?>
+                                  <tr id="saida_<?= $tb_saidas['id_saida'] ?>">
+                                  <td><?= $tb_saidas['data'] ?></td>
+                                  <td><?= $tb_saidas['conta_saida'] ?></td>
+                                  <td><?= $tb_saidas['origem_saida'] ?></td>
+                                  <td><?= $tb_saidas['fpagante_saida'] ?></td>
+                                  <td><?= $tb_saidas['fpagamento_saida'] ?></td>
+                                  <td>R$ <?= number_format( $tb_saidas['valor_saida'], 2, "," , ".") ?></td>
+                                  <?php 
+                                    switch ($tb_saidas['status_saida']) {
+                                        case 'Paga':
+                                            $cor = 'class="badge rounded-pill bg-label-primary"';
+                                            break;
+                                        case 'Atualização Pendente':
+                                            $cor = 'class="badge rounded-pill bg-label-secondary"';
+                                            break;
+                                        case 'Aprovação Pendente':
+                                            $cor = 'class="badge rounded-pill bg-label-success"';
+                                            break;
+                                        case 'Envio de Documentos Pendente':
+                                            $cor = 'class="badge rounded-pill bg-label-danger"';
+                                            break;
+                                        case 'Pagamento Pendente':
+                                            $cor = 'class="badge rounded-pill bg-label-warning"';
+                                            break;
+                                        case 'Paga sem Aprovação':
+                                            $cor = 'class="badge rounded-pill bg-label-info"';
+                                            break;
+                                        case 'Paga sem Aprovação Admin':
+                                            $cor = 'class="badge rounded-pill bg-label-dark"';
+                                            break;
+                                        case 'Aguardando Peças':
+                                            $cor = '#FF7F00';
+                                            break;
+                                        case 'Aprovado':
+                                            $cor = 'class="badge rounded-pill bg-label-success"';
+                                            break;
+                                        default:
+                                            $cor = '#E0E4CC';
+                                            break;
+                                          } 
+
+                                          echo '<td><span '. $cor .'>' . $tb_saidas['status_saida'] . '</span> </td>';
+
+                                          ?>
+                                  <td></td>
+                                  <td>
+                                    <div class="dropdown">
+                                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                      </button>
+                                      <div class="dropdown-menu">
+                                        
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
+                                        data-whateverid="<?= $tb_saidas['id_saida'] ?>"
+                                        data-whateverfpagante="<?= $tb_saidas['fpagante_saida'] ?>"
+                                        data-whateverfpagamento="<?= $tb_saidas['fpagamento_saida'] ?>"
+                                        data-whateverdata="10"
+                                        data-whateverconta="<?= $tb_saidas['conta_saida'] ?>"
+                                        data-whateverorigem="<?= $tb_saidas['origem_saida'] ?>"
+                                        data-whatevervalor="<?= $tb_saidas['valor_saida'] ?>"
+                                        data-whateverstatus="<?= $tb_saidas['status_saida'] ?>"
+                                        data-whateverobs="<?= $tb_saidas['obs_saida'] ?>">
+                                        <i class="bx bx-edit-alt me-1"></i>Editar</a>
+                                        <a class="dropdown-item"><i class="bx bx-trash me-1"></i> Deletar</a>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  </tr>
+                                  <?php } ?>
+                          
+                              </tbody>
+                              <tfoot class="table-border-bottom-0">
+                                <tr>
+                                  <th></th>
+                                  <th></th>
+                                  <th style="font-size: 15px">Total</th>
+                                  <th></th>
+                                  <th></th>
+                                  <?php foreach($this->view->sm_saidas as $index => $sm_saidas) { ?>
+                                  <th style="font-size: 15px">R$ <?= number_format($sm_saidas['vl_saida'], 2, "," , ".") ?></th>
+                                  <?php } ?>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                        </div>
+                    <!-- Table Footer -->
+                    <!-- Final Tabela -->
+                        </div>
+                          </div>
+                        </div>
+                      </div>    
+                    </div>
+          <!-- / Content wrapper -->
+          
+      <!-- / Layout page -->
+      </div>
+
+         <!-- Modal -->
+         <div class="modal fade" id="modal_saida" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastro de Saidas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form method="post" action="/saida_cadastro" name="fm_saida_cadastro"> 
+              <div class="modal-body">
+                               
+              <div class="row">
+                <div class="mb-3">
+                             <label class="form-label">Fonte Pagante</label>
+                             <select class="form-select" name="fpagante_saida">
+                              <?php foreach($this->view->tb_fontes as $index_fonte => $tb_fontes) { ?>
+
+                                <option value="<?= $tb_fontes['nome_fonte'] ?>"><?= $tb_fontes['nome_fonte'] ?></option>
+
+                              <?php } ?>
+                            </select>
+                </div>
+                <div class="mb-3">
+                            <label class="form-label">Forma Pagamento</label>
+                             <select class="form-select" name="fpagamento_saida">
+                             <?php foreach($this->view->tb_pagamentos as $index_pagamento => $tb_pagamentos) { ?>
+
+                              <option value="<?= $tb_pagamentos['nome_formapagamento'] ?>"><?= $tb_pagamentos['nome_formapagamento'] ?></option>
+
+                            <?php } ?>
+                            </select>
+                </div>
+                <div class="mb-3">
+                            <label class="form-label">Data:</label>
+                            <input type="date" class="form-control" name="data_saida" row='3'>
+                </div>
+                <div class="mb-3">
+                            <label class="form-label">Conta</label>
+                             <textarea class="form-control" name="conta_saida" id="conta_saida" oninput="countText()"  ></textarea>
+                            <label class="form-label" for="characters">Maximo de 150 caracteres permitidos</label>
+                            <span id="characters">n°</span>
+                             
+                </div>
+                <div class="mb-3">
+                             <label class="form-label">Origem</label>
+                             <select class="form-select" name="origem_saida">
+                             <?php foreach($this->view->tb_origens as $index_origens => $tb_origens) { ?>
+
+                              <option value="<?= $tb_origens['nome_origem'] ?>"><?= $tb_origens['nome_origem'] ?></option>
+
+                            <?php } ?>
+                            </select>
+                </div>
+                <div class="mb-3">
+                            <label class="form-label" for="dinheiro">Valor:</label>
+                            <input type="text" id="dinheiro" name="valor_saida" class="dinheiro form-control" style="display:inline-block" />
+                </div>
+                <div class="mb-3">
+                             <label class="form-label">Atualizada</label>
+                             <select class="form-select" name="status_saida">
+                                <option value="Aprovação Pendente">Sim</option>
+                                <option value="Atualização Pendente">Não</option>
+                              </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Observação</label>
+                  <textarea class="form-control" name="obs_saida"></textarea>
+                      
+                      <div class="mb-3">
+                  <label class="form-label">Observação Auditoria</label>
+                  <textarea class="form-control" name="obsauditoria_saida"></textarea>
+                      
+                </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Observação Auditoria 2</label>
+                  <textarea class="form-control" name="obsauditoria2_saida"></textarea>
+                      
+                </div>
+              </div>
+              </div>
+              <div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+              </div>
+              
+                </form>
+            </div>
+          </div>
+        </div>   
+         <!-- / Modal -->
+         
+    </div>
+    
+     <!-- / Modal Editar-->
+   
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+      <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        
+        <h4 class="modal-title" id="exampleModalLabel" align="center">Editar Saida
+        </h4>
+        </div>
+        <div class="modal-body">
+        <form method="post" action="/editarsaida">
+        <div class="row">
+
+                <div class="mb-3">
+                             <label class="form-label">Fonte Pagante</label>
+                             
+                             <select class="form-select" name="fpagante_saida">
+                                                      
+                                <option id="editFonte" ></option>
+                                                           
+                            </select>
+                           
+                </div>
+                <div class="mb-3">
+                            <label class="form-label">Forma Pagamento</label>
+                             <select class="form-select" name="fpagamento_saida"  >
+                              
+                                <option id="editFpagamento"></option>
+                           
+                            </select>
+                </div>
+                <div class="mb-3">
+                            <label class="form-label">Data:</label>
+                            <input type="date" class="form-control" id="editData" name="data_saida" row='3'>
+                </div>
+                <div class="mb-3">
+                            <label class="form-label">Conta</label>
+                             <textarea class="form-control" name="conta_saida" id="editConta" oninput="countText()"  ></textarea>
+                            <label class="form-label" for="characters">Maximo de 150 caracteres permitidos</label>
+                            <span id="characters">n°</span>
+                             
+                </div>
+                <div class="mb-3">
+                             <label class="form-label">Origem</label>
+                             <select class="form-select" name="origem_saida">
+                              
+
+                                <option id="editOrigem"></option>
+  
+                                                       
+                            </select>
+                </div>
+                <div class="mb-3">
+                            <label class="form-label" for="dinheiro">Valor:</label>
+                            <input type="text" id="dinheiro" name="valor_saida" class="dinheiro form-control" style="display:inline-block" />
+                </div>
+                <div class="mb-3">
+                             <label class="form-label">Status</label>
+                             <select class="form-select" name="status_saida">
+                                <option id="editStatus"></option>
+                              </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Observação</label>
+                  <textarea class="form-control" name="obs_saida" id="editObs"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">OK</button>
+                
+              </div>
+        </div>
+        </form>
+      </div>
+      </div>
+    </div>
+
+  <script type="text/javascript">
+  $('.dinheiro').mask('#.##0,00', {reverse: true});
+            
+  function countText() {
+    let text = document.fm_saida_cadastro.conta_saida.value;
+        document.getElementById('characters').innerText = text.length;
+              
+  }
+ $('#exampleModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var recipientid = button.data('whateverid')
+      var recipientfpagante = button.data('whateverfpagante')
+      var recipientfpagamento = button.data('whateverfpagamento')
+      var recipientdata = button.data('whateverdata')
+      var recipientconta = button.data('whateverconta')
+      var recipientorigem = button.data('whateverorigem')
+      var recipientvalor = button.data('whatevervalor')
+      var recipientstatus = button.data('whateverstatus')
+      var recipientobs = button.data('whateverobs')
+ 
+      var modal = $(this)
+      modal.find('#editFonte').html(recipientfpagante)
+      modal.find('#editFpagamento').html(recipientfpagamento)
+      modal.find('#editData').html(recipientdata)
+      modal.find('#editConta').html(recipientconta)
+      modal.find('#editOrigem').html(recipientorigem)
+      modal.find('#dinheiro').val(recipientvalor)
+      modal.find('#editStatus').html(recipientstatus)
+      modal.find('#editObs').text(recipientdata)
+      
+    })
+      
+  </script> 

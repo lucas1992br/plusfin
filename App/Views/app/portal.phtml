@@ -1,0 +1,206 @@
+
+
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- / Layout page -->
+        <div class="layout-page">
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
+                <!-- Painel Pendencias-->
+                <div class="col-6">
+                  <div class="card">
+                    <h5 class="card-header">Pendencias</h5>
+                    <div class="table">
+                      <table class="table table-striped table-hover">
+                        <thead>
+                          <tr>
+                          <th>---</th>
+                          <th>Venc.</th>
+                          <th>Hoje</th>
+                          <th>Mes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          <tr> 
+                            <td>Atualização Pendente</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>  
+                          </tr>
+                          <tr> 
+                            <td>Aprovação Pendente</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>  
+                          </tr>
+                          <tr> 
+                            <td>Envio de Documentos Pendente</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>  
+                          </tr>
+                          <tr> 
+                            <td>Pagamento Pendente</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>  
+                          </tr>
+                          <tr> 
+                            <td>Entradas Pendentes</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>  
+                          </tr>
+                          <tr> 
+                            <td>Auditorias Entrada Pendentes</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>  
+                          </tr>
+                          <tr> 
+                            <td>Auditorias Saida Pendentes</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td> 
+                          </tr>                  
+                        </tbody>
+                        <tfoot>
+                          
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!-- Painel Faturamento-->
+                <div class="col-6">
+                  <div class="card">
+                    <h5 class="card-header">Faturamento em Mãos</h5>                    
+                    <div class="table">                     
+                      <table class="table table-striped table-hover">
+                        <thead>
+                          <tr>
+                          <th>---</th>
+                          <th>Valor</th>
+                          <th>Aporte</th>
+                          <th>Retirada</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          <?php foreach($this->view->tb_pagamentos as $index => $tb_pagamentos) { ?>
+                          <tr> 
+                            <td><?= $tb_pagamentos['nome_formapagamento'] ?></td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>  
+                          </tr> 
+                          <?php } ?>     
+                        </tbody>
+                        <tfoot>
+                            <td>Total</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tfoot>
+                      </table>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
+              <!-- Table with Header - Footer -->
+                  <div class="card">
+                    <h5 class="card-header">Lista de Saidas Pendentes</h5>
+                    <div class="table-responsive text-nowrap">
+                      <table class="table table-striped table-hover">
+                        <thead>
+                          <tr>
+                            <th>Data</th>
+                            <th>Conta</th>
+                            <th>Origem</th>
+                            <th>Fonte<br>Pg</th>
+                            <th>Forma<br>Pg</th>
+                            <th>Valor</th>
+                            <th>Estagio</th>
+                          </tr>
+                        </thead>
+                        <tbody >
+                            
+                            <?php foreach($this->view->tb_saidas as $index => $tb_saidas) { ?>
+                            <tr id="saida_<?= $tb_saidas['id_saida'] ?>">
+                            <td><?= $tb_saidas['data'] ?></td>
+                            <td><?= $tb_saidas['conta_saida'] ?></td>
+                            <td><?= $tb_saidas['origem_saida'] ?></td>
+                            <td><?= $tb_saidas['fpagante_saida'] ?></td>
+                            <td><?= $tb_saidas['fpagamento_saida'] ?></td>
+                            <td>R$ <?= number_format( $tb_saidas['valor_saida'], 2, "," , ".") ?></td>
+                            <?php 
+                              switch ($tb_saidas['status_saida']) {
+                                  case 'Paga':
+                                      $cor = 'class="badge rounded-pill bg-label-primary"';
+                                      break;
+                                  case 'Atualização Pendente':
+                                      $cor = 'class="badge rounded-pill bg-label-secondary"';
+                                      break;
+                                  case 'Aprovação Pendente':
+                                      $cor = 'class="badge rounded-pill bg-label-success"';
+                                      break;
+                                  case 'Envio de Documentos Pendente':
+                                      $cor = 'class="badge rounded-pill bg-label-danger"';
+                                      break;
+                                  case 'Pagamento Pendente':
+                                      $cor = 'class="badge rounded-pill bg-label-warning"';
+                                      break;
+                                  case 'Paga sem Aprovação':
+                                      $cor = 'class="badge rounded-pill bg-label-info"';
+                                      break;
+                                  case 'Paga sem Aprovação Admin':
+                                      $cor = 'class="badge rounded-pill bg-label-dark"';
+                                      break;
+                                  case 'Aguardando Peças':
+                                      $cor = '#FF7F00';
+                                      break;
+                                  case 'Aprovado':
+                                      $cor = '#808080';
+                                      break;
+                                  default:
+                                      $cor = '#E0E4CC';
+                                      break;
+                                    } 
+      
+                                    echo '<td><span '. $cor .'>' . $tb_saidas['status_saida'] . '</span> </td>';
+      
+                                    ?>                      
+                            </tr>
+                            <?php } ?>
+                    
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+              <!-- Table Footer -->
+              <!-- Final Tabela -->
+                  </div>
+                    </div>
+                  </div>
+                </div>    
+              </div>
+          <!-- / Content wrapper -->
+          
+      <!-- / Layout page -->
+      </div>
+
+  <script type="text/javascript">
+  $('.dinheiro').mask('#.##0,00', {reverse: true});
+            
+  function countText() {
+    let text = document.fm_saida_cadastro.conta_saida.value;
+        document.getElementById('characters').innerText = text.length;
+              
+  }
+  </script> 

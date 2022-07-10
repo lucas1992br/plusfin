@@ -1,0 +1,228 @@
+<!-- Layout container -->
+<div class="layout-page">
+  <!-- Navbar -->
+
+  <!-- Content wrapper -->
+  <div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <div class="row">
+      
+      </div>
+        
+        <!--/ Total Revenue -->
+        <div>
+          <div class="row">
+          <div class="col-12">
+          <div class="card mb-3">
+            <h5 class="card-header" align="center">Aprovar Saídas</h5>
+            <div class="card-body row">
+              <div align="left">
+                <label class="form-label">
+                  <h5>Filtros:</h5>
+                </label>
+              </div>
+              <div class=" col-4 mb-3">
+                <label for="exampleFormControlSelect1" class="form-label">Data Inicio:</label>
+                <input type="date" name="" class="form-control">
+                </br>
+                <div class="mb-1" align="left">
+                  <label class="form-label">
+                    <button class="btn btn-primary">Aplicar Filtro</button>
+                  </label>
+              </div>
+              </div>
+              <div class="col-4 mb-3">
+                <label for="exampleFormControlSelect1" class="form-label">Data Final:</label>
+                <input type="date" name="" class="form-control">
+              </div>
+
+             <!-- Tabela -->
+
+             <div class="card">
+              <h5 class="card-header" align="center">Saidas</h5>
+              <div class="table text-nowrap">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Conta</th>
+                      <th>Origem</th>
+                      <th>Fonte Pagante</th>
+                      <th>Forma de Pagamento</th>
+                      <th>Valor</th>
+                      <th>Status</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach($this->view->tb_saidas as $index => $tb_saidas) { ?>
+                      <tr>
+                      <td><?= $tb_saidas['data_saida'] ?></td>
+                      <td><?= $tb_saidas['conta_saida'] ?></td>
+                      <td><?= $tb_saidas['origem_saida'] ?></td>
+                      <td><?= $tb_saidas['fpagante_saida'] ?></td>
+                      <td><?= $tb_saidas['fpagamento_saida'] ?></td>
+                      <td>R$ <?= $tb_saidas['valor_saida'] ?></td>
+                      <?php 
+                      switch ($tb_saidas['status_saida']) {
+                          case 'Paga':
+                              $cor = 'class="badge rounded-pill bg-label-primary"';
+                              break;
+                          case 'Atualização Pendente':
+                              $cor = 'class="badge rounded-pill bg-label-secondary"';
+                              break;
+                          case 'Aprovação Pendente':
+                              $cor = 'class="badge rounded-pill bg-label-success"';
+                              break;
+                          case 'Envio de Documentos Pendente':
+                              $cor = 'class="badge rounded-pill bg-label-danger"';
+                              break;
+                          case 'Pagamento Pendente':
+                              $cor = 'class="badge rounded-pill bg-label-warning"';
+                              break;
+                          case 'Paga sem Aprovação':
+                              $cor = 'class="badge rounded-pill bg-label-info"';
+                              break;
+                          case 'Paga sem Aprovação Admin':
+                              $cor = 'class="badge rounded-pill bg-label-dark"';
+                              break;
+                          case 'Aguardando Peças':
+                              $cor = '#FF7F00';
+                              break;
+                          case 'Aprovado':
+                              $cor = '#808080';
+                              break;
+                          default:
+                              $cor = '#E0E4CC';
+                              break;
+                            } 
+
+                            echo '<td><span '. $cor .'>' . $tb_saidas['status_saida'] . '</span> </td>';
+
+                            ?>
+                      <td>
+                        <div class="dropdown">
+                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                          </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
+                              data-whateverid="<?= $tb_saidas['id_saida'] ?>"
+                              data-whateverfpagante="<?= $tb_saidas['fpagante_saida'] ?>"
+                              data-whateverfpagamento="<?= $tb_saidas['fpagamento_saida'] ?>"
+                              data-whateverdata="10"
+                              data-whateverconta="<?= $tb_saidas['conta_saida'] ?>"
+                              data-whateverorigem="<?= $tb_saidas['origem_saida'] ?>"
+                              data-whatevervalor="<?= $tb_saidas['valor_saida'] ?>"
+                              data-whateverstatus="<?= $tb_saidas['status_saida'] ?>"
+                              >
+                              <i class="bx bx-edit-alt me-1"></i>Aprovar</a>
+                              <a class="dropdown-item"><i class="bx bx-trash me-1"></i>Observação</a>
+                            </div>
+                          </div>
+                      </td>
+                      </tr>
+                      <?php } ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+    <!-- / Footer -->
+
+    <div class="content-backdrop fade"></div>
+  </div>
+  <!-- Content wrapper -->
+</div>
+<!-- / Layout page -->
+</div>
+<!--  Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+    
+    <h4 class="modal-title" id="exampleModalLabel" align="center">Atualizar Saida
+    </h4>
+    </div>
+    <div class="modal-body">
+    <form method="post" action="/aprovar_saidas">
+    <div class="row">
+            <div>
+              <input type="hidden" id="editID" name="id_saida">
+              <input type="hidden" name="status_saida" value="Aprovado">
+            </div>
+            <div class="mb-3">
+                         <label class="form-label">Fonte Pagante</label>
+                         
+                         <select class="form-select" name="fpagante_saida">
+                                                  
+                          <option id="editFonte" ></option>
+                                                       
+                        </select>
+                       
+            </div>
+            <div class="mb-3">
+                        <label class="form-label">Forma Pagamento</label>
+                         <select class="form-select" name="fpagamento_saida"  >
+                          
+                            <option id="editFpagamento"></option>
+                       
+                        </select>
+            </div>
+            <div class="mb-3">
+                        <label class="form-label">Data:</label>
+                        <input type="date" class="form-control" id="editData" name="data_saida" row='3'>
+            </div>
+            <div class="mb-3">
+                        <label class="form-label" for="dinheiro">Valor:</label>
+                        <input type="text" id="dinheiro" name="valor_saida" class="dinheiro form-control" style="display:inline-block" />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-success">Aprovar</button>
+            </div>            
+          </div>
+    </div>
+    </form>
+  </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.dinheiro').mask('#.##0,00', {reverse: true});
+            
+  function countText() {
+    let text = document.fm_saida_cadastro.conta_saida.value;
+        document.getElementById('characters').innerText = text.length;
+              
+  }
+ $('#exampleModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var recipientid = button.data('whateverid')
+      var recipientfpagante = button.data('whateverfpagante')
+      var recipientfpagamento = button.data('whateverfpagamento')
+      var recipientdata = button.data('whateverdata')
+      var recipientconta = button.data('whateverconta')
+      var recipientorigem = button.data('whateverorigem')
+      var recipientvalor = button.data('whatevervalor')
+      var recipientstatus = button.data('whateverstatus')
+      var recipientobs = button.data('whateverobs')
+ 
+      var modal = $(this)
+      modal.find('#editFonte').html(recipientfpagante)
+      modal.find('#editId').val(recipientid)
+      modal.find('#editFpagamento').html(recipientfpagamento)
+      modal.find('#editData').val(recipientdata)
+      modal.find('#editConta').val(recipientconta)
+      modal.find('#editOrigem').val(recipientorigem)
+      modal.find('#dinheiro').val(recipientvalor)
+      modal.find('#editStatus').val(recipientstatus)
+      
+      
+    })
+      
+  </script> 

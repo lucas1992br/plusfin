@@ -1,0 +1,297 @@
+
+
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- / Layout page -->
+        <div class="layout-page">
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
+              
+              </div>
+                
+                <!--/ Total Revenue -->
+                <!-- area de trabalho -->
+                <div>
+                  <div class="row">
+                  <div class="col-12">
+                  <div class="card mb-3">
+                    <h5 class="card-header" align="center">Entradas</h5>
+                    <div class="card-body row">
+                      <div align="left">
+                        <label class="form-label">
+                          <h5>Filtros:</h5>
+                        </label>
+                      </div>
+                      <div class=" col-4 mb-3">
+                        <label for="exampleFormControlSelect1" class="form-label">Data Inicio:</label>
+                        <input type="date" name="" class="form-control">
+                        </br>
+                        <div class="mb-1" align="left">
+                          <label class="form-label">
+                            <button class="btn btn-primary">Aplicar Filtro</button>
+                          </label>
+                        </div>                      
+                      </div>
+                      <div class="col-4 mb-3">
+                        <label for="exampleFormControlSelect1" class="form-label">Data Final:</label>
+                        <input type="date" class="form-control" id="teste">
+                      </div>
+                      <div class="col-4 mb-3">
+                        <label for="exampleFormControlSelect1" class="form-label">Excluidas</label>
+                        <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
+                          <option value="">NÃO</option>
+                          <option value="1">SIM</option>
+                          </select>
+                      </div>
+                    </div>
+                    <!-- botoes ação origens -->
+                    <div class="row card-body">
+                      <div class="col-4">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_saida">Adicionar Entrada</button>
+                      </div>
+                    </div>
+                 
+                    <!-- inicio Tabela -->
+                   
+                    <!-- Table with Header - Footer -->
+                        <div class="card">
+                          <h5 class="card-header">Entradas</h5>
+                          <div>
+                            <div style="display: flex; overflow:auto" class="table-responsive-md table-sm table-hover">
+                              <table class="table" style="width: 20%;">
+                                <thead>
+                                  <colgroup>
+                                    <th>Data</th>  
+                                  </colgroup>
+                                </thead>
+                                <tbody>
+                                  <td>sdasdsdsad</td>
+                                </tbody> 
+                              </table>
+                              <table class="table">
+                                <colgroup>
+                                  <th>Origens</th>  
+                                </colgroup>
+                                <tbody>    
+                                  <tr></tr>                             
+                                    <?php foreach($this->view->tb_origens as $index_origens => $tb_origens) { ?>
+                                    <td><?= $tb_origens['nome_origem'] ?></td>
+                                    <?php } ?>
+                                    <td>Total</td>
+                                  </tr>
+                                </tbody>    
+                              </table>
+                              <table class="table">
+                                <thead>
+                                  <colgroup>
+                                    <th>Forma de Pagamento</th>  
+                                  </colgroup>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <?php foreach($this->view->tb_pagamentos as $index_pagamento => $tb_pagamentos) { ?>
+                                    <td><?= $tb_pagamentos['nome_formapagamento'] ?></td> 
+                                    <?php } ?>
+                                    <td>Total</td>
+                                  </tr>
+                                </tbody> 
+                              </table>
+                          </div>
+                          </div>
+                        </div>
+                    <!-- Table Footer -->
+                    <!-- Final Tabela -->
+                        </div>
+                          </div>
+                        </div>
+                      </div>    
+                    </div>
+          <!-- / Content wrapper -->
+          
+      <!-- / Layout page -->
+      </div>
+
+         <!-- Modal -->
+         <div class="modal fade" id="modal_saida" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Entradas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form method="post" action="/entrada_cadastro" name="fm_saida_cadastro"> 
+                <div class="modal-body">               
+                  <div class="row">
+                    <div class="mb-3">
+                      <label class="form-label">Data:</label>
+                      <input type="date" class="form-control" name="data_entrada" id="data_entrada" row='3'>
+                    </div>
+                    <!--Origens-->
+                    <div class="mb-3">
+                      <label class="form-label">Origem</label>
+                    </div>
+                    <div class="input-group mb-3">
+                      <select class="btn btn-outline-primary" name="origem_entrada1">
+                      <?php foreach($this->view->tb_origens as $index_origens => $tb_origens) { ?>
+    
+                          <option  value="<?= $tb_origens['nome_origem'] ?>"><?= $tb_origens['nome_origem'] ?></option>
+    
+                      <?php } ?>
+                      </select>
+                      <input type="text" id="origem" name="valor_entrada_origem1" class="origem form-control" style="display:inline-block" value="0" onkeyup="soma()"/>
+                    </div>
+                    <div class="input-group mb-3">
+                      <select class="btn btn-outline-primary" name="origem_entrada2">
+                      <?php foreach($this->view->tb_origens as $index_origens => $tb_origens) { ?>
+    
+                          <option  value="<?= $tb_origens['nome_origem'] ?>"><?= $tb_origens['nome_origem'] ?></option>
+    
+                      <?php } ?>
+                      </select>
+                      <input type="text" id="origem2" name="valor_entrada_origem2" class="origem form-control" style="display:inline-block" value="0" onkeyup="soma()"/>
+                    </div>
+                    <div class="input-group mb-3">
+                      <select class="btn btn-outline-primary" name="origem_entrada3">
+                      <?php foreach($this->view->tb_origens as $index_origens => $tb_origens) { ?>
+    
+                          <option  value="<?= $tb_origens['nome_origem'] ?>"><?= $tb_origens['nome_origem'] ?></option>
+    
+                      <?php } ?>
+                      </select>
+                      <input type="text" id="origem3" name="valor_entrada_origem3" class="origem form-control" style="display:inline-block" value="0" onkeyup="soma()"/>
+                    </div>
+                    <div class="input-group mb-3">
+                      <select class="btn btn-outline-primary" name="origem_entrada4">
+                      <?php foreach($this->view->tb_origens as $index_origens => $tb_origens) { ?>
+    
+                          <option  value="<?= $tb_origens['nome_origem'] ?>"><?= $tb_origens['nome_origem'] ?></option>
+    
+                      <?php } ?>
+                      </select>
+                      <input type="text" id="origem4" name="valor_entrada_origem4" class="origem form-control" style="display:inline-block" value="0" onkeyup="soma()" />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="origem">Valor Origens:</label>
+                      <span id="valorTotalOrigem"></span>
+
+                    </div>
+                    <!--Formas de Pagamento-->
+                    
+                    <div class="input-group mb-3">
+                      <select class="btn btn-outline-primary" name="formapg_entrada1">
+                        <?php foreach($this->view->tb_pagamentos as $index_pagamento => $tb_pagamentos) { ?>
+
+                          <option value="<?= $tb_pagamentos['nome_formapagamento'] ?>"><?= $tb_pagamentos['nome_formapagamento'] ?></option>
+
+                        <?php } ?>
+                      </select>
+                      <input type="text" id="pg1" name="valor_entrada_pg1" class="origem form-control" style="display:inline-block" value="0" onkeyup="soma()"/>
+                    </div>
+                    <div class="input-group mb-3">
+                      <select class="btn btn-outline-primary" name="formapg_entrada2">
+                        <?php foreach($this->view->tb_pagamentos as $index_pagamento => $tb_pagamentos) { ?>
+
+                          <option value="<?= $tb_pagamentos['nome_formapagamento'] ?>"><?= $tb_pagamentos['nome_formapagamento'] ?></option>
+
+                        <?php } ?>
+                      </select>
+                      <input type="text" id="pg2" name="valor_entrada_pg2" class="origem form-control" style="display:inline-block" value="0" onkeyup="soma()"/>
+                    </div>
+                    <div class="input-group mb-3">
+                      <select class="btn btn-outline-primary" name="formapg_entrada3">
+                        <?php foreach($this->view->tb_pagamentos as $index_pagamento => $tb_pagamentos) { ?>
+
+                          <option value="<?= $tb_pagamentos['nome_formapagamento'] ?>"><?= $tb_pagamentos['nome_formapagamento'] ?></option>
+
+                        <?php } ?>
+                      </select>
+                      <input type="text" id="pg3" name="valor_entrada_pg3" class="origem form-control" style="display:inline-block" value="0" onkeyup="soma()"/>
+                    </div>
+                    <div class="input-group mb-3">
+                      <select class="btn btn-outline-primary" name="formapg_entrada4">
+                        <?php foreach($this->view->tb_pagamentos as $index_pagamento => $tb_pagamentos) { ?>
+
+                          <option value="<?= $tb_pagamentos['nome_formapagamento'] ?>"><?= $tb_pagamentos['nome_formapagamento'] ?></option>
+
+                        <?php } ?>
+                      </select>
+                      <input type="text" id="pg4" name="valor_entrada_pg4" class="origem form-control" style="display:inline-block" value="0" onkeyup="soma()"/>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="origem">Valor Formas de Pagamento:</label>
+                      <span id="valorTotalFormapg"></span>
+
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Observação</label>
+                      <textarea class="form-control" name="obs_entrada"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="button_salvar">Salvar</button>
+                  </div> 
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>   
+         <!-- / Modal -->
+
+        
+    </div>
+    
+
+  <script type="text/javascript">
+$('.origem').mask('#.##0,00', {reverse: true});
+$('.origem2').mask('#.##0,00', {reverse: true});
+$('.origem3').mask('#.##0,00', {reverse: true});
+$('.origem4').mask('#.##0,00', {reverse: true});
+$('.entrada').mask('#.##0,00', {reverse: true});
+$('#valorTotal').mask('#.##0,00', {reverse: true});
+
+document.getElementById("button_salvar").disabled = true;
+$('#button_salvar').addClass('btn-danger');
+
+function soma(){
+  var origem =  document.getElementById('origem').value.replace('.' , '').replace(',' , '.');
+  var origem1 = document.getElementById('origem2').value.replace('.' , '').replace(',' , '.');
+  var origem2 = document.getElementById('origem3').value.replace('.' , '').replace(',' , '.');
+  var origem3 = document.getElementById('origem4').value.replace('.' , '').replace(',' , '.');
+  
+  var teste1 = parseFloat(origem);
+  var teste2 = parseFloat(origem1);
+  var teste3 = parseFloat(origem2);
+  var teste4 = parseFloat(origem3);
+
+  var soma1 = (teste1) + (teste2) + (teste3) + (teste4);
+
+  var formato = { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' }
+  $('#valorTotalOrigem').html(soma1.toLocaleString('pt-BR', formato));
+  
+
+  var pg1 =  document.getElementById('pg1').value.replace('.' , '').replace(',' , '.');
+  var pg2 = document.getElementById('pg2').value.replace('.' , '').replace(',' , '.');
+  var pg3 = document.getElementById('pg3').value.replace('.' , '').replace(',' , '.');
+  var pg4 = document.getElementById('pg4').value.replace('.' , '').replace(',' , '.');
+  
+  var pteste1 = parseFloat(pg1);
+  var pteste2 = parseFloat(pg2);
+  var pteste3 = parseFloat(pg3);
+  var pteste4 = parseFloat(pg4);
+
+  var soma2 = (pteste1) + (pteste2) + (pteste3) + (pteste4);
+
+  var formato = { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' }
+  $('#valorTotalFormapg').html(soma2.toLocaleString('pt-BR', formato));
+ 
+  if(soma1 == soma2){
+    document.getElementById("button_salvar").disabled = false;
+    $('#button_salvar').addClass('btn-primary');
+  }
+} 
+
+
+  </script>
