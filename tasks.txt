@@ -1,0 +1,38 @@
+cadastrar
+
+- clientes/fornecedor:
+-- tipo: cliente/fornecedor
+-- name
+-- razao-social
+-- cpf-cnpj
+-- email
+-- phone
+-- responsavel
+-- responsavel-phone
+-- cep
+-- rua
+-- numero
+-- cidade
+-- estado
+-- infos-adicionais
+-- foto
+
+- formas-pagamento/formas-recebimento:
+-- tipo: pagamento/recebimento
+-- title
+-- description
+-- 
+
+- payment:
+-- clientes_id/fornecedor_id
+-- description
+-- documents(upload)
+-- valor
+-- 
+
+- payment-review-status:
+-- aguardando
+-- aprovado
+-- reprovado
+
+- payment-status:
