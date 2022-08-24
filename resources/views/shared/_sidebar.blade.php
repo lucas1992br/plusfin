@@ -58,32 +58,32 @@
     </x-sidebar-item>
     -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#gerenciamento"
+            aria-expanded="true" aria-controls="gerenciamento">
             <i class="fas fa-fw fa-cog"></i>
             <span>Gerenciamento</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="gerenciamento" class="collapse" aria-labelledby="gerenciamento" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded">
                 <a class="text-light collapse-item" href="{{route('atualizar-saidas.index')}}">Atualizar Saidas</a>
             </div>
         </div>
 
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="gerenciamento" class="collapse" aria-labelledby="gerenciamento" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded">
                 <a class="collapse-item text-light" href="{{ route('aprovar-saidas.index') }}">Aprovar Saidas</a>
             </div>
         </div>
 
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="gerenciamento" class="collapse" aria-labelledby="gerenciamento" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded">
-                <a class="collapse-item text-light" href="{{ route('centro-de-custo.index') }}">Auditoria Saidas</a>
+                <a class="collapse-item text-light" href="{{ route('envio-documentos.index') }}">Envio de Documentos</a>
             </div>
         </div>
 
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="gerenciamento" class="collapse" aria-labelledby="gerenciamento" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded">
-                <a class="collapse-item text-light" href="{{ route('centro-de-custo.index') }}">Pagamento Saidas</a>
+                <a class="collapse-item text-light" href="{{ route('pagamento-saidas.index') }}">Pagamento Saidas</a>
             </div>
         </div>        
     </li>
@@ -200,10 +200,10 @@
     <!-- Divider -->
     <hr class="sidebar-divider d-none">
 
-    <!-- Sidebar Toggler (Sidebar) -->
+    <!-- Sidebar Toggler (Sidebar) 
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
+    </div> -->
 
     <!-- Sidebar Message -->
     {{-- <div class="sidebar-card d-none d-lg-flex">

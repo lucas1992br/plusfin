@@ -45,8 +45,8 @@
                                 @case('Pagamento Pendente')
                                     <td class="bg-success text-white rounded align-middle">Pagamento Pendente</td>
                                     @break
-                                @case('Observações')
-                                    <td class="bg-primary text-white rounded align-middle">Observações</td>
+                                @case('Envio De Documentos Pendente')
+                                    <td class="bg-primary text-white rounded align-middle">Envio De Documentos Pendente</td>
                                     @break
                                 @default
                                     
@@ -68,7 +68,7 @@
     </div>
 
     <div class="modal fade" id="register-new-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="register-modal">Cadastro Saidas</h5>
@@ -128,8 +128,8 @@
                                           </select>
                             </div>
 
-                            <div class="col-md-12 mb-3">
-                              <label class="form-label">Observação - Gestor</label>
+                            <div class="col-md-12 mb-3" style="display: none">
+                              <label class="form-label" >Observação - Gestor</label>
                               <textarea class="form-control" name="observacao"></textarea>
                             </div>
                                   
@@ -138,7 +138,7 @@
                               <textarea class="form-control" name="observacao_atuditoria"></textarea>
                             </div>
 
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3" style="display: none">
                               <label class="form-label">Observação - Administrativo</label>
                               <textarea class="form-control" name="observacao2"></textarea>    
                             </div>
@@ -161,7 +161,7 @@
     </div>
 
     <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="update-modal" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="update-modal">Editar saidas</h5>
@@ -234,12 +234,12 @@
                             </div>
 
                             <div class="col-md-12 mb-3">
-                                <label class="form-label" style="display: none">Observação Auditoria</label>
+                                <label class="form-label">Observação Auditoria</label>
                                 <textarea class="form-control" id="edit-observacao_atuditoria" name="observacao_atuditoria"></textarea>
                               </div>
 
                             <div class="col-md-12 mb-3">
-                                <label class="form-label" style="display: none">Observação Auditoria</label>
+                                <label class="form-label">Observação Auditoria</label>
                                 <textarea class="form-control" id="edit-observacao_atuditoria2" name="observacao_atuditoria2"></textarea>
                             </div>
 

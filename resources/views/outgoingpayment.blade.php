@@ -2,7 +2,7 @@
 <x-aplicativo-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Atualizar Saidas
+            Pagamento Saidas
         </h2>
     </x-slot>
     <!-- DataTales Example -->
@@ -21,7 +21,7 @@
                 @slot('data')
                     @foreach ($methods ?? '' as $item)
                     @switch($item->status)            
-                                @case('Atualização Pendente')
+                                @case('Pagamento Pendente')
                                     <tr>
                                         <td title="{{ $item->data }}">{{ $item->data }}</td>
                                         <td title="{{ $item->conta }}">{{ $item->conta }}</td>
@@ -29,7 +29,7 @@
                                         <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
                                         <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
                                         <td title="{{ $item->valor }}">{{ $item->valor }}</td>
-                                        <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td>
+                                        <td class="bg-success text-white rounded align-middle">Pagamento Pendente</td>
                                         <td title="Ações">
                                             <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
                                                 <i class="fa fa-trash _i text-danger"></i>
@@ -50,10 +50,10 @@
     </div>
 
     <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="update-modal" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="update-modal">Aprovar Saidas</h5>
+                    <h5 class="modal-title" id="update-modal">Lançar Pagamento</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -63,7 +63,10 @@
                         @method('PUT')
                         @csrf
                         <div class="form-row">
-                            <div class="col-md-12 mb-3">
+                            <div class="form-group col-md-12 mb-3">
+                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                              </div>
+                            <div class="col-md-12 mb-3" style="display: none">
                                             <label class="form-label">Fonte Pagante</label>
                                             <select class="form-select-item select form-control" id="edit-paying_sources_id" name="paying_sources_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Fonte Pagante</option>
@@ -72,7 +75,7 @@
                                             @endforeach                                        
                                         </select>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3" style="display: none">
                                         <label class="form-label">Forma Pagamento</label>
                                         <select class="form-select-item select form-control" id="edit-payment_methods_id" name="payment_methods_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Forma de Pagamento</option>
@@ -81,11 +84,11 @@
                                             @endforeach                                        
                                         </select>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3" style="display: none">
                                         <label class="form-label">Data:</label>
                                         <input type="date" class="form-control" id="edit-data" name="data" row='3'>
                             </div>
-                            <div class="col-md-12 mb-3" style="display: none">
+                            <div class="col-md-12 mb-3">
                                         <label class="form-label">Conta</label>
                                         <textarea class="form-control" id="edit-conta" name="conta"></textarea>                                    
                             </div>
@@ -98,7 +101,7 @@
                                             @endforeach                                        
                                         </select>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3" style="display: none">
                                         <label class="form-label" for="dinheiro">Valor:</label>
                                         <input type="number" id="edit-valor" name="valor" class="dinheiro form-control" style="display:inline-block" />
                             </div>
@@ -111,7 +114,7 @@
                             </div>
 
                             <div class="col-md-12 mb-3" style="display: none">
-                                <label class="form-label" >Observação</label>
+                                <label class="form-label" >Observação - Gestor</label>
                                 <textarea class="form-control" id="edit-observacao" name="observacao"></textarea>
                             </div>
                                     
@@ -121,7 +124,7 @@
                             </div>
 
                             <div class="col-md-12 mb-3" style="display: none">
-                                <label class="form-label" >Observação</label>
+                                <label class="form-label" >Observação - Administrativo</label>
                                 <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>    
                             </div>
 
