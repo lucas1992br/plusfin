@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
     <!-- DataTales Example -->
-   
+
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
         </div>
@@ -20,7 +20,7 @@
 
                 @slot('data')
                     @foreach ($methods ?? '' as $item)
-                    @switch($item->status)            
+                    @switch($item->status)
                                 @case('Atualização Pendente')
                                     <tr>
                                         <td title="{{ $item->data }}">{{ $item->data }}</td>
@@ -31,17 +31,17 @@
                                         <td title="{{ $item->valor }}">{{ $item->valor }}</td>
                                         <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td>
                                         <td title="Ações">
-                                            <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
+                                            <a title="Excluir" role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
                                                 <i class="fa fa-trash _i text-danger"></i>
                                             </a>
-                                            <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
+                                            <a title="Editar" role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
                                                 <i class="fa fa-edit _i text-navy"></i>
                                             </a>
                                         </td>
                                     </tr>
                                     @break
-                                @default                                    
-                        @endswitch  
+                                @default
+                        @endswitch
                     @endforeach
                 @endslot
 
@@ -69,7 +69,7 @@
                                             <option value="">Selecione uma Fonte Pagante</option>
                                             @foreach($payings_sources as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -78,7 +78,7 @@
                                             <option value="">Selecione uma Forma de Pagamento</option>
                                             @foreach($payments_methods as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -87,7 +87,7 @@
                             </div>
                             <div class="col-md-12 mb-3" style="display: none">
                                         <label class="form-label">Conta</label>
-                                        <textarea class="form-control" id="edit-conta" name="conta"></textarea>                                    
+                                        <textarea class="form-control" id="edit-conta" name="conta"></textarea>
                             </div>
                             <div class="col-md-12 mb-3" style="display: none">
                                             <label class="form-label">Origem</label>
@@ -95,7 +95,7 @@
                                             <option value="">Selecione uma Origem</option>
                                             @foreach($origins as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -114,7 +114,7 @@
                                 <label class="form-label" >Observação</label>
                                 <textarea class="form-control" id="edit-observacao" name="observacao"></textarea>
                             </div>
-                                    
+
                             <div class="col-md-12 mb-3" style="display: none">
                                 <label class="form-label">Observação Auditoria</label>
                                 <textarea class="form-control" id="edit-observacao_atuditoria" name="observacao_atuditoria"></textarea>
@@ -122,14 +122,14 @@
 
                             <div class="col-md-12 mb-3" style="display: none">
                                 <label class="form-label" >Observação</label>
-                                <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>    
+                                <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3" style="display: none">
                                 <label class="form-label">Observação Auditoria</label>
                                 <textarea class="form-control" id="edit-observacao_atuditoria2" name="observacao_atuditoria2"></textarea>
                             </div>
-                        </div>    
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button id="js-edit-submit" class="btn btn-primary">Salvar</button>
@@ -206,7 +206,7 @@
                 confirmButtonText: 'Sim, remover!',
                 cancelButtonText: "Cancelar"
             }).then((result) => {
-                if (result.isConfirmed) {                   
+                if (result.isConfirmed) {
                     $(this).parent('td').parent('tr').hide();
                     $.ajax({
                         type: 'delete',

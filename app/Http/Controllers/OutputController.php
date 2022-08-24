@@ -27,7 +27,7 @@ class OutputController extends Controller
      */
     public function index()
     {
-        $methods = Output::all();            
+        $methods = Output::all();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
@@ -58,10 +58,9 @@ class OutputController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreOutputRequest $request)
-    {   
-         
+    {
+
         if($request->all()){
-            
             Output::create([
                 'status' => $request->status,
                 'data' => $request->data,
@@ -150,6 +149,6 @@ class OutputController extends Controller
         $item->delete();
 
         return response('Deletado com sucesso.', 200);
-        
+
     }
 }
