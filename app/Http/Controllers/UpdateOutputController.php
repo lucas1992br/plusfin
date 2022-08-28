@@ -22,7 +22,7 @@ class UpdateOutputController extends Controller
      */
     public function index()
     {
-        $methods = Output::all();            
+        $methods = Output::where('status', '=', 'Atualização Pendente')->get();            
         $activities = Activity::all('nome', 'id');
         $costcenters = CostCenter::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
@@ -56,26 +56,7 @@ class UpdateOutputController extends Controller
      */
     public function store(StoreUpdateOutputRequest $request)
     {
-        if($request->all()){
-            Output::create([
-                'status' => $request->status,
-                'data' => $request->data,
-                'conta' => $request->conta,
-                'observacao' => $request->observacao,
-                'observacao_atuditoria' => $request->observacao_atuditoria,
-                'observacao2' => $request->observacao2,
-                'observacao_atuditoria2' => $request->observacao_atuditoria2,
-                'valor' => $request->valor,
-                'paying_sources_id' => $request->paying_sources_id,
-                'payment_methods_id' => $request->payment_methods_id,
-                'origin_id' => $request->origin_id,
-            ]);
-
-            return Redirect::route('saidas.index');
-        }else{
-            // toDo: flash message de erro
-            return Redirect::route('saidas.index');
-        }
+        //
     }
 
     /**
@@ -97,9 +78,9 @@ class UpdateOutputController extends Controller
      * @param  \App\Models\gerenciamento\UpdateOutput  $updateOutput
      * @return \Illuminate\Http\Response
      */
-    public function edit(UpdateOutput $updateOutput)
+    public function edit(UpdateOutput $updateOutput, $id)
     {
-        //
+        olá;
     }
 
     /**
@@ -110,27 +91,23 @@ class UpdateOutputController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateUpdateOutputRequest $request, $id)
-    {
-        $item = Output::find($id);
+    {  
+        $item = UpdateOutput::find($id);
         if($item && $request->all()){
-            $item->status = $request->status;
+            $item->status = ('Aprovação Pendente');
             $item->data = $request->data;
             $item->conta = $request->conta;
-            $item->observacao = $request->observacao;
-            $item->observacao2 = $request->observacao2;
-            $item->observacao_atuditoria = $request->observacao_atuditoria;
-            $item->observacao_atuditoria2 = $request->observacao_atuditoria2;
             $item->valor = $request->valor;
             $item->paying_sources_id = $request->paying_sources_id;
             $item->payment_methods_id = $request->payment_methods_id;
-            $item->origin_id = $request->origin_id;
             $item->save();
             // toDo: flash message de sucesso
-            return Redirect::route('saidas.index');
+            return Redirect::route('atualizar-saidas.index');
         }else{
             // toDo: flash message de erro
             return response('Houve um erro ao salvar.', 400);
         }
+        
     }
 
     /**

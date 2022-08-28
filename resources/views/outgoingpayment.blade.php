@@ -23,12 +23,12 @@
                     @switch($item->status)            
                                 @case('Pagamento Pendente')
                                     <tr>
-                                        <td title="{{ $item->data }}">{{ $item->data }}</td>
+                                        <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
                                         <td title="{{ $item->conta }}">{{ $item->conta }}</td>
                                         <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
                                         <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
                                         <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
-                                        <td title="{{ $item->valor }}">{{ $item->valor }}</td>
+                                        <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
                                         <td class="bg-success text-white rounded align-middle">Pagamento Pendente</td>
                                         <td title="Ações">
                                             <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">

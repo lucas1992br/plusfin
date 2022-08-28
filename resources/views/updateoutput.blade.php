@@ -19,29 +19,24 @@
                 ])
 
                 @slot('data')
-                    @foreach ($methods ?? '' as $item)
-                    @switch($item->status)
-                                @case('Atualização Pendente')
-                                    <tr>
-                                        <td title="{{ $item->data }}">{{ $item->data }}</td>
-                                        <td title="{{ $item->conta }}">{{ $item->conta }}</td>
-                                        <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
-                                        <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
-                                        <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
-                                        <td title="{{ $item->valor }}">{{ $item->valor }}</td>
-                                        <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td>
-                                        <td title="Ações">
-                                            <a title="Excluir" role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
-                                                <i class="fa fa-trash _i text-danger"></i>
-                                            </a>
-                                            <a title="Editar" role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
-                                                <i class="fa fa-edit _i text-navy"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @break
-                                @default
-                        @endswitch
+                    @foreach ($methods ?? '' as $item)                
+                        <tr>
+                            <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
+                            <td title="{{ $item->conta }}">{{ $item->conta }}</td>
+                            <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
+                            <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
+                            <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
+                            <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
+                            <td class="bg-warning text-white rounded align-middle">{{ $item->status }}</td>
+                            <td title="Ações">
+                                <a title="Excluir" role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
+                                    <i class="fa fa-trash _i text-danger"></i>
+                                </a>
+                                <a title="Editar" role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
+                                    <i class="fa fa-edit _i text-navy"></i>
+                                </a>
+                            </td>
+                        </tr>   
                     @endforeach
                 @endslot
 
