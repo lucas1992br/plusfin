@@ -78,6 +78,7 @@ class ApproveOutputsController extends Controller
      */
     public function edit(ApproveOutputs $approveOutputs)
     {
+        //
         
     }
 
@@ -90,18 +91,26 @@ class ApproveOutputsController extends Controller
      */
     public function update(UpdateApproveOutputsRequest $request, $id)
     {
+        
         $item = Output::find($id);
-        if($item && $request->all()){
+        if($item && $request->status == 'Pagamento Pendente'){
+            $item->status = $request->status;;
+            $item->update();         
+        }
+        else if($item && $request->status == 'Envio De Documentos Pendente'){
             $item->status = $request->status;;
             $item->observacao = $request->observacao;
             $item->observacao2 = $request->observacao2;
             $item->update();
             // toDo: flash message de sucesso
             return Redirect::route('aprovar-saidas.index');
-        }else{
-            // toDo: flash message de erro
+           
+        } 
+        else {
+             // toDo: flash message de erro
             return response('Houve um erro ao salvar.', 400);
         }
+        
     }
 
     /**

@@ -35,7 +35,7 @@
                                 <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
                                     <i class="fa fa-edit _i text-navy"></i>
                                 </a>
-                                <a role="button" class="aprov-row-js" data-route="{{route('saidas.show', $item->id)}}">
+                                <a role="button" class="aprov-row-js" data-route="{{route('aprovar-saidas.update', $item->id)}}">
                                     <i class="fa fa-check _i text-success"></i>
                                 </a>
                             </td>
@@ -80,41 +80,7 @@
                 </form>
             </div>
         </div>
-    </div>
-
-    <div class="modal fade" id="aprov-item-modal" tabindex="-1" role="dialog" aria-labelledby="update-modal" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="update-modal"></h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <form id="aprov-form" class="needs-validation" method="POST" novalidate>
-                    <div class="modal-body">
-                        @method('PUT')
-                        @csrf
-                        <div class="form-row">
-                            <div class="col-md-12 mb-3">
-                                <label class="row d-flex justify-content-center">Aprovar Saida</label>
-                            </div>
-                            <div class="col-md-4 mb-3" style="display: none">
-                                <input type="text" value="Pagamento Pendente" name="status">       
-                            </div>                                    
-                        </div>    
-                    </div>
-                    <div class="modal-footer">
-                        <button id="js-aprov-submit" class="btn btn-primary">Aprovar</button>
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    
-
+    </div>  
 </x-aplicativo-layout>
 
 <script type="text/javascript">
@@ -239,31 +205,47 @@
             });
         });
 
-        let aprovItemId = '';
-
         $('.aprov-row-js').on('click', function(e) {
             e.preventDefault();
 
-            $.ajax({
-                type: 'get',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: $(this).data('route'),
-                success: (response, textStatus, xhr) => {
-                    aprovItemId = response.id;
-                    $('#aprov-form').attr('action', `aprovar-saidas/${aprovItemId}`);
-                    $('#aprov-item-modal').modal('show');
-                },
-                error: (response) => {
-                    console.log(response);
-                    Swal.fire(
-                        'Erro!',
-                        response.responseJSON.message,
-                        'error'
-                    )
+            Swal.fire({
+                title: 'Aprovar Saida',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim',
+                cancelButtonText: 'Não'
+            }).then((result) => {
+                if (result.isConfirmed) {                   
+                    $(this).parent('td').parent('tr').hide();
+                    $.ajax({
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: $(this).data('route'),
+                        data: {'_method': 'PUT', status: 'Pagamento Pendente'},
+                        success: (response, textStatus, xhr) => {
+                            Swal.fire(
+                                'Concluido!',
+                                response,
+                                'success'
+                            )
+                        },
+                        error: (response) => {
+                            console.log(response);
+                            Swal.fire(
+                                'Erro!',
+                                response.responseJSON.message,
+                                'error'
+                            )
+                        }
+                    });
                 }
             });
         });
     });
+
+    
 </script>
