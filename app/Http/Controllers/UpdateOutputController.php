@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UpdateOutput;
 use App\Http\Requests\StoreUpdateOutputRequest;
 use App\Http\Requests\UpdateUpdateOutputRequest;
-
+use Illuminate\Support\Facades\Redirect;
 use App\Models\Origin;
 use App\Models\Activity;
 use App\Models\CostCenter;
@@ -92,15 +92,15 @@ class UpdateOutputController extends Controller
      */
     public function update(UpdateUpdateOutputRequest $request, $id)
     {  
-        $item = UpdateOutput::find($id);
+        
+        $item = Output::find($id);  
         if($item && $request->all()){
-            $item->status = ('Aprovação Pendente');
+            $item->status = 'Aprovação Pendente';
             $item->data = $request->data;
-            $item->conta = $request->conta;
             $item->valor = $request->valor;
             $item->paying_sources_id = $request->paying_sources_id;
             $item->payment_methods_id = $request->payment_methods_id;
-            $item->save();
+            $item->update();
             // toDo: flash message de sucesso
             return Redirect::route('atualizar-saidas.index');
         }else{
@@ -108,6 +108,9 @@ class UpdateOutputController extends Controller
             return response('Houve um erro ao salvar.', 400);
         }
         
+        
+        
+
     }
 
     /**

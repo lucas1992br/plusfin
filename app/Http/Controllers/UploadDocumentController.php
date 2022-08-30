@@ -24,7 +24,7 @@ class UploadDocumentController extends Controller
      */
     public function index()
     {
-        $methods = Output::all();            
+        $methods = Output::where('status', '=', 'Envio De Documentos Pendente')->get();            
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
@@ -56,7 +56,7 @@ class UploadDocumentController extends Controller
      */
     public function store(StoreUploadDocumentRequest $request)
     {
-        //
+        dd($request);
     }
 
     /**

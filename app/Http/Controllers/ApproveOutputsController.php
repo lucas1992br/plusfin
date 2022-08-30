@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ApproveOutputs;
 use App\Http\Requests\StoreApproveOutputsRequest;
 use App\Http\Requests\UpdateApproveOutputsRequest;
-
+use Illuminate\Support\Facades\Redirect;
 use App\Models\Origin;
 use App\Models\Activity;
 use App\Models\CostCenter;
@@ -22,7 +22,7 @@ class ApproveOutputsController extends Controller
      */
     public function index()
     {
-        $methods = Output::all();            
+        $methods = Output::where('status', '=', 'Aprovação Pendente')->get();          
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
@@ -30,8 +30,6 @@ class ApproveOutputsController extends Controller
 
         return view('approveoutputs', compact([
             'methods',
-            'activities',
-            'origins',
             'payings_sources' ,
             'payments_methods'
         ]));
@@ -56,26 +54,7 @@ class ApproveOutputsController extends Controller
      */
     public function store(StoreApproveOutputsRequest $request)
     {
-        if($request->all()){
-            Output::create([
-                'status' => $request->status,
-                'data' => $request->data,
-                'conta' => $request->conta,
-                'observacao' => $request->observacao,
-                'observacao_atuditoria' => $request->observacao_atuditoria,
-                'observacao2' => $request->observacao2,
-                'observacao_atuditoria2' => $request->observacao_atuditoria2,
-                'valor' => $request->valor,
-                'paying_sources_id' => $request->paying_sources_id,
-                'payment_methods_id' => $request->payment_methods_id,
-                'origin_id' => $request->origin_id,
-            ]);
-
-            return Redirect::route('aprovar-saidas.index');
-        }else{
-            // toDo: flash message de erro
-            return Redirect::route('aprovar-saidas.index');
-        }
+        //
     }
 
     /**
@@ -99,7 +78,7 @@ class ApproveOutputsController extends Controller
      */
     public function edit(ApproveOutputs $approveOutputs)
     {
-        //
+        
     }
 
     /**
@@ -113,18 +92,10 @@ class ApproveOutputsController extends Controller
     {
         $item = Output::find($id);
         if($item && $request->all()){
-            $item->status = $request->status;
-            $item->data = $request->data;
-            $item->conta = $request->conta;
+            $item->status = $request->status;;
             $item->observacao = $request->observacao;
             $item->observacao2 = $request->observacao2;
-            $item->observacao_atuditoria = $request->observacao_atuditoria;
-            $item->observacao_atuditoria2 = $request->observacao_atuditoria2;
-            $item->valor = $request->valor;
-            $item->paying_sources_id = $request->paying_sources_id;
-            $item->payment_methods_id = $request->payment_methods_id;
-            $item->origin_id = $request->origin_id;
-            $item->save();
+            $item->update();
             // toDo: flash message de sucesso
             return Redirect::route('aprovar-saidas.index');
         }else{

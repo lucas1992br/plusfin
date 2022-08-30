@@ -20,28 +20,23 @@
 
                 @slot('data')
                     @foreach ($methods ?? '' as $item)
-                    @switch($item->status)            
-                                @case('Envio De Documentos Pendente')
-                                    <tr>
-                                        <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
-                                        <td title="{{ $item->conta }}">{{ $item->conta }}</td>
-                                        <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
-                                        <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
-                                        <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
-                                        <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
-                                        <td class="bg-primary text-white rounded align-middle">Envio De Documentos Pendente</td>
-                                        <td title="Ações">
-                                            <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
-                                                <i class="fa fa-trash _i text-danger"></i>
-                                            </a>
-                                            <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
-                                                <i class="fa fa-edit _i text-navy"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @break
-                                @default                                    
-                        @endswitch  
+                        <tr>
+                            <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
+                            <td title="{{ $item->conta }}">{{ $item->conta }}</td>
+                            <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
+                            <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
+                            <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
+                            <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
+                            <td class="bg-primary text-white rounded align-middle">{{ $item->status }}</td>
+                            <td title="Ações">
+                                <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
+                                    <i class="fa fa-trash _i text-danger"></i>
+                                </a>
+                                <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
+                                    <i class="fa fa-edit _i text-navy"></i>
+                                </a>
+                            </td>
+                        </tr>          
                     @endforeach
                 @endslot
 
@@ -58,79 +53,22 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="edit-form" class="needs-validation" method="POST" novalidate>
+                <form id="edit-form" class="needs-validation" method="POST" novalidate enctype="multipart/form-data">
                     <div class="modal-body">
-                        @method('PUT')
+                        @method('POST')
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-12 mb-3">
-                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                              </div>
-                            <div class="col-md-12 mb-3" style="display: none">
-                                            <label class="form-label">Fonte Pagante</label>
-                                            <select class="form-select-item select form-control" id="edit-paying_sources_id" name="paying_sources_id" searchable="Search here.." required="true">
-                                            <option value="">Selecione uma Fonte Pagante</option>
-                                            @foreach($payings_sources as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
-                                        </select>
+                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="imagem">
                             </div>
-                            <div class="col-md-12 mb-3" style="display: none">
-                                        <label class="form-label">Forma Pagamento</label>
-                                        <select class="form-select-item select form-control" id="edit-payment_methods_id" name="payment_methods_id" searchable="Search here.." required="true">
-                                            <option value="">Selecione uma Forma de Pagamento</option>
-                                            @foreach($payments_methods as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
-                                        </select>
-                            </div>
-                            <div class="col-md-12 mb-3" style="display: none">
-                                        <label class="form-label">Data:</label>
-                                        <input type="date" class="form-control" id="edit-data" name="data" row='3'>
-                            </div>
-                            <div class="col-md-12 mb-3" style="display: none">
-                                        <label class="form-label">Conta</label>
-                                        <textarea class="form-control" id="edit-conta" name="conta"></textarea>                                    
-                            </div>
-                            <div class="col-md-12 mb-3" style="display: none">
-                                            <label class="form-label">Origem</label>
-                                            <select class="form-select-item select form-control" id="edit-origin_id" name="origin_id" searchable="Search here.." required="true">
-                                            <option value="">Selecione uma Origem</option>
-                                            @foreach($origins as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
-                                        </select>
-                            </div>
-                            <div class="col-md-12 mb-3" style="display: none">
-                                        <label class="form-label" for="dinheiro">Valor:</label>
-                                        <input type="number" id="edit-valor" name="valor" class="dinheiro form-control" style="display:inline-block" />
-                            </div>
-
-                            <div class="col-md-4 mb-3" style="display: none">
-                                            <label class="form-label" >Estagio</label>
-                                            <select class="form-select-item select form-control" name="status">
-                                            <option value="Aprovação Pendente">Aprovação Pendente</option>
-                                            </select>
-                            </div>
-
                             <div class="col-md-12 mb-3">
                                 <label class="form-label" >Observação - Gestor</label>
                                 <textarea class="form-control" id="edit-observacao" name="observacao"></textarea>
-                            </div>
-                                    
-                            <div class="col-md-12 mb-3" style="display: none">
-                                <label class="form-label">Observação Auditoria</label>
-                                <textarea class="form-control" id="edit-observacao_atuditoria" name="observacao_atuditoria"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3">
                                 <label class="form-label" >Observação - Administrativo</label>
                                 <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>    
-                            </div>
-
-                            <div class="col-md-12 mb-3" style="display: none">
-                                <label class="form-label">Observação Auditoria</label>
-                                <textarea class="form-control" id="edit-observacao_atuditoria2" name="observacao_atuditoria2"></textarea>
                             </div>
                         </div>    
                     </div>
@@ -251,16 +189,9 @@
                 url: $(this).data('route'),
                 success: (response, textStatus, xhr) => {
                     editItemId = response.id;
-                    $('#edit-data').val(response.data);
-                    $('#edit-conta').val(response.conta);
                     $('#edit-observacao').val(response.observacao);
-                    $('#edit-observacao_atuditoria').val(response.observacao_atuditoria);
                     $('#edit-observacao2').val(response.observacao2);
-                    $('#edit-valor').val(response.valor);
-                    $('#edit-paying_sources_id').val(response.paying_sources_id);
-                    $('#edit-payment_methods_id').val(response.payment_methods_id);
-                    $('#edit-origin_id').val(response.payment_methods_id);
-                    $('#edit-form').attr('action', `saidas/${editItemId}`);
+                    $('#edit-form').attr('action', `envio-documentos`);
 
                     $('#edit-item-modal').modal('show');
                 },
