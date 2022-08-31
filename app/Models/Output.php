@@ -10,6 +10,7 @@ use App\Models\Activity;
 use App\Models\CostCenter;
 use App\Models\PaymentMethod;
 use App\Models\PayingSource;
+use App\Models\File;
 
 class Output extends Model
 {
@@ -30,7 +31,7 @@ class Output extends Model
         'origin_id'
     ];
 
-    protected $with = ['activity', 'origin', 'payments_methods', 'payings_sources'];
+    protected $with = ['activity', 'origin', 'payments_methods', 'payings_sources', 'files'];
 
     public function activity() {
         return $this->hasOne(Activity::class , 'id', 'activity_id');
@@ -46,5 +47,9 @@ class Output extends Model
 
     public function payings_sources() {
         return $this->hasOne(PayingSource::class  , 'id', 'paying_sources_id');
+    }
+
+    public function files() {
+        return $this->belongsToMany(File::class);
     }
 }

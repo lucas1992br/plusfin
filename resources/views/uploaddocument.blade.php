@@ -5,8 +5,16 @@
             Envio de Documentos
         </h2>
     </x-slot>
-    <!-- DataTales Example -->
-   
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
         </div>
@@ -36,7 +44,7 @@
                                     <i class="fa fa-edit _i text-navy"></i>
                                 </a>
                             </td>
-                        </tr>          
+                        </tr>
                     @endforeach
                 @endslot
 
@@ -55,11 +63,11 @@
                 </div>
                 <form id="edit-form" class="needs-validation" method="POST" novalidate enctype="multipart/form-data">
                     <div class="modal-body">
-                        @method('POST')
+                        @method('PUT')
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-12 mb-3">
-                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="imagem">
+                                <input multiple type="file" class="form-control-file" id="exampleFormControlFile1" name="files[]">
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label" >Observação - Gestor</label>
@@ -68,9 +76,9 @@
 
                             <div class="col-md-12 mb-3">
                                 <label class="form-label" >Observação - Administrativo</label>
-                                <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>    
+                                <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>
                             </div>
-                        </div>    
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button id="js-edit-submit" class="btn btn-primary">Salvar</button>
@@ -147,7 +155,7 @@
                 confirmButtonText: 'Sim, remover!',
                 cancelButtonText: "Cancelar"
             }).then((result) => {
-                if (result.isConfirmed) {                   
+                if (result.isConfirmed) {
                     $(this).parent('td').parent('tr').hide();
                     $.ajax({
                         type: 'delete',
@@ -191,7 +199,8 @@
                     editItemId = response.id;
                     $('#edit-observacao').val(response.observacao);
                     $('#edit-observacao2').val(response.observacao2);
-                    $('#edit-form').attr('action', `envio-documentos`);
+                    // $('#edit-form').attr('action', `saidas/${editItemId}`);
+                    $('#edit-form').attr('action', `envio-documentos/${editItemId}`);
 
                     $('#edit-item-modal').modal('show');
                 },

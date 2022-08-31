@@ -22,7 +22,7 @@ class ApproveOutputsController extends Controller
      */
     public function index()
     {
-        $methods = Output::where('status', '=', 'Aprovação Pendente')->get();          
+        $methods = Output::where('status', '=', 'Aprovação Pendente')->get();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
@@ -33,7 +33,7 @@ class ApproveOutputsController extends Controller
             'payings_sources' ,
             'payments_methods'
         ]));
-        
+
     }
 
     /**
@@ -79,7 +79,7 @@ class ApproveOutputsController extends Controller
     public function edit(ApproveOutputs $approveOutputs)
     {
         //
-        
+
     }
 
     /**
@@ -89,13 +89,12 @@ class ApproveOutputsController extends Controller
      * @param  \App\Models\ApproveOutputs  $approveOutputs
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateApproveOutputsRequest $request, $id)
-    {
-        
+    public function update(UpdateApproveOutputsRequest $request, $id) {
         $item = Output::find($id);
+
         if($item && $request->status == 'Pagamento Pendente'){
             $item->status = $request->status;;
-            $item->update();         
+            $item->update();
         }
         else if($item && $request->status == 'Envio De Documentos Pendente'){
             $item->status = $request->status;;
@@ -104,13 +103,13 @@ class ApproveOutputsController extends Controller
             $item->update();
             // toDo: flash message de sucesso
             return Redirect::route('aprovar-saidas.index');
-           
-        } 
+
+        }
         else {
              // toDo: flash message de erro
             return response('Houve um erro ao salvar.', 400);
         }
-        
+
     }
 
     /**

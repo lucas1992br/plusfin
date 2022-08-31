@@ -19,12 +19,12 @@
     <link href="{{ asset('css/cpr/sb-admin-2.min.css') }}" rel="stylesheet">
     {{-- <link href="vendor/datatables/dataTables.min.css" rel="stylesheet" type="text/css"> --}}
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
-    
+
 
 </head>
 
 <body id="page-top">
-    
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -99,7 +99,7 @@
     <script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
     <script src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    
+
 
     <!-- Core plugin JavaScript-->
     <script src="js/jquery-easing/jquery.easing.min.js"></script>

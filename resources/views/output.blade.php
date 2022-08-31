@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <!-- DataTales Example -->
-   
+
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
             <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
@@ -37,7 +37,7 @@
                             <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
                             @switch($item->status)
                                 @case('Atualização Pendente')
-                                    <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td> 
+                                    <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td>
                                     @break
                                 @case('Aprovação Pendente')
                                     <td class="bg-dark text-white rounded align-middle">Aprovação Pendente</td>
@@ -49,8 +49,8 @@
                                     <td class="bg-primary text-white rounded align-middle">Envio De Documentos Pendente</td>
                                     @break
                                 @default
-                                    
-                            @endswitch                                                                       
+
+                            @endswitch
                             <td title="Ações">
                                 <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
                                     <i class="fa fa-trash _i text-danger"></i>
@@ -58,6 +58,11 @@
                                 <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
                                     <i class="fa fa-edit _i text-navy"></i>
                                 </a>
+                                @if (count($item->files) > 0)
+                                    <a role="button" class="view-row-js" data-files="{{$item->files}}">
+                                        <i class="fa fa-eye _i text-navy"></i>
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -86,7 +91,7 @@
                                             <option value="">Selecione uma Fonte Pagante</option>
                                             @foreach($payings_sources as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -95,7 +100,7 @@
                                             <option value="">Selecione uma Forma de Pagamento</option>
                                             @foreach($payments_methods as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -104,7 +109,7 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label">Conta</label>
-                                        <textarea class="form-control" name="conta" required="true"></textarea>                                    
+                                        <textarea class="form-control" name="conta" required="true"></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                          <label class="form-label">Origem</label>
@@ -112,7 +117,7 @@
                                             <option value="">Selecione uma Origem</option>
                                             @foreach($origins as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -132,7 +137,7 @@
                               <label class="form-label" >Observação - Gestor</label>
                               <textarea class="form-control" name="observacao"></textarea>
                             </div>
-                                  
+
                             <div class="col-md-12 mb-3" style="display: none">
                               <label class="form-label" >Observação Auditoria</label>
                               <textarea class="form-control" name="observacao_atuditoria"></textarea>
@@ -140,7 +145,7 @@
 
                             <div class="col-md-12 mb-3" style="display: none">
                               <label class="form-label">Observação - Administrativo</label>
-                              <textarea class="form-control" name="observacao2"></textarea>    
+                              <textarea class="form-control" name="observacao2"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3" style="display: none">
@@ -155,7 +160,7 @@
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
-                
+
             </div>
         </div>
     </div>
@@ -180,7 +185,7 @@
                                             <option value="">Selecione uma Fonte Pagante</option>
                                             @foreach($payings_sources as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -189,7 +194,7 @@
                                             <option value="">Selecione uma Forma de Pagamento</option>
                                             @foreach($payments_methods as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -198,7 +203,7 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label">Conta</label>
-                                        <textarea class="form-control" id="edit-conta" name="conta"></textarea>                                    
+                                        <textarea class="form-control" id="edit-conta" name="conta"></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                          <label class="form-label">Origem</label>
@@ -206,7 +211,7 @@
                                             <option value="">Selecione uma Origem</option>
                                             @foreach($origins as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach                                        
+                                            @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -230,7 +235,7 @@
 
                             <div class="col-md-12 mb-3">
                               <label class="form-label" >Observação - Administrativo</label>
-                              <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>    
+                              <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3">
@@ -253,6 +258,27 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="view-files-modal" aria-labelledby="view-modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Arquivos</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <ul id="files-list-js" class="list-group">
+
+                </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
 </x-aplicativo-layout>
 
@@ -321,7 +347,7 @@
                 confirmButtonText: 'Sim, remover!',
                 cancelButtonText: "Cancelar"
             }).then((result) => {
-                if (result.isConfirmed) {                   
+                if (result.isConfirmed) {
                     $(this).parent('td').parent('tr').hide();
                     $.ajax({
                         type: 'delete',
@@ -386,6 +412,19 @@
                     )
                 }
             });
+        });
+
+        $('.view-row-js').on('click', function(e) {
+            e.preventDefault();
+            var files = $(this).data('files');
+
+            var arquivos = files.map(function(item){
+                return `<li class="list-group-item"><a target="_blank" href="${item.path}">${item.name}</a></li>`
+            });
+
+            document.querySelector("#files-list-js").innerHTML = arquivos.join("");
+
+            $('#view-files-modal').modal('show');
         });
     });
 </script>

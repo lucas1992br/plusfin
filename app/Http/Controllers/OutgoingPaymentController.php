@@ -6,6 +6,8 @@ use App\Models\OutgoingPayment;
 use App\Http\Requests\StoreOutgoingPaymentRequest;
 use App\Http\Requests\UpdateOutgoingPaymentRequest;
 use Exception;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Origin;
 use App\Models\Activity;
@@ -13,17 +15,16 @@ use App\Models\CostCenter;
 use App\Models\PaymentMethod;
 use App\Models\PayingSource;
 use App\Models\Output;
+use App\Models\File;
 
-class OutgoingPaymentController extends Controller
-{
+class OutgoingPaymentController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $methods = Output::all();            
+    public function index() {
+        $methods = Output::all();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
@@ -87,9 +88,31 @@ class OutgoingPaymentController extends Controller
      * @param  \App\Models\OutgoingPayment  $outgoingPayment
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateOutgoingPaymentRequest $request, OutgoingPayment $outgoingPayment)
-    {
-        //
+    public function update(UpdateOutgoingPaymentRequest $request, $id) {
+        $item = Output::find($id);
+
+        if($item && $request->all()){
+            if($request->hasfile('files') && $item->status === "Pagamento Pendente") {
+                foreach($request->file('files') as $file) {
+                    $path = $file->store('files');
+                    $name = $file->getClientOriginalName();
+
+                    $arquivo = File::create([
+                        'name' => "$name-comprovante",
+                        'path' => $path,
+                    ]);
+
+                    $item->files()->attach($arquivo);
+                    $file->move(public_path().'/files/', $path);
+                };
+                $item->status = "Aprovação Pendente";
+                $item->save();
+            };
+
+            return Redirect::route('saidas.index');
+        }else{
+            return response('Houve um erro ao salvar.', 400);
+        }
     }
 
     /**

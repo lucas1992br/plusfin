@@ -7,6 +7,8 @@ use App\Http\Requests\StoreUploadDocumentRequest;
 use App\Http\Requests\UpdateUploadDocumentRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 
 use App\Models\Origin;
 use App\Models\Activity;
@@ -14,17 +16,16 @@ use App\Models\CostCenter;
 use App\Models\PaymentMethod;
 use App\Models\PayingSource;
 use App\Models\Output;
+use App\Models\File;
 
-class UploadDocumentController extends Controller
-{
+class UploadDocumentController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $methods = Output::where('status', '=', 'Envio De Documentos Pendente')->get();            
+    public function index() {
+        $methods = Output::where('status', '=', 'Envio De Documentos Pendente')->get();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
@@ -56,7 +57,7 @@ class UploadDocumentController extends Controller
      */
     public function store(StoreUploadDocumentRequest $request)
     {
-        dd($request);
+        // dd($request);
     }
 
     /**
@@ -88,9 +89,33 @@ class UploadDocumentController extends Controller
      * @param  \App\Models\UploadDocument  $uploadDocument
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUploadDocumentRequest $request, UploadDocument $uploadDocument)
-    {
-        //
+    public function update(UpdateUploadDocumentRequest $request, $id) {
+        $item = Output::find($id);
+
+        if($item && $request->all()){
+            if($request->hasfile('files') && $item->status === "Envio De Documentos Pendente") {
+                foreach($request->file('files') as $file) {
+                    $path = $file->store('files');
+                    $name = $file->getClientOriginalName();
+
+                    $arquivo = File::create([
+                        'name' => $name,
+                        'path' => $path,
+                    ]);
+
+                    $item->files()->attach($arquivo);
+                    $file->move(public_path().'/files/', $path);
+                };
+                $item->status = "Pagamento Pendente";
+                $item->observacao = $request->observacao;
+                $item->observacao2 = $request->observacao2;
+                $item->save();
+            };
+
+            return Redirect::route('saidas.index');
+        }else{
+            return response('Houve um erro ao salvar.', 400);
+        }
     }
 
     /**
