@@ -105,7 +105,7 @@ class OutgoingPaymentController extends Controller {
                     $item->files()->attach($arquivo);
                     $file->move(public_path().'/files/', $path);
                 };
-                $item->status = "Aprovação Pendente";
+                $item->status = "Paga";
                 $item->save();
             };
 

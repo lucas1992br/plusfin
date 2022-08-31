@@ -48,13 +48,16 @@
                                 @case('Envio De Documentos Pendente')
                                     <td class="bg-primary text-white rounded align-middle">Envio De Documentos Pendente</td>
                                     @break
+                                @case('Paga')
+                                    <td class="bg-primary text-white rounded align-middle">Paga</td>
+                                    @break
                                 @default
 
                             @endswitch
                             <td title="Ações">
                                 <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
                                     <i class="fa fa-trash _i text-danger"></i>
-                                </a>
+                                </a>                             
                                 <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
                                     <i class="fa fa-edit _i text-navy"></i>
                                 </a>

@@ -109,7 +109,7 @@
                             <div class="col-md-4 mb-3" style="display: none">
                                             <label class="form-label" >Estagio</label>
                                             <select class="form-select-item select form-control" name="status">
-                                            <option value="Aprovação Pendente">Aprovação Pendente</option>
+                                            <option value="Paga">Paga</option>
                                             </select>
                             </div>
 
