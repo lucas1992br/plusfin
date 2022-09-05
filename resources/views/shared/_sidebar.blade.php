@@ -25,7 +25,7 @@
         <span>Clientes</span>
     </x-sidebar-item>
 
-    <x-sidebar-item :href="route('clientes')" :active="request()->routeIs('clientes')">
+    <x-sidebar-item :href="route('entradas.index')" :active="request()->routeIs('entradas')">
         <i class="fas fa-fw fa-user-alt"></i>
         <span>Entradas</span>
     </x-sidebar-item>
