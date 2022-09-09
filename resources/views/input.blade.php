@@ -30,11 +30,11 @@
                     @foreach ($methods ?? '' as $item)
                         <tr>
                             <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
-                            <td title="{{ $item->conta }}">{{ $item->conta }}</td>
-                            <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
-                            <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
-                            <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
-                            <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
+                            <td title=""></td>
+                            <td title=""></td>
+                            <td title=""></td>
+                            <td title=""</td>
+                            <td title="{{ $item->valor_payment_total }}">{{ 'R$ '.number_format($item->valor_payment_total, 2, ',', '.') }}</td>
                             @switch($item->status)
                                 @case('Atualização Pendente')
                                     <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td>
@@ -61,11 +61,7 @@
                                 <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
                                     <i class="fa fa-edit _i text-navy"></i>
                                 </a>
-                                @if (count($item->files) > 0)
-                                    <a role="button" class="view-row-js" data-files="{{$item->files}}">
-                                        <i class="fa fa-eye _i text-navy"></i>
-                                    </a>
-                                @endif
+
                             </td>
                         </tr>
                     @endforeach
@@ -87,68 +83,76 @@
                 <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
                     <div class="modal-body">
                         @csrf
-                        <div>
-                            <div class="col-md-12 mb-3">
+                        <div class="container">
+                            <div class="col-sm mb-3">
                                 <label class="form-label">Data:</label>
-                                <input type="date" class="form-control" name="data" row='3' required="true">
+                                <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
                             </div>
-                            <div class="form-row" id="formulario_formapg">
-                                <div class="col-md-6 mb-3">
+                            <div class="form-row col-sm" id="formulario_formapg">
+                                <div class="col-sm-8">
                                     <label class="form-label">Forma Pagamento</label>
-                                        <select class="form-select-item select form-control" name="payment_methods_id" searchable="Search here.." required="true">
+                                        <select class="form-select-item select form-control form-control-sm" name="payment_methods_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Forma de Pagamento</option>
                                             @foreach($payments_methods as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                             @endforeach
                                         </select>
                                 </div>
-                                <div class="col-md-5 mb-3">  
-                                    <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="valor" class="valor form-control" style="display:inline-block" >
+                                <div class="col-sm mb-3">  
+                                    <label class="form-label text-sm" for="valor">Valor:</label>
+                                    <input type="text" id="valor" name="valor_payment" class="valor form-control form-control-sm" style="display:inline-block" >
                                 </div>
-                                <div class="col-md-1 mb-3">
-                                    <label class="form-label">Add</label>
-                                    <button type="button" class="btn btn-primary mb-3" onclick="adicionarcampo()"><i class="fas fa-plus"></i></button>
+                                <div class="col-sm">
+                                    <label class="form-label">Add</label></br>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="adicionarcampo()"><i class="fas fa-plus"></i></button>
                                 </div>                          
                             </div>
-                            <div class="col-md-12 mb-3">  
-                                <label class="form-label" for="valor">Valor Total Entrada Forma de Recebimento:</label>
-                                <input type="text" id="valor" name="valor" class="valor form-control" style="display:inline-block" disabled="">
+                            <div class="col-sm mb-3">  
+                                <div>
+                                    <label class="form-label form-label" for="valor">Valor Total Entrada Forma de Recebimento:</label>
+                                </div>
+                                <div>
+                                <input type="text" id="valorPayment" name="valor_payment_total" class="valor form-control-sm form-control" value="10" style="display:inline-block">
+                                </div>
                             </div>
-                            <div class="form-row" id="formulario_origin">
-                                <div class="col-md-6 mb-3">
+                            <div class="form-row col-sm" id="formulario_origin">
+                                <div class="col-sm-8 mb-3">
                                     <label class="form-label">Origem</label>
-                                    <select class="form-select-item select form-control" id="edit-origin_id" name="origin_id" searchable="Search here.." required="true">
+                                    <select class="form-select-item select form-control form-control-sm" id="edit-origin_id" name="origin_id" searchable="Search here.." required="true">
                                        <option value="">Selecione uma Origem</option>
                                        @foreach($origins as $item)
                                            <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                        @endforeach
                                    </select>
                                 </div>
-                                <div class="col-md-5 mb-3">  
+                                <div class="col-sm mb-3">  
                                     <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="valor" class="valor form-control" style="display:inline-block" >
+                                    <input type="text" id="valor" name="valor_origin" class="valor form-control-sm form-control" style="display:inline-block" >
                                 </div>
-                                <div class="col-md-1 mb-3">
+                                <div class="col-sm mb-3">
                                     <label class="form-label">Add</label>
-                                    <button type="button" class="btn btn-primary mb-3" onclick="adicionarCampoOrigin()"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary mb-3" onclick="adicionarCampoOrigin()"><i class="fas fa-plus"></i></button>
                                 </div>                          
                             </div>
-                            <div class="col-md-12 mb-3">  
+                            <div class="col-sm mb-3">  
                                 <label class="form-label" for="valor">Valor Total Entrada Origen:</label>
-                                <input type="text" id="valor" name="valor" class="valor form-control" style="display:inline-block" disabled="">
+                                <input type="text" id="valorOrigin" name="valor_payment_origin" value="10" class="valor form-control-sm form-control" style="display:inline-block">
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-sm-12 mb-3">
                               <label class="form-label">Observação - Administrativo</label>
-                              <textarea class="form-control" name="observacao2"></textarea>
+                              <textarea class="form-control form-control-sm" name="observacao"></textarea>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-sm-12 mb-3">
+                                <label class="form-label">Observação - Gestpr</label>
+                                <textarea class="form-control form-control-sm" name="observacao2"></textarea>
+                              </div>
+                            <div class="col-sm-12 mb-3">
                                 <label class="form-label" >Observação Auditoria</label>
-                                <textarea class="form-control" name="observacao_atuditoria"></textarea>
+                                <textarea class="form-control form-control-sm" name="observacao_atuditoria"></textarea>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-sm-12 mb-3">
                                 <label class="form-label">Observação Auditoria</label>
-                                <textarea class="form-control" name="observacao_atuditoria2"></textarea>
+                                <textarea class="form-control form-control-sm" name="observacao_atuditoria2"></textarea>
                             </div>
                           </div>
                     </div>
@@ -420,8 +424,15 @@
     var formaPagamento = 1;
     function adicionarcampo()
     {
-        formaPagamento++;         
-        document.getElementById('formulario_formapg').insertAdjacentHTML('beforeend', '<div class="form-row" id="campo' + formaPagamento + '"><div class="col-md-6 mb-3"><label class="form-label">Forma Pagamento</label><select class="form-select-item select form-control" name="payment_methods_id' + formaPagamento + '" searchable="Search here.." required="true"><option value="">Selecione uma Forma de Pagamento</option>@foreach($payments_methods as $item)<option value="{{ $item->id }}">{{ $item->nome }}</option>@endforeach</select></div><div class="col-md-5 mb-3"><label class="form-label" for="valor">Valor:</label><input type="text" id="valor" name="valor' + formaPagamento + '" class="valor form-control" style="display:inline-block" ></div><div class="col-md-1 mb-3"><label class="form-label">Remove</label><button type="button" class="btn btn-danger mb-3" onclick="removerCampo(' + formaPagamento + ')"><i class="fas fa-minus-circle"></i></button></div></div>');
+        var totalformaPagamento = formaPagamento++;
+        if(totalformaPagamento <= 4)
+        {
+            document.getElementById('formulario_formapg').insertAdjacentHTML('beforeend', '<div class="form-row"  id="campo' + formaPagamento +'"><div class="col-sm-8"><label class="form-label">Forma Pagamento</label><select class="form-select-item select form-control form-control-sm" name="payment_methods_id' + formaPagamento +'" searchable="Search here.." required="true"><option value="">Selecione uma Forma de Pagamento</option>@foreach($payments_methods as $item)<option value="{{ $item->id }}">{{ $item->nome }}</option>@endforeach</select></div><div class="col-sm mb-3"><label class="form-label text-sm" for="valor">Valor:</label><input type="text" id="valor" name="valor' + formaPagamento +'" class="valor form-control form-control-sm" style="display:inline-block" ></div><div class="col-sm"><label class="form-label">Add</label></br><button type="button" class="btn btn-sm btn-danger" onclick="removerCampo(' + formaPagamento + ')"><i class="fas fa-minus-circle"></i></button></div></div>');
+        }         
+        else 
+        {
+            alert("Limite Maximo de Formas de Pagamento");
+        }
         
     }
     function removerCampo(idCampo)
@@ -431,8 +442,17 @@
     var origin = 1;
     function adicionarCampoOrigin()
     {
-        origin++;
-        document.getElementById('formulario_origin').insertAdjacentHTML('beforeend', '<div class="form-row" id="campo' + origin + '"><div class="col-md-6 mb-3"><label class="form-label">Forma Pagamento</label><select class="form-select-item select form-control" name="payment_methods_id' + origin + '" searchable="Search here.." required="true"><option value="">Selecione uma Origen</option>@foreach($origins as $item)<option value="{{ $item->id }}">{{ $item->nome }}</option>@endforeach</select></div><div class="col-md-5 mb-3"><label class="form-label" for="valor">Valor:</label><input type="text" id="valor" name="valor' + origin + '" class="valor form-control" style="display:inline-block" ></div><div class="col-md-1 mb-3"><label class="form-label">Remove</label><button type="button" class="btn btn-danger mb-3" onclick="removerCampo(' + origin + ')"><i class="fas fa-minus-circle"></i></button></div></div>');
+        
+        var totalOrigin = origin++;
+        if( totalOrigin <= 4)
+        {
+            document.getElementById('formulario_origin').insertAdjacentHTML('beforeend', '<div class="form-row"  id="campo' + origin +'"><div class="col-sm-8"><label class="form-label">Origem</label><select class="form-select-item select form-control form-control-sm" name="payment_methods_id' + origin +'" searchable="Search here.." required="true"><option value="">Selecione uma Origem</option>@foreach($origins as $item)<option value="{{ $item->id }}">{{ $item->nome }}</option>@endforeach</select></div><div class="col-sm mb-3"><label class="form-label text-sm" for="valor">Valor:</label><input type="text" id="valor" name="valor' + origin +'" class="valor form-control form-control-sm" style="display:inline-block" ></div><div class="col-sm"><label class="form-label">Add</label></br><button type="button" class="btn btn-sm btn-danger" onclick="removerCampo(' + origin + ')"><i class="fas fa-minus-circle"></i></button></div></div>');
+        }   
+        else 
+        {
+            alert("Limite Maximo de Origens");
+        }
+        
     }
     
 </script>

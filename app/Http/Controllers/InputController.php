@@ -27,7 +27,7 @@ class InputController extends Controller
      */
     public function index()
     {
-        $methods = Output::all();
+        $methods = Input::all();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
@@ -59,7 +59,44 @@ class InputController extends Controller
      */
     public function store(StoreInputRequest $request)
     {
-        //
+        if($request->all()){
+            Input::create([
+                'status' =>$request->status = 'Pendente',
+                'data' => $request->data,
+                'observacao' => $request->observacao,
+                'observacao_atuditoria' => $request->observacao_atuditoria,
+                'observacao2' => $request->observacao2,
+                'observacao_atuditoria2' => $request->observacao_atuditoria2,
+                'payment_methods_id' => $request->payment_methods_id,
+                'payment_methods_id2' => $request->payment_methods_id2,
+                'payment_methods_id3' => $request->payment_methods_id3,
+                'payment_methods_id4' => $request->payment_methods_id4,
+                'payment_methods_id5' => $request->payment_methods_id5,
+                'valor_payment' => $request->valor_payment,
+                'valor_payment2' => $request->valor_payment2,
+                'valor_payment3' => $request->valor_payment3,
+                'valor_payment4' => $request->valor_payment4,
+                'valor_payment5' => $request->valor_payment5,
+                'valor_payment_total' => $request->valor_payment_total,
+                'origin_id' => $request->origin_id,
+                'origin_id2' => $request->origin_id2,
+                'origin_id3' => $request->origin_id3,
+                'origin_id4' => $request->origin_id4,
+                'origin_id5' => $request->origin_id5,
+                'valor_origin' => $request->valor_origin,
+                'valor_origin2' => $request->valor_origin2,
+                'valor_origin3' => $request->valor_origin3,
+                'valor_origin4' => $request->valor_origin4,
+                'valor_origin5' => $request->valor_origin5,
+                'valor_payment_origin'  => $request->valor_payment_origin,
+            ]);
+
+            return Redirect::route('entradas.index');
+        }
+        else
+        {
+            return Redirect::route('entradas.index');
+        }
     }
 
     /**
