@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="col-sm mb-7">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment" class="valor form-control form-control-sm formaRecebimento" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment" class="valor form-control form-control-sm formaRecebimento" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment2" class="valor form-control form-control-sm formaRecebimento2" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment2" class="valor form-control form-control-sm formaRecebimento2" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment3" class="valor form-control form-control-sm formaRecebimento3" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment3" class="valor form-control form-control-sm formaRecebimento3" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -130,7 +130,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment4" class="valor form-control form-control-sm formaRecebimento4" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment4" class="valor form-control form-control-sm formaRecebimento4" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment5" class="valor form-control form-control-sm formaRecebimento5" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment5" class="valor form-control form-control-sm formaRecebimento5" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -150,7 +150,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment6" class="valor form-control form-control-sm formaRecebimento6" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment6" class="valor form-control form-control-sm formaRecebimento6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment7" class="valor form-control form-control-sm formaRecebimento7" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment7" class="valor form-control form-control-sm formaRecebimento7" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -170,7 +170,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment8" class="valor form-control form-control-sm formaRecebimento8" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment8" class="valor form-control form-control-sm formaRecebimento8" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -180,7 +180,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment9" class="valor form-control form-control-sm formaRecebimento9" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                    <input type="text" id="valor" name="valor_payment9" class="valor form-control form-control-sm formaRecebimento9" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
                             <div class="row col-sm">
@@ -547,10 +547,8 @@
         var r9 = document.querySelector(".formaRecebimento9").value;
         
         var result = parseInt(r1 || 0) + parseInt(r2 || 0) + parseInt(r3 || 0) + parseInt(r4 || 0) + parseInt(r5 || 0) + parseInt(r6 || 0) + parseInt(r7 || 0) + parseInt(r8 || 0) + parseInt(r9 || 0);
-        
         if(result == ''){
             document.querySelector(".formaRecebimentoResut").innerHTML = 'Valor Incorreto';
-            console.log(result);
         } else {
             document.querySelector(".formaRecebimentoResut").innerHTML = result;
             document.querySelector(".formaRecebimentoResut").value = result;
