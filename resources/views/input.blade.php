@@ -21,56 +21,69 @@
 
         <div class="card-body">
             <meta name="csrf-token" content="{{ csrf_token() }}">
-            @component('components.dataTable',
-                [
-                    'headers' => ['Data', 'Conta', 'Origem', 'Fonte Pagante', 'Forma de Pagamento', 'Valor', 'Estagio', 'Ações'],
-                ])
-
-                @slot('data')
-                    @foreach ($methods ?? '' as $item)
+            <h2>Formas de Recebimento</h2>
+            <div class="table-responsive">
+                
+                <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
+                    
+                    <thead>
                         <tr>
-                            <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
-                            <td title=""></td>
-                            <td title=""></td>
-                            <td title=""></td>
-                            <td title=""</td>
-                            <td title="{{ $item->valor_payment_total }}">{{ 'R$ '.number_format($item->valor_payment_total, 2, ',', '.') }}</td>
-                            @switch($item->status)
-                                @case('Atualização Pendente')
-                                    <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td>
-                                    @break
-                                @case('Aprovação Pendente')
-                                    <td class="bg-dark text-white rounded align-middle">Aprovação Pendente</td>
-                                    @break
-                                @case('Pagamento Pendente')
-                                    <td class="bg-success text-white rounded align-middle">Pagamento Pendente</td>
-                                    @break
-                                @case('Envio De Documentos Pendente')
-                                    <td class="bg-primary text-white rounded align-middle">Envio De Documentos Pendente</td>
-                                    @break
-                                @case('Paga')
-                                    <td class="bg-primary text-white rounded align-middle">Paga</td>
-                                    @break
-                                @default
-
-                            @endswitch
-                            <td title="Ações">
-                                <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
-                                    <i class="fa fa-trash _i text-danger"></i>
-                                </a>                             
-                                <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
-                                    <i class="fa fa-edit _i text-navy"></i>
-                                </a>
-
-                            </td>
+                            <th>Data</th>
+                            <th>Cheque a Vista</th>
+                            <th>Cheque Pre</th>
+                            <th>Dinheiro</th>
+                            <th>Elo Credito</th>
+                            <th>Master Credito</th>
+                            <th>Master Debito</th>
+                            <th>PIX</th>
+                            <th>Visa Credito</th>
+                            <th>Visa Debito</th>
+                            <th>Total</th>
+                            <th>Ações</th>
                         </tr>
-                    @endforeach
-                @endslot
-
-            @endcomponent
+                    </thead>
+                    <tbody>
+                        @foreach ($methods ?? '' as $item)
+                            <tr>
+                                <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
+                                <td title="{{ $item->valor_payment }}">{{ 'R$ '.number_format($item->valor_payment, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment2 }}">{{ 'R$ '.number_format($item->valor_payment2, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment3 }}">{{ 'R$ '.number_format($item->valor_payment3, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment4 }}">{{ 'R$ '.number_format($item->valor_payment4, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment5 }}">{{ 'R$ '.number_format($item->valor_payment5, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment6 }}">{{ 'R$ '.number_format($item->valor_payment6, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment7 }}">{{ 'R$ '.number_format($item->valor_payment7, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment8 }}">{{ 'R$ '.number_format($item->valor_payment8, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment9 }}">{{ 'R$ '.number_format($item->valor_payment9, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment_total }}">{{ 'R$ '.number_format($item->valor_payment_total, 2, ',', '.') }}</td>
+                                <td title="Ações">
+                                    <a role="button" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
+                                        <i class="fa fa-trash _i text-danger"></i>
+                                    </a>                             
+                                    <a role="button" class="edit-row-js" data-route="{{route('entradas.show', $item->id)}}">
+                                        <i class="fa fa-edit _i text-navy"></i>
+                                    </a>
+                                   
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
+    <!--
+    <option value="">Selecione uma Forma de Pagamento</option>
+    <option value='payment_methods_id'>Cheque a Vista</option>
+    <option value='payment_methods_id2'>Cheque Pre</option>
+    <option value='payment_methods_id3'>Dinheiro</option>
+    <option value='payment_methods_id4'>Elo Credito</option>
+    <option value='payment_methods_id5'>Master Credito</option>
+    <option value='payment_methods_id6'>Master Debito</option>
+    <option value='payment_methods_id7'>PIX</option>
+    <option value='payment_methods_id8'>Visa Credito</option>
+    <option value='payment_methods_id9'>Visa Debito</option>
+    -->
     <div class="modal fade" id="register-new-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
@@ -81,39 +94,118 @@
                     </button>
                 </div>
                 <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
+                    @csrf
                     <div class="modal-body">
-                        @csrf
+                       
                         <div class="container">
                             <div class="col-sm mb-3">
                                 <label class="form-label">Data:</label>
                                 <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
                             </div>
-                            <div class="form-row col-sm" id="formulario_formapg">
-                                <div class="col-sm-8">
-                                    <label class="form-label">Forma Pagamento</label>
-                                        <select class="form-select-item select form-control form-control-sm" name="payment_methods_id" searchable="Search here.." required="true">
-                                            <option value="">Selecione uma Forma de Pagamento</option>
-                                            @foreach($payments_methods as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach
-                                        </select>
+                            <hr class="sidebar-divider">
+                            <p class="text-center">Formas de Recebimento</p>                          
+                            <div class="row col-sm" id="formulario_formapg">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id" searchable="Search here.." required="true">Cheque a Vista</div>
                                 </div>
-                                <div class="col-sm mb-3">  
-                                    <label class="form-label text-sm" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="valor_payment" class="valor form-control form-control-sm" style="display:inline-block" >
-                                </div>
-                                <div class="col-sm">
-                                    <label class="form-label">Add</label></br>
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="adicionarcampo()"><i class="fas fa-plus"></i></button>
-                                </div>                          
+                                <div class="col-sm mb-7">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment" class="valor form-control form-control-sm formaRecebimento" style="display:inline-block" >
+                                </div>                         
                             </div>
-                            <div class="col-sm mb-3">  
-                                <div>
-                                    <label class="form-label form-label" for="valor">Valor Total Entrada Forma de Recebimento:</label>
+                            <div class="row col-sm">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id2" searchable="Search here.." required="true">Cheque Pre</div>
                                 </div>
-                                <div>
-                                <input type="text" id="valorPayment" name="valor_payment_total" class="valor form-control-sm form-control" value="10" style="display:inline-block">
+                                <div class="col-sm">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment2" class="valor form-control form-control-sm formaRecebimento2" style="display:inline-block" >
+                                </div>                         
+                            </div>
+                            <div class="row col-sm">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id3" searchable="Search here.." required="true">Dinheiro</div>
                                 </div>
+                                <div class="col-sm">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment3" class="valor form-control form-control-sm formaRecebimento3" style="display:inline-block" >
+                                </div>                         
+                            </div>
+                            <div class="row col-sm">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id4" searchable="Search here.." required="true">Elo Credito</div>
+                                </div>
+                                <div class="col-sm">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment4" class="valor form-control form-control-sm formaRecebimento4" style="display:inline-block" >
+                                </div>                         
+                            </div>
+                            <div class="row col-sm">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id5" searchable="Search here.." required="true">Master Credito</div>
+                                </div>
+                                <div class="col-sm">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment5" class="valor form-control form-control-sm formaRecebimento5" style="display:inline-block" >
+                                </div>                         
+                            </div>
+                            <div class="row col-sm">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id6" searchable="Search here.." required="true">Master Debito</div>
+                                </div>
+                                <div class="col-sm">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment6" class="valor form-control form-control-sm formaRecebimento6" style="display:inline-block" >
+                                </div>                         
+                            </div>
+                            <div class="row col-sm">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id7" searchable="Search here.." required="true">PIX</div>
+                                </div>
+                                <div class="col-sm">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment7" class="valor form-control form-control-sm formaRecebimento7" style="display:inline-block" >
+                                </div>                         
+                            </div>
+                            <div class="row col-sm">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id8" searchable="Search here.." required="true">Visa Credito</div>
+                                </div>
+                                <div class="col-sm">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment8" class="valor form-control form-control-sm formaRecebimento8" style="display:inline-block" >
+                                </div>                         
+                            </div>
+                            <div class="row col-sm">
+                                <div class="col-sm-5">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm" name="payment_methods_id9" searchable="Search here.." required="true">Visa Debito</div>
+                                </div>
+                                <div class="col-sm">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment9" class="valor form-control form-control-sm formaRecebimento9" style="display:inline-block" onblur="SomatoriaformaRecebimento()">
+                                </div>                         
+                            </div>
+                            <div class="row col-sm">
+                                <div class="col-sm">
+                                    <label class="form-label"></label>
+                                    <div class="form-label text-sm"><span>Valor Total Forma de Recebimento</span></div>
+                                    <input type="text" id="valor" name="valor_payment_total" class="valor form-control form-control-sm formaRecebimentoResut" style="display:inline-block" >
+                                    <!--<p class="form-control form-control-sm formaRecebimentoResut" name="valor_payment_total"></p>-->
+                                </div>
+                                <!-- <div class="col-sm-3">  
+                                    <label class="form-label text-sm" for="valor"></label>
+                                    <input type="text" id="valor" name="valor_payment_total" class="valor form-control form-control-sm formaRecebimentoResut" style="display:inline-block" >
+                                    <p class="form-control form-control-sm formaRecebimentoResut"></p>
+                                </div>     -->                    
                             </div>
                             <div class="form-row col-sm" id="formulario_origin">
                                 <div class="col-sm-8 mb-3">
@@ -454,5 +546,26 @@
         }
         
     }
-    
+    function SomatoriaformaRecebimento(){
+        var r1 = document.querySelector(".formaRecebimento").value;
+        var r2 = document.querySelector(".formaRecebimento2").value;
+        var r3 = document.querySelector(".formaRecebimento3").value;
+        var r4 = document.querySelector(".formaRecebimento4").value;
+        var r5 = document.querySelector(".formaRecebimento5").value;
+        var r6 = document.querySelector(".formaRecebimento6").value;
+        var r7 = document.querySelector(".formaRecebimento7").value;
+        var r8 = document.querySelector(".formaRecebimento8").value;
+        var r9 = document.querySelector(".formaRecebimento9").value;
+        
+        var result = parseInt(r1) + parseInt(r2) + parseInt(r3) + parseInt(r4) + parseInt(r5) + parseInt(r6) + parseInt(r7) + parseInt(r8) + parseInt(r9);
+        
+        if(result == ''){
+            document.querySelector(".formaRecebimentoResut").innerHTML = 'Valor Incorreto';
+            console.log(result);
+        } else {
+            document.querySelector(".formaRecebimentoResut").innerHTML = result;
+            document.querySelector(".formaRecebimentoResut").value = result;
+        }
+        
+    }
 </script>

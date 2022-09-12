@@ -31,13 +31,15 @@ class InputController extends Controller
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
+        $payments_methods2 = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
         return view('input', compact([
             'methods',
             'activities',
             'origins',
             'payings_sources' ,
-            'payments_methods'
+            'payments_methods',
+            'payments_methods2'
         ]));
     }
 
@@ -72,11 +74,19 @@ class InputController extends Controller
                 'payment_methods_id3' => $request->payment_methods_id3,
                 'payment_methods_id4' => $request->payment_methods_id4,
                 'payment_methods_id5' => $request->payment_methods_id5,
+                'payment_methods_id5' => $request->payment_methods_id6,
+                'payment_methods_id5' => $request->payment_methods_id7,
+                'payment_methods_id5' => $request->payment_methods_id8,
+                'payment_methods_id5' => $request->payment_methods_id9,
                 'valor_payment' => $request->valor_payment,
                 'valor_payment2' => $request->valor_payment2,
                 'valor_payment3' => $request->valor_payment3,
                 'valor_payment4' => $request->valor_payment4,
                 'valor_payment5' => $request->valor_payment5,
+                'valor_payment6' => $request->valor_payment6,
+                'valor_payment7' => $request->valor_payment7,
+                'valor_payment8' => $request->valor_payment8,
+                'valor_payment9' => $request->valor_payment9,
                 'valor_payment_total' => $request->valor_payment_total,
                 'origin_id' => $request->origin_id,
                 'origin_id2' => $request->origin_id2,

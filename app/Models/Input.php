@@ -28,11 +28,19 @@ class Input extends Model
         'payment_methods_id3',
         'payment_methods_id4',
         'payment_methods_id5',
+        'payment_methods_id6',
+        'payment_methods_id7',
+        'payment_methods_id8',
+        'payment_methods_id9',
         'valor_payment',
         'valor_payment2',
         'valor_payment3',
         'valor_payment4',
         'valor_payment5',
+        'valor_payment6',
+        'valor_payment7',
+        'valor_payment8',
+        'valor_payment9',
         'valor_payment_total',
         'origin_id',
         'origin_id2',
@@ -47,7 +55,7 @@ class Input extends Model
         'valor_payment_origin'
     ];
 
-    protected $with = ['activity', 'origin', 'payments_methods', 'payings_sources'];
+    protected $with = ['activity', 'origin', 'payments_methods', 'payings_sources', 'payments_methods2'];
 
     public function activity() {
         return $this->hasOne(Activity::class , 'id', 'activity_id');
@@ -58,6 +66,10 @@ class Input extends Model
     }
 
     public function payments_methods() {
+        return $this->hasOne(PaymentMethod::class , 'id', 'payment_methods_id');
+    }
+
+    public function payments_methods2() {
         return $this->hasOne(PaymentMethod::class , 'id', 'payment_methods_id');
     }
 
