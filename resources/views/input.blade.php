@@ -29,15 +29,12 @@
                     <thead>
                         <tr>
                             <th>Data</th>
-                            <th>Cheque a Vista</th>
-                            <th>Cheque Pre</th>
                             <th>Dinheiro</th>
-                            <th>Elo Credito</th>
-                            <th>Master Credito</th>
-                            <th>Master Debito</th>
-                            <th>PIX</th>
-                            <th>Visa Credito</th>
-                            <th>Visa Debito</th>
+                            <th>Pix</th>
+                            <th>Cheque</th>
+                            <th>Cartão Debito</th>
+                            <th>Cartão Credito</th>
+                            <th>Cartão Recorrente</th>
                             <th>Total</th>
                             <th>Ações</th>
                         </tr>
@@ -52,9 +49,6 @@
                                 <td title="{{ $item->valor_payment4 }}">{{ 'R$ '.number_format($item->valor_payment4, 2, ',', '.') }}</td>
                                 <td title="{{ $item->valor_payment5 }}">{{ 'R$ '.number_format($item->valor_payment5, 2, ',', '.') }}</td>
                                 <td title="{{ $item->valor_payment6 }}">{{ 'R$ '.number_format($item->valor_payment6, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment7 }}">{{ 'R$ '.number_format($item->valor_payment7, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment8 }}">{{ 'R$ '.number_format($item->valor_payment8, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment9 }}">{{ 'R$ '.number_format($item->valor_payment9, 2, ',', '.') }}</td>
                                 <td title="{{ $item->valor_payment_total }}">{{ 'R$ '.number_format($item->valor_payment_total, 2, ',', '.') }}</td>
                                 <td title="Ações">
                                     <a role="button" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
@@ -93,108 +87,58 @@
                             </div>
                             <hr class="sidebar-divider">
                             <p class="text-center">Formas de Recebimento</p>                          
-                            <div class="row col-sm" id="formulario_formapg">
+                            <div class="row col-sm mt-2" id="formulario_formapg">
                                 <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id" searchable="Search here.." required="true">Cheque a Vista</div>
+                                    <div class="form-label text-sm" name="payment_methods_id" searchable="Search here.." required="true">Dinheiro</div>
                                 </div>
                                 <div class="col-sm mb-7">  
-                                    <label class="form-label text-sm" for="valor"></label>
                                     <input type="text" id="valor" name="valor_payment" class="valor form-control form-control-sm formaRecebimento" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
-                            <div class="row col-sm">
+                            <div class="row col-sm mt-2">
                                 <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id2" searchable="Search here.." required="true">Cheque Pre</div>
+                                    <div class="form-label text-sm" name="payment_methods_id2" searchable="Search here.." required="true">PIX</div>
                                 </div>
                                 <div class="col-sm">  
-                                    <label class="form-label text-sm" for="valor"></label>
                                     <input type="text" id="valor" name="valor_payment2" class="valor form-control form-control-sm formaRecebimento2" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
-                            <div class="row col-sm">
+                            <div class="row col-sm mt-2">
                                 <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id3" searchable="Search here.." required="true">Dinheiro</div>
+                                    <div class="form-label text-sm" name="payment_methods_id3" searchable="Search here.." required="true">Cheque</div>
                                 </div>
                                 <div class="col-sm">  
-                                    <label class="form-label text-sm" for="valor"></label>
                                     <input type="text" id="valor" name="valor_payment3" class="valor form-control form-control-sm formaRecebimento3" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
-                            <div class="row col-sm">
+                            <div class="row col-sm mt-2">
                                 <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id4" searchable="Search here.." required="true">Elo Credito</div>
+                                    <div class="form-label text-sm" name="payment_methods_id4" searchable="Search here.." required="true">Cartão Debito</div>
                                 </div>
                                 <div class="col-sm">  
-                                    <label class="form-label text-sm" for="valor"></label>
                                     <input type="text" id="valor" name="valor_payment4" class="valor form-control form-control-sm formaRecebimento4" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
-                            <div class="row col-sm">
+                            <div class="row col-sm mt-2">
                                 <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id5" searchable="Search here.." required="true">Master Credito</div>
+                                    <div class="form-label text-sm" name="payment_methods_id5" searchable="Search here.." required="true">Cartão Credito</div>
                                 </div>
                                 <div class="col-sm">  
-                                    <label class="form-label text-sm" for="valor"></label>
                                     <input type="text" id="valor" name="valor_payment5" class="valor form-control form-control-sm formaRecebimento5" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
-                            <div class="row col-sm">
+                            <div class="row col-sm mt-2">
                                 <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id6" searchable="Search here.." required="true">Master Debito</div>
+                                    <div class="form-label text-sm" name="payment_methods_id6" searchable="Search here.." required="true">Cartão Recorrente</div>
                                 </div>
-                                <div class="col-sm">  
-                                    <label class="form-label text-sm" for="valor"></label>
+                                <div class="col-sm-7">  
                                     <input type="text" id="valor" name="valor_payment6" class="valor form-control form-control-sm formaRecebimento6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
                                 </div>                         
                             </div>
-                            <div class="row col-sm">
-                                <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id7" searchable="Search here.." required="true">PIX</div>
-                                </div>
-                                <div class="col-sm">  
-                                    <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment7" class="valor form-control form-control-sm formaRecebimento7" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>                         
-                            </div>
-                            <div class="row col-sm">
-                                <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id8" searchable="Search here.." required="true">Visa Credito</div>
-                                </div>
-                                <div class="col-sm">  
-                                    <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment8" class="valor form-control form-control-sm formaRecebimento8" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>                         
-                            </div>
-                            <div class="row col-sm">
-                                <div class="col-sm-5">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm" name="payment_methods_id9" searchable="Search here.." required="true">Visa Debito</div>
-                                </div>
-                                <div class="col-sm">  
-                                    <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment9" class="valor form-control form-control-sm formaRecebimento9" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>                         
-                            </div>
-                            <div class="row col-sm">
-                                <div class="col-sm">
-                                    <label class="form-label"></label>
-                                    <div class="form-label text-sm"><span>Valor Total Forma de Recebimento</span></div>
-                                    <input type="text" id="valor" name="valor_payment_total" class="valor form-control form-control-sm formaRecebimentoResut" style="display:inline-block" >
-                                    <!--<p class="form-control form-control-sm formaRecebimentoResut" name="valor_payment_total"></p>-->
-                                </div>
-                                <!-- <div class="col-sm-3">  
-                                    <label class="form-label text-sm" for="valor"></label>
-                                    <input type="text" id="valor" name="valor_payment_total" class="valor form-control form-control-sm formaRecebimentoResut" style="display:inline-block" >
-                                    <p class="form-control form-control-sm formaRecebimentoResut"></p>
-                                </div>     -->                    
+                            <div class="row col-sm mt-2">
+                                    <div class="form-label text-sm col-sm-9"><span>Valor Total Forma de Recebimento</span></div>
+                                    <input type="text" id="valor" name="valor_payment_total" class="valor form-control form-control-sm formaRecebimentoResut col-sm-3" style="display:inline-block" >
+                                                                        
                             </div>
                             <div class="form-row col-sm" id="formulario_origin">
                                 <div class="col-sm-8 mb-3">
@@ -542,16 +486,14 @@
         var r4 = document.querySelector(".formaRecebimento4").value;
         var r5 = document.querySelector(".formaRecebimento5").value;
         var r6 = document.querySelector(".formaRecebimento6").value;
-        var r7 = document.querySelector(".formaRecebimento7").value;
-        var r8 = document.querySelector(".formaRecebimento8").value;
-        var r9 = document.querySelector(".formaRecebimento9").value;
         
-        var result = parseInt(r1 || 0) + parseInt(r2 || 0) + parseInt(r3 || 0) + parseInt(r4 || 0) + parseInt(r5 || 0) + parseInt(r6 || 0) + parseInt(r7 || 0) + parseInt(r8 || 0) + parseInt(r9 || 0);
+        var result = parseInt(r1 || 0) + parseInt(r2 || 0) + parseInt(r3 || 0) + parseInt(r4 || 0) + parseInt(r5 || 0) + parseInt(r6 || 0);
         if(result == ''){
             document.querySelector(".formaRecebimentoResut").innerHTML = 'Valor Incorreto';
         } else {
             document.querySelector(".formaRecebimentoResut").innerHTML = result;
             document.querySelector(".formaRecebimentoResut").value = result;
+            
         }
         
     }

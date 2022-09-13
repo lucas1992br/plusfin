@@ -13,9 +13,9 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <x-sidebar-item :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+    <x-sidebar-item :href="route('dashboard.index')" :active="request()->routeIs('dashboard')">
         <i class="fas fa-fw fa-chart-pie"></i>
-        <span>{{ __('Dashboard') }}</span>
+        <span>Home</span>
     </x-sidebar-item>
 
    

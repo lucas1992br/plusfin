@@ -13,7 +13,7 @@ use App\Http\Controllers\UpdateOutputController;
 use App\Http\Controllers\UploadDocumentController;
 use App\Http\Controllers\OutgoingPaymentController;
 use App\Http\Controllers\InputController;
-
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,9 +37,7 @@ Route::get('/', function () {
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::resource('dashboard', HomeController::class);
 
     Route::get('clientes', [CustomerSupplierController::class, 'index'])->name('clientes');
 

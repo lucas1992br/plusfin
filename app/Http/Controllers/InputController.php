@@ -115,9 +115,11 @@ class InputController extends Controller
      * @param  \App\Models\Input  $input
      * @return \Illuminate\Http\Response
      */
-    public function show(Input $input)
+    public function show($id)
     {
-        //
+        $showItem = Input::find($id);
+
+        return response()->json($showItem);
     }
 
     /**
@@ -149,8 +151,11 @@ class InputController extends Controller
      * @param  \App\Models\Input  $input
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Input $input)
+    public function destroy($id)
     {
-        //
+        $item = Input::find($id);
+        $item->delete();
+
+        return response('Deletado com sucesso.', 200);
     }
 }
