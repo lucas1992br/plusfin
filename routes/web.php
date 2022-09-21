@@ -71,5 +71,5 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('entradas', InputController::class);
 
-    Route::resource('entradadocumentos', UploadDocumentInputController::class);
+    Route::resource('entradas-documentos', UploadDocumentInputController::class);
 });

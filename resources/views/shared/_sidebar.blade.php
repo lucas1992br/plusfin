@@ -88,7 +88,7 @@
         </div>
         <div id="gerenciamento" class="collapse" aria-labelledby="gerenciamento" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded">
-                <a class="collapse-item text-light" href="{{ route('entradadocumentos.index') }}">Efetivar Entradas</a>
+                <a class="collapse-item text-light" href="{{ route('entradas-documentos.index') }}">Efetivar Entradas</a>
             </div>
         </div>   
     </li>
