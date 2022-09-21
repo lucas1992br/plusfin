@@ -30,11 +30,6 @@
         <span>Entradas</span>
     </x-sidebar-item>
 
-    <x-sidebar-item :href="route('entradas-documentos.index')" :active="request()->routeIs('entradas-documentos')">
-        <i class="fas fa-fw fa-user-alt"></i>
-        <span>Efetivar Entradas</span>
-    </x-sidebar-item>
-
     <x-sidebar-item :href="route('saidas.index')" :active="request()->routeIs('saidas')">
         <i class="fas fa-fw fa-user-alt"></i>
         <span>Saidas</span>
@@ -90,7 +85,12 @@
             <div class="py-2 collapse-inner rounded">
                 <a class="collapse-item text-light" href="{{ route('pagamento-saidas.index') }}">Pagamento Saidas</a>
             </div>
-        </div>        
+        </div>
+        <div id="gerenciamento" class="collapse" aria-labelledby="gerenciamento" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded">
+                <a class="collapse-item text-light" href="{{ route('entradas-documentos.index') }}">Efetivar Entradas</a>
+            </div>
+        </div>   
     </li>
 
     <!-- Divider --> <hr class="sidebar-divider">
