@@ -287,7 +287,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-       /*$('#valor').mask('#.##0,00', {reverse: true});*/
+      $('#valor').mask('#.##0,00', {reverse: true});
         $('#table').DataTable({
             pageLength: 25,
             responsive: true,

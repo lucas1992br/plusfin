@@ -28,18 +28,14 @@ class InputController extends Controller
     public function index()
     {
         $methods = Input::all();
-        $activities = Activity::all('nome', 'id');
-        $origins = Origin::all('nome', 'id');
-        $payments_methods = PaymentMethod::all('nome', 'id');
-        $payments_methods2 = PaymentMethod::all('nome', 'id');
+        $origins = Origin::where('status','Ativo')->where('tipo','Entrada')->get();
+        $payments_methods = PaymentMethod::where('status','Ativo')->where('tipo','Entrada')->get();
         $payings_sources = PayingSource::all('nome', 'id');
         return view('input', compact([
             'methods',
-            'activities',
             'origins',
-            'payings_sources' ,
             'payments_methods',
-            'payments_methods2'
+            'payings_sources'
         ]));
     }
 
@@ -60,10 +56,31 @@ class InputController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreInputRequest $request)
-    {
+    {   
+        $dinheiro = str_replace('.','',$request->dinheiro);
+        $dinheiro = str_replace(',','.',$dinheiro);
+
+        $pix = str_replace('.','',$request->pix);
+        $pix = str_replace(',','.',$pix);
+
+        $cheque = str_replace('.','',$request->cheque);
+        $cheque = str_replace(',','.',$cheque);
+
+        $cartao_debito = str_replace('.','',$request->cartao_debito);
+        $cartao_debito = str_replace(',','.',$cartao_debito);
+
+        $cartao_credito = str_replace('.','',$request->cartao_credito);
+        $cartao_credito = str_replace(',','.',$cartao_credito);
+
+        $cartao_recorrente = str_replace('.','',$request->cartao_recorrente);
+        $cartao_recorrente = str_replace(',','.',$cartao_recorrente);
+
+        $banco = str_replace('.','',$request->banco);
+        $banco = str_replace(',','.',$banco);
+
         if($request->all()){
             Input::create([
-                'status' =>$request->status = 'Pendente',
+                'status' =>$request->status = 'Entrada Pendente',
                 'data' => $request->data,
                 'observacao' => $request->observacao,
                 'observacao_atuditoria' => $request->observacao_atuditoria,
@@ -78,13 +95,13 @@ class InputController extends Controller
                 'payment_methods_id5' => $request->payment_methods_id7,
                 'payment_methods_id5' => $request->payment_methods_id8,
                 'payment_methods_id5' => $request->payment_methods_id9,
-                'valor_payment' => $request->valor_payment,
-                'valor_payment2' => $request->valor_payment2,
-                'valor_payment3' => $request->valor_payment3,
-                'valor_payment4' => $request->valor_payment4,
-                'valor_payment5' => $request->valor_payment5,
-                'valor_payment6' => $request->valor_payment6,
-                'valor_payment7' => $request->valor_payment7,
+                'valor_payment' => $dinheiro,
+                'valor_payment2' => $pix,
+                'valor_payment3' => $cheque,
+                'valor_payment4' => $cartao_debito,
+                'valor_payment5' => $cartao_credito,
+                'valor_payment6' => $cartao_recorrente,
+                'valor_payment7' => $banco,
                 'valor_payment8' => $request->valor_payment8,
                 'valor_payment9' => $request->valor_payment9,
                 'valor_payment_total' => $request->valor_payment_total,
@@ -107,6 +124,7 @@ class InputController extends Controller
         {
             return Redirect::route('entradas.index');
         }
+        
     }
 
     /**

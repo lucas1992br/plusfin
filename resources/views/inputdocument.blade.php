@@ -2,10 +2,18 @@
 <x-aplicativo-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Atualizar Saidas
+            
         </h2>
     </x-slot>
-    <!-- DataTales Example -->
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
@@ -13,93 +21,82 @@
 
         <div class="card-body">
             <meta name="csrf-token" content="{{ csrf_token() }}">
-            @component('components.dataTable',
-                [
-                    'headers' => ['Data', 'Conta', 'Origem', 'Fonte Pagante', 'Forma de Pagamento', 'Valor', 'Estagio', 'Ações'],
-                ])
-
-                @slot('data')
-                    @foreach ($methods ?? '' as $item)                
+            <h2>Efetivar Entradas</h2>
+            <div class="table-responsive">
+                
+                <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
+                    
+                    <thead>
                         <tr>
-                            <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
-                            <td title="{{ $item->conta }}">{{ $item->conta }}</td>
-                            <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
-                            <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
-                            <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
-                            <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
-                            <td class="bg-warning text-white rounded align-middle">{{ $item->status }}</td>
-                            <td title="Ações">
-                                <a title="Excluir" role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
-                                    <i class="fa fa-trash _i text-danger"></i>
-                                </a>
-                                <a title="Editar" role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
-                                    <i class="fa fa-edit _i text-navy"></i>
-                                </a>
-                            </td>
-                        </tr>   
-                    @endforeach
-                @endslot
-
-            @endcomponent
+                            <th>Data</th>
+                            <th>Dinheiro</th>
+                            <th>Pix</th>
+                            <th>Cheque</th>
+                            <th>Cartão Debito</th>
+                            <th>Cartão Credito</th>
+                            <th>Cartão Recorrente</th>
+                            <th>Total</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($methods ?? '' as $item)
+                            <tr>
+                                <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
+                                <td title="{{ $item->valor_payment }}">{{ 'R$ '.number_format($item->valor_payment, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment2 }}">{{ 'R$ '.number_format($item->valor_payment2, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment3 }}">{{ 'R$ '.number_format($item->valor_payment3, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment4 }}">{{ 'R$ '.number_format($item->valor_payment4, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment5 }}">{{ 'R$ '.number_format($item->valor_payment5, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment6 }}">{{ 'R$ '.number_format($item->valor_payment6, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment_total }}">{{ 'R$ '.number_format($item->valor_payment_total, 2, ',', '.') }}</td>
+                                <td title="Ações">
+                                    <a role="button" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
+                                        <i class="fa fa-trash _i text-danger"></i>
+                                    </a>                             
+                                    <a role="button" class="edit-row-js" data-route="{{route('entradas.show', $item->id)}}">
+                                        <i class="fa fa-edit _i text-navy"></i>
+                                    </a>
+                                    @if (count($item->files) > 0)
+                                    <a role="button" class="view-row-js" data-files="{{$item->files}}">
+                                        <i class="fa fa-eye _i text-navy"></i>
+                                    </a>
+                                @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="update-modal" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="update-modal">Aprovar Saidas</h5>
+                    <h5 class="modal-title" id="update-modal">Comprovantes de Entradas</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="edit-form" class="needs-validation" method="POST" novalidate>
+                <form id="edit-form" class="needs-validation" method="POST" novalidate enctype="multipart/form-data">
                     <div class="modal-body">
                         @method('PUT')
                         @csrf
                         <div class="form-row">
-                            <div class="col-md-12 mb-3">
-                                            <label class="form-label">Fonte Pagante</label>
-                                            <select class="form-select-item select form-control" id="edit-paying_sources_id" name="paying_sources_id" searchable="Search here.." required="true">
-                                            <option value="">Selecione uma Fonte Pagante</option>
-                                            @foreach($payings_sources as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach
-                                        </select>
+                            <div class="form-group col-sm-12 mb-3">
+                                <p class="col-sm">Caixa</p>
+                                <input multiple type="file" class="form-control-file" id="exampleFormControlFile1" name="files[]" >
                             </div>
-                            <div class="col-md-12 mb-3">
-                                        <label class="form-label">Forma Pagamento</label>
-                                        <select class="form-select-item select form-control" id="edit-payment_methods_id" name="payment_methods_id" searchable="Search here.." required="true">
-                                            <option value="">Selecione uma Forma de Pagamento</option>
-                                            @foreach($payments_methods as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                            @endforeach
-                                        </select>
+                            <div class="form-group col-md-12 mb-3">
+                                <p class="col-sm">Cartão</p>
+                                <input multiple type="file" class="form-control-file" id="exampleFormControlFile1" name="files[]">
                             </div>
-                            <div class="col-md-12 mb-3">
-                                        <label class="form-label">Data:</label>
-                                        <input type="date" class="form-control" id="edit-data" name="data" row='3'>
+                            <div class="form-group col-md-12 mb-3">
+                                <p class="col-sm">Banco</p>
+                                <input multiple type="file" class="form-control-file" id="exampleFormControlFile1" name="files[]">
                             </div>
-                           
-                            
-                            <div class="col-md-12 mb-3">
-                                        <label class="form-label" for="dinheiro">Valor:</label>
-                                        <input type="text" id="edit-valor" name="valor" class="dinheiro form-control" style="display:inline-block" />
-                            </div>
-
-                            <div class="col-md-4 mb-3" style="display: none">
-                                            <label class="form-label" >Estagio</label>
-                                            <select class="form-select-item select form-control" name="status">
-                                            <option value="Aprovação Pendente">Aprovação Pendente</option>
-                                            </select>
-                            </div>
-
-                   
-                           
-
-                            
-
-                            
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -110,12 +107,31 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="view-files-modal" aria-labelledby="view-modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Arquivos</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <ul id="files-list-js" class="list-group">
 
+                </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
 </x-aplicativo-layout>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#edit-valor').mask('#.##0,00', {reverse: true});
         $('#table').DataTable({
             pageLength: 25,
             responsive: true,
@@ -186,7 +202,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         url: $(this).data('route'),
-                        data: {'_method': 'update'},
+                        data: {'_method': 'delete'},
                         success: (response, textStatus, xhr) => {
                             Swal.fire(
                                 'Concluido!',
@@ -220,12 +236,11 @@
                 url: $(this).data('route'),
                 success: (response, textStatus, xhr) => {
                     editItemId = response.id;
-                    $('#edit-data').val(response.data);
-                    $('#edit-conta').val(response.conta);                               
-                    $('#edit-valor').val(response.valor);
-                    $('#edit-paying_sources_id').val(response.paying_sources_id);
-                    $('#edit-payment_methods_id').val(response.payment_methods_id);                 
-                    $('#edit-form').attr('action', `atualizar-saidas/${editItemId}`);
+                    $('#edit-observacao').val(response.observacao);
+                    $('#edit-observacao2').val(response.observacao2);
+                    // $('#edit-form').attr('action', `saidas/${editItemId}`);
+                    $('#edit-form').attr('action', `entradas-documentos/${editItemId}`);
+
                     $('#edit-item-modal').modal('show');
                 },
                 error: (response) => {

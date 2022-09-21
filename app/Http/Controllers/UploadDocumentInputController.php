@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OutgoingPayment;
-use App\Http\Requests\StoreOutgoingPaymentRequest;
-use App\Http\Requests\UpdateOutgoingPaymentRequest;
+use App\Models\UploadDocumentInput;
+use App\Http\Requests\StoreUploadDocumentInputRequest;
+use App\Http\Requests\UpdateUploadDocumentInputRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 
 use App\Models\Origin;
 use App\Models\Activity;
@@ -15,27 +16,31 @@ use App\Models\CostCenter;
 use App\Models\PaymentMethod;
 use App\Models\PayingSource;
 use App\Models\Output;
-use App\Models\File;
+use App\Models\Input;
+use App\Models\Filein;
 
-class OutgoingPaymentController extends Controller {
+class UploadDocumentInputController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $methods = Output::all();
+    public function index()
+    {
+        $methods = Input::where('status', '=', 'Entrada Pendente')->get();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
-        return view('outgoingpayment', compact([
+        return view('inputdocument', compact([
             'methods',
             'activities',
             'origins',
             'payings_sources' ,
             'payments_methods'
         ]));
+        
     }
 
     /**
@@ -51,10 +56,10 @@ class OutgoingPaymentController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreOutgoingPaymentRequest  $request
+     * @param  \App\Http\Requests\StoreUploadDocumentInputRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreOutgoingPaymentRequest $request)
+    public function store(StoreUploadDocumentInputRequest $request)
     {
         //
     }
@@ -62,10 +67,10 @@ class OutgoingPaymentController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\OutgoingPayment  $outgoingPayment
+     * @param  \App\Models\UploadDocumentInput  $uploadDocumentInput
      * @return \Illuminate\Http\Response
      */
-    public function show(OutgoingPayment $outgoingPayment)
+    public function show(UploadDocumentInput $uploadDocumentInput)
     {
         //
     }
@@ -73,10 +78,10 @@ class OutgoingPaymentController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\OutgoingPayment  $outgoingPayment
+     * @param  \App\Models\UploadDocumentInput  $uploadDocumentInput
      * @return \Illuminate\Http\Response
      */
-    public function edit(OutgoingPayment $outgoingPayment)
+    public function edit(UploadDocumentInput $uploadDocumentInput)
     {
         //
     }
@@ -84,32 +89,33 @@ class OutgoingPaymentController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateOutgoingPaymentRequest  $request
-     * @param  \App\Models\OutgoingPayment  $outgoingPayment
+     * @param  \App\Http\Requests\UpdateUploadDocumentInputRequest  $request
+     * @param  \App\Models\UploadDocumentInput  $uploadDocumentInput
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateOutgoingPaymentRequest $request, $id) {
-        $item = Output::find($id);
-       
+    public function update(UpdateUploadDocumentInputRequest $request, $id)
+    {
+        $item = Input::find($id);
+
         if($item && $request->all()){
-            if($request->hasfile('files') && $item->status === "Pagamento Pendente") {
+            if($request->hasfile('files') && $item->status === "Entrada Pendente") {
                 foreach($request->file('files') as $file) {
                     $path = $file->store('files');
                     $name = $file->getClientOriginalName();
 
-                    $arquivo = File::create([
-                        'name' => "$name-comprovante",
+                    $arquivo = Filein::create([
+                        'name' => $name,
                         'path' => $path,
                     ]);
 
                     $item->files()->attach($arquivo);
                     $file->move(public_path().'/files/', $path);
                 };
-                $item->status = "Paga";
+                $item->status = "Entrada Efetuada";
                 $item->save();
             };
 
-            return Redirect::route('saidas.index');
+            return Redirect::route('entradas.index');
         }else{
             return response('Houve um erro ao salvar.', 400);
         }
@@ -118,10 +124,10 @@ class OutgoingPaymentController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\OutgoingPayment  $outgoingPayment
+     * @param  \App\Models\UploadDocumentInput  $uploadDocumentInput
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OutgoingPayment $outgoingPayment)
+    public function destroy(UploadDocumentInput $uploadDocumentInput)
     {
         //
     }

@@ -92,17 +92,20 @@ class UpdateOutputController extends Controller
      */
     public function update(UpdateUpdateOutputRequest $request, $id)
     {  
+        $valor = str_replace('.','',$request->valor);
+        $valornew = str_replace(',','.',$valor); 
         
         $item = Output::find($id);  
         if($item && $request->all()){
             $item->status = 'Aprovação Pendente';
             $item->data = $request->data;
-            $item->valor = $request->valor;
+            $item->valor = $valornew;
             $item->paying_sources_id = $request->paying_sources_id;
             $item->payment_methods_id = $request->payment_methods_id;
             $item->update();
             // toDo: flash message de sucesso
             return Redirect::route('atualizar-saidas.index');
+            
         }else{
             // toDo: flash message de erro
             return response('Houve um erro ao salvar.', 400);

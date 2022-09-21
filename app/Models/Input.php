@@ -10,6 +10,8 @@ use App\Models\Activity;
 use App\Models\CostCenter;
 use App\Models\PaymentMethod;
 use App\Models\PayingSource;
+use App\Models\Filein;
+
 
 class Input extends Model
 {
@@ -55,7 +57,7 @@ class Input extends Model
         'valor_payment_origin'
     ];
 
-    protected $with = ['activity', 'origin', 'payments_methods', 'payings_sources', 'payments_methods2'];
+    protected $with = ['activity', 'origin', 'payments_methods', 'payings_sources', 'files'];
 
     public function activity() {
         return $this->hasOne(Activity::class , 'id', 'activity_id');
@@ -68,14 +70,10 @@ class Input extends Model
     public function payments_methods() {
         return $this->hasOne(PaymentMethod::class , 'id', 'payment_methods_id');
     }
-
-    public function payments_methods2() {
-        return $this->hasOne(PaymentMethod::class , 'id', 'payment_methods_id');
-    }
-
     public function payings_sources() {
         return $this->hasOne(PayingSource::class  , 'id', 'paying_sources_id');
     }
- 
-
+    public function files() {
+        return $this->belongsToMany(Filein::class);
+    }
 }

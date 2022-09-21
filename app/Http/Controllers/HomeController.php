@@ -17,6 +17,8 @@ use App\Models\CostCenter;
 use App\Models\PaymentMethod;
 use App\Models\PayingSource;
 use App\Models\Output;
+use App\Models\Input;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -27,17 +29,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $methods = Output::all();
+        $methods = Output::all();  
+        $input = Input::where('valor_payment', '>', 0)->get()->sum->valor_payment;
+        $input2 = Output::where('valor', '>', 0)->get()->sum->valor;            
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
+        
         return view('home', compact([
             'methods',
             'activities',
             'origins',
             'payings_sources' ,
-            'payments_methods'
+            'payments_methods',
+            'input', 'input2'
         ]));
     }
 

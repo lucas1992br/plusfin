@@ -16,12 +16,10 @@ class ActivitySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('activities')->create([
-            'nome' => "Informática",
+        DB::table('activities')->insert([
+            'nome' => 'Odontologia'
         ]);
 
-        DB::table('activities')->create([
-            'nome' => "Faxina"
-        ]);
+        
     }
 }

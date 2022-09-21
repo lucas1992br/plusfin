@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use app\Models\PaymentMethod;
 class PaymentMethodSeeder extends Seeder
 {
     /**
@@ -13,6 +16,41 @@ class PaymentMethodSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('payment_methods')->insert([
+            'nome' => 'Dinheiro',
+            'tipo'=> 'Entrada',
+            'status'=> 'Ativo',
+            'activity_id' => '1',
+        ]);
+        DB::table('payment_methods')->insert([
+            'nome' => 'Pix',
+            'tipo'=> 'Entrada',
+            'status'=> 'Ativo',
+            'activity_id' => '1',
+        ]);
+        DB::table('payment_methods')->insert([
+            'nome' => 'Cheque',
+            'tipo'=> 'Entrada',
+            'status'=> 'Ativo',
+            'activity_id' => '1',
+        ]);
+        DB::table('payment_methods')->insert([
+            'nome' => 'Cartão Debito',
+            'tipo'=> 'Entrada',
+            'status'=> 'Ativo',
+            'activity_id' => '1',
+        ]);
+        DB::table('payment_methods')->insert([
+            'nome' => 'Cartão Credito',
+            'tipo'=> 'Entrada',
+            'status'=> 'Ativo',
+            'activity_id' => '1',
+        ]);
+        DB::table('payment_methods')->insert([
+            'nome' => 'Cartão Recorrente',
+            'tipo'=> 'Entrada',
+            'status'=> 'Ativo',
+            'activity_id' => '1',
+        ]);
     }
 }

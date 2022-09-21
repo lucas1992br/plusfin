@@ -30,6 +30,11 @@
         <span>Entradas</span>
     </x-sidebar-item>
 
+    <x-sidebar-item :href="route('entradas-documentos.index')" :active="request()->routeIs('entradas-documentos')">
+        <i class="fas fa-fw fa-user-alt"></i>
+        <span>Efetivar Entradas</span>
+    </x-sidebar-item>
+
     <x-sidebar-item :href="route('saidas.index')" :active="request()->routeIs('saidas')">
         <i class="fas fa-fw fa-user-alt"></i>
         <span>Saidas</span>

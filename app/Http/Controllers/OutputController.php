@@ -59,6 +59,8 @@ class OutputController extends Controller
      */
     public function store(StoreOutputRequest $request)
     {
+        $valor = str_replace('.','',$request->valor);
+        $valor = str_replace(',','.',$valor);
 
         if($request->all()){
             Output::create([
@@ -69,7 +71,7 @@ class OutputController extends Controller
                 'observacao_atuditoria' => $request->observacao_atuditoria,
                 'observacao2' => $request->observacao2,
                 'observacao_atuditoria2' => $request->observacao_atuditoria2,
-                'valor' => $request->valor,
+                'valor' => $valor,
                 'paying_sources_id' => $request->paying_sources_id,
                 'payment_methods_id' => $request->payment_methods_id,
                 'origin_id' => $request->origin_id,
@@ -116,6 +118,10 @@ class OutputController extends Controller
     public function update(UpdateOutputRequest $request, $id)
     {
         $item = Output::find($id);
+
+        $valor = str_replace('.','',$request->valor);
+        $valor = str_replace(',','.',$valor);
+
         if($item && $request->all()){
             $item->status = $request->status;
             $item->data = $request->data;
@@ -124,7 +130,7 @@ class OutputController extends Controller
             $item->observacao2 = $request->observacao2;
             $item->observacao_atuditoria = $request->observacao_atuditoria;
             $item->observacao_atuditoria2 = $request->observacao_atuditoria2;
-            $item->valor = $request->valor;
+            $item->valor =  $valor;
             $item->paying_sources_id = $request->paying_sources_id;
             $item->payment_methods_id = $request->payment_methods_id;
             $item->origin_id = $request->origin_id;

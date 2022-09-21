@@ -14,6 +14,7 @@ use App\Http\Controllers\UploadDocumentController;
 use App\Http\Controllers\OutgoingPaymentController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UploadDocumentInputController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,4 +70,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('pagamento-saidas', OutgoingPaymentController::class);
 
     Route::resource('entradas', InputController::class);
+
+    Route::resource('entradas-documentos', UploadDocumentInputController::class);
 });
