@@ -25,13 +25,32 @@ class OutputController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+              
         $methods = Output::all();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
+
+        if($request->status){
+            $methods = Output::where('status', $request->status)->get();
+        }
+        if($request->excluida_search){
+            $methods = Output::where('status', $request->excluida_search)->get();
+        }
+        if($request->origin_search){
+            $methods = Output::where('origin_id', $request->origin_search)->get();
+        }
+        if($request->payments_methods_search){
+            $methods = Output::where('payment_methods_id', $request->payments_methods_search)->get();
+        }
+        if($request->paying_sources_search){
+            $methods = Output::where('paying_sources_id', $request->paying_sources_search)->get();
+        }
+        
         return view('output', compact([
             'methods',
             'activities',
@@ -39,6 +58,7 @@ class OutputController extends Controller
             'payings_sources' ,
             'payments_methods'
         ]));
+
     }
 
     /**

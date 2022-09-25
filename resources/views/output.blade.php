@@ -5,7 +5,8 @@
         </h2>
     </x-slot>
     <!-- DataTales Example -->
-
+    @component('components.search')
+    @endcomponent
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
             <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
@@ -288,7 +289,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
       $('#valor').mask('#.##0,00', {reverse: true});
-        $('#table').DataTable({
+        /*$('#table').DataTable({
             pageLength: 25,
             responsive: true,
             dom: 'lTf<"row-datatable-user"ip>',
@@ -336,7 +337,7 @@
                 }
             }
         });
-
+        */
         $('.delete-row-js').on('click', function(e) {
             e.preventDefault();
 
