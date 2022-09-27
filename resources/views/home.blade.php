@@ -199,7 +199,7 @@ use Illuminate\Support\Facades\DB;
                                 <tr>
                                     <th>Dinheiro</th>
                                     @php
-                                    $input = Input::where('valor_payment', '>', 0)->get()->sum->valor_payment;
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment', '>', 0)->get()->sum->valor_payment;
                                     $input2 = Output::where('payment_methods_id', '=', 	'1')->where('status', '=', 	'Paga')->get()->sum->valor;
                                     $dinheiro = $input - $input2;
                                     @endphp
@@ -210,7 +210,7 @@ use Illuminate\Support\Facades\DB;
                                 <tr>
                                     <th>Pix</th>
                                     @php
-                                    $input = Input::where('valor_payment2', '>', 0)->get()->sum->valor_payment2;
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment2', '>', 0)->get()->sum->valor_payment2;
                                     $input2 = Output::where('payment_methods_id', '=', 	'2')->where('status', '=', 	'Paga')->get()->sum->valor;
                                     $pix = $input - $input2;
                                     @endphp
@@ -221,7 +221,7 @@ use Illuminate\Support\Facades\DB;
                                 <tr>
                                     <th>Cheque</th>
                                     @php
-                                    $input = Input::where('valor_payment3', '>', 0)->get()->sum->valor_payment3;
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment3', '>', 0)->get()->sum->valor_payment3;
                                     $input2 = Output::where('payment_methods_id', '=', 	'3')->where('status', '=', 	'Paga')->get()->sum->valor;
                                     $cheque = $input - $input2;
                                     @endphp                                     
@@ -233,7 +233,7 @@ use Illuminate\Support\Facades\DB;
                                 <tr>
                                     <th>Cartão Debito</th>
                                     @php
-                                    $input = Input::where('valor_payment4', '>', 0)->get()->sum->valor_payment4;
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment4', '>', 0)->get()->sum->valor_payment4;
                                     $input2 = Output::where('payment_methods_id', '=', 	'4')->where('status', '=', 	'Paga')->get()->sum->valor;
                                     $debito = $input - $input2;
                                     @endphp
@@ -244,7 +244,7 @@ use Illuminate\Support\Facades\DB;
                                 <tr>
                                     <th>Cartão Credito</th>
                                     @php
-                                    $input = Input::where('valor_payment5', '>', 0)->get()->sum->valor_payment4;
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment5', '>', 0)->get()->sum->valor_payment4;
                                     $input2 = Output::where('payment_methods_id', '=', 	'5')->where('status', '=', 	'Paga')->get()->sum->valor;
                                     $credito = $input - $input2;
                                     @endphp
@@ -255,7 +255,7 @@ use Illuminate\Support\Facades\DB;
                                 <tr>
                                     <th>Cartão Recorrente</th>
                                     @php
-                                    $input = Input::where('valor_payment6', '>', 0)->get()->sum->valor_payment5;
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment6', '>', 0)->get()->sum->valor_payment5;
                                     $input2 = Output::where('payment_methods_id', '=', 	'7')->where('status', '=', 	'Paga')->get()->sum->valor;
                                     $recorrente = $input - $input2;
                                     @endphp
