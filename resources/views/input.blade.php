@@ -13,6 +13,11 @@
                 <i class="fa-plus-circle fas mr-2"></i>
                 Entrada
             </a>
+            <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
+                data-target="#register-bank-item-modal">
+                <i class="fa-plus-circle fas mr-2"></i>
+                Entrada Banco
+            </a>
         </div>
 
         <div class="card-body">
@@ -148,7 +153,7 @@
                             </div>
                             <div class="form-row col-sm">  
                                 <label class="form-label col-sm-8 mt-3" for="valor">Valor Total Origem:</label>
-                                <input type="text" name="valor_payment_origin" class="valor form-control-sm form-control OrigenResult col-sm mt-2" >
+                                <input type="text" name="valor_payment_origin" class="valor form-control-sm form-control OrigenResult col-sm mt-2" readonly >
                             </div>
                             <!-- Formas de Recebimento -->
                             <p class="text-center mt-2">Formas de Recebimento</p>                          
@@ -190,17 +195,11 @@
                                 </div>
                                 <div class="col-sm mt-2">  
                                     <input type="text" id="valor" name="cartao_recorrente" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                   
-                                    <input class="form-select-item select form-control form-control-sm" value="Banco" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="banco" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>                   
+                                </div>                  
                             </div>
                             <div class="form-row col-sm">  
                                 <label class="form-label col-sm-8 mt-3" for="valor">Valor Total Recebimento:</label>
-                                <input type="text" id="valorPaymentTotal" name="valor_payment_total" class="valor form-control-sm form-control formaRecebimentoResut col-sm mt-2" >
+                                <input type="text" id="valorPaymentTotal" name="valor_payment_total" class="valor form-control-sm form-control formaRecebimentoResut col-sm mt-2" readonly>
                             </div>
                             <!-- /Forma Recebimento -->
                             <!-- observações -->
@@ -222,6 +221,43 @@
                             </div>
                           </div>
                     </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Salvar</button>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="register-bank-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="register-modal">Cadastro Entradas Bancarias</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form method="PATCH" action="{{ route('entradas.create') }}" class="needs-validation" novalidate>
+                    @csrf
+                    @method('PATCH')
+                    <div class="modal-body">
+                        <div class="container">
+                            
+                            <div class="row">
+                                <label>Entrada Bancaria</label>
+                                <div class="col mb-2">
+                                <input type="text" id="valor" name="banco" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
+                                </div> 
+                                
+                            </div>
+                            <div class="row mb-3">
+                                <label class="form-label">Data:</label>
+                                <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
+                            </div>
+                        </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="submit">Salvar</button>
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
@@ -356,9 +392,6 @@
                                 </div>
                                 <div class="col-sm mt-2">  
                                     <input type="text" id="valor" name="cartao_recorrente" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                   
-                                    <input class="form-select-item select form-control form-control-sm" value="Banco" searchable="Search here.." required="true" disabled>                                      
                                 </div>
                                 <div class="col-sm mt-2">  
                                     <input type="text" id="valor" name="banco" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">

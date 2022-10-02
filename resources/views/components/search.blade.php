@@ -59,7 +59,7 @@
                             @endforeach                       
                         </select>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="col">
                         <label>Fonte Pagante</label>
                         <select class="form-select-item select form-control form-control-sm" name="paying_sources_search">
                             <option value="">Selecione uma Fonte Pagante</option>
@@ -69,8 +69,8 @@
                         </select>
                     </div>
                     <div class="col">
-                    </br>
-                        <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+                        <label>Pesquisar</label>
+                        <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
                     </div>
                 </div>
             </div>

@@ -17,6 +17,7 @@ use App\Models\PaymentMethod;
 use App\Models\PayingSource;
 use App\Models\Output;
 use App\Models\File;
+use Illuminate\Http\Request;
 
 class UploadDocumentController extends Controller {
     /**
@@ -24,12 +25,35 @@ class UploadDocumentController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         $methods = Output::where('status', '=', 'Envio De Documentos Pendente')->get();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
+
+        if($request->status){
+            $methods = Output::where('status', $request->status)->get();
+        }
+        if($request->data_inicial_search && $request->data_final_search){
+
+            $data_inicio = $request->data_inicial_search;
+            $data_fim    = $request->data_final_search;
+
+            $methods = Output::whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->get();           
+        }
+        if($request->excluida_search){
+            $methods = Output::where('status', $request->excluida_search)->get();
+        }
+        if($request->origin_search){
+            $methods = Output::where('origin_id', $request->origin_search)->get();
+        }
+        if($request->payments_methods_search){
+            $methods = Output::where('payment_methods_id', $request->payments_methods_search)->get();
+        }
+        if($request->paying_sources_search){
+            $methods = Output::where('paying_sources_id', $request->paying_sources_search)->get();
+        }
         return view('uploaddocument', compact([
             'methods',
             'activities',

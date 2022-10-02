@@ -244,7 +244,7 @@ use Illuminate\Support\Facades\DB;
                                 <tr>
                                     <th>Cartão Credito</th>
                                     @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment5', '>', 0)->get()->sum->valor_payment4;
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment5', '>', 0)->get()->sum->valor_payment5;
                                     $input2 = Output::where('payment_methods_id', '=', 	'5')->where('status', '=', 	'Paga')->get()->sum->valor;
                                     $credito = $input - $input2;
                                     @endphp
@@ -255,11 +255,22 @@ use Illuminate\Support\Facades\DB;
                                 <tr>
                                     <th>Cartão Recorrente</th>
                                     @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment6', '>', 0)->get()->sum->valor_payment5;
-                                    $input2 = Output::where('payment_methods_id', '=', 	'7')->where('status', '=', 	'Paga')->get()->sum->valor;
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment6', '>', 0)->get()->sum->valor_payment6;
+                                    $input2 = Output::where('payment_methods_id', '=', 	'6')->where('status', '=', 	'Paga')->get()->sum->valor;
                                     $recorrente = $input - $input2;
                                     @endphp
                                     <td>{{ 'R$ '.number_format("$recorrente",2,",",".") }}</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th>Banco</th>
+                                    @php
+                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment7', '>', 0)->get()->sum->valor_payment7;
+                                    $input2 = Output::where('payment_methods_id', '=', 	'7')->where('status', '=', 	'Paga')->get()->sum->valor;
+                                    $banco = $input - $input2;
+                                    @endphp
+                                    <td>{{ 'R$ '.number_format("$banco",2,",",".") }}</td>
                                     <td>0</td>
                                     <td>0</td>
                                 </tr> 

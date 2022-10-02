@@ -91,33 +91,38 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                          <label class="form-label">Fonte Pagante</label>
-                                         <select class="form-select-item select form-control" name="paying_sources_id" searchable="Search here.." required="true">
+                                         <select class="form-select-item select form-control form-control-sm " id="fonte_pagante" name="paying_sources_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Fonte Pagante</option>
-                                            @foreach($payings_sources as $item)
+                                            @foreach($payings_sourcecad as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                             @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label">Forma Pagamento</label>
-                                        <select class="form-select-item select form-control" name="payment_methods_id" searchable="Search here.." required="true">
+                                        <select class="form-select-item select form-control form-control-sm" id="forma_pagamento" name="payment_methods_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Forma de Pagamento</option>
-                                            @foreach($payments_methods as $item)
-                                                <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                            @foreach($payments_methodcad as $item)                                              
+                                                @if($item->nome  === 'Banco'){
+                                                    <option disabled></option>
+                                                  } @else {                                                 
+                                                    <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                                  }
+                                                @endif
                                             @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label">Data:</label>
-                                        <input type="date" class="form-control" name="data" row='3' required="true">
+                                        <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label">Conta</label>
-                                        <textarea class="form-control" name="conta" required="true"></textarea>
+                                        <textarea class="form-control form-control-sm" name="conta" required="true"></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                          <label class="form-label">Origem</label>
-                                         <select class="form-select-item select form-control" name="origin_id" searchable="Search here.." required="true">
+                                         <select class="form-select-item select form-control form-control-sm" name="origin_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Origem</option>
                                             @foreach($origins as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
@@ -126,12 +131,12 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label" for="valor">Valor:</label>
-                                        <input type="text" id="valor" name="valor" class="valor form-control" style="display:inline-block" required="true"/>
+                                        <input type="text" id="valor" name="valor" class="valor form-control form-control-sm" style="display:inline-block" required="true"/>
                             </div>
-
+                           
                             <div class="col-md-12 mb-3">
                                          <label class="form-label" required="true">Atualizada</label>
-                                         <select class="form-select-item select form-control" name="status">
+                                         <select class="form-select-item select form-control form-control-sm" name="status">
                                             <option value="Aprovação Pendente">Sim</option>
                                             <option value="Atualização Pendente">Não</option>
                                           </select>
@@ -139,22 +144,22 @@
 
                             <div class="col-md-12 mb-3" style="display: none">
                               <label class="form-label" >Observação - Gestor</label>
-                              <textarea class="form-control" name="observacao"></textarea>
+                              <textarea class="form-control form-control-sm" name="observacao"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3" style="display: none">
                               <label class="form-label" >Observação Auditoria</label>
-                              <textarea class="form-control" name="observacao_atuditoria"></textarea>
+                              <textarea class="form-control form-control-sm" name="observacao_atuditoria"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3" style="display: none">
                               <label class="form-label">Observação - Administrativo</label>
-                              <textarea class="form-control" name="observacao2"></textarea>
+                              <textarea class="form-control form-control-sm" name="observacao2"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3" style="display: none">
                                 <label class="form-label">Observação Auditoria</label>
-                                <textarea class="form-control" name="observacao_atuditoria2"></textarea>
+                                <textarea class="form-control form-control-sm" name="observacao_atuditoria2"></textarea>
                             </div>
 
                           </div>
@@ -185,7 +190,7 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                          <label class="form-label">Fonte Pagante</label>
-                                         <select class="form-select-item select form-control" id="edit-paying_sources_id" name="paying_sources_id" searchable="Search here.." required="true">
+                                         <select class="form-select-item select form-control form-control-sm" id="edit-paying_sources_id" name="paying_sources_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Fonte Pagante</option>
                                             @foreach($payings_sources as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
@@ -194,24 +199,24 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label">Forma Pagamento</label>
-                                        <select class="form-select-item select form-control" id="edit-payment_methods_id" name="payment_methods_id" searchable="Search here.." required="true">
+                                        <select class="form-select-item select form-control form-control-sm" id="edit-payment_methods_id" name="payment_methods_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Forma de Pagamento</option>
-                                            @foreach($payments_methods as $item)
+                                            @foreach($payments_methodcad as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                             @endforeach
                                         </select>
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label" required="true">Data:</label>
-                                        <input type="date" class="form-control" id="edit-data" name="data" row='3'>
+                                        <input type="date" class="form-control form-control-sm" id="edit-data" name="data" row='3'>
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label">Conta</label>
-                                        <textarea class="form-control" id="edit-conta" name="conta"></textarea>
+                                        <textarea class="form-control form-control-sm" id="edit-conta" name="conta"></textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                          <label class="form-label">Origem</label>
-                                         <select class="form-select-item select form-control" id="edit-origin_id" name="origin_id" searchable="Search here.." required="true">
+                                         <select class="form-select-item select form-control form-control-sm" id="edit-origin_id" name="origin_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Origem</option>
                                             @foreach($origins as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
@@ -220,12 +225,12 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                         <label class="form-label" for="dinheiro" required="true">Valor:</label>
-                                        <input type="number" id="edit-valor" name="valor" class="dinheiro form-control" style="display:inline-block" />
+                                        <input type="number" id="edit-valor" name="valor" class="dinheiro form-control form-control-sm" style="display:inline-block" />
                             </div>
 
                             <div class="col-md-12 mb-3">
                                          <label class="form-label">Estagio</label>
-                                         <select class="form-select-item select form-control" name="status" searchable="Search here.." id="edit-status">
+                                         <select class="form-select-item select form-control form-control-sm" name="status" searchable="Search here.." id="edit-status">
                                             @foreach($methods ?? '' as $item)
                                                 <option value="{{ $item->status }}">{{ $item->status }}</option>
                                             @endforeach
@@ -234,22 +239,22 @@
 
                             <div class="col-md-12 mb-3">
                               <label class="form-label">Observação - Gestor</label>
-                              <textarea class="form-control" id="edit-observacao" name="observacao"></textarea>
+                              <textarea class="form-control form-control-sm" id="edit-observacao" name="observacao"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3">
                               <label class="form-label" >Observação - Administrativo</label>
-                              <textarea class="form-control" id="edit-observacao2" name="observacao2"></textarea>
+                              <textarea class="form-control form-control-sm" id="edit-observacao2" name="observacao2"></textarea>
                             </div>
 
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Observação Auditoria</label>
-                                <textarea class="form-control" id="edit-observacao_atuditoria" name="observacao_atuditoria"></textarea>
+                                <textarea class="form-control form-control-sm" id="edit-observacao_atuditoria" name="observacao_atuditoria"></textarea>
                               </div>
 
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Observação Auditoria</label>
-                                <textarea class="form-control" id="edit-observacao_atuditoria2" name="observacao_atuditoria2"></textarea>
+                                <textarea class="form-control form-control-sm" id="edit-observacao_atuditoria2" name="observacao_atuditoria2"></textarea>
                             </div>
 
                           </div>
@@ -289,55 +294,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
       $('#valor').mask('#.##0,00', {reverse: true});
-        /*$('#table').DataTable({
-            pageLength: 25,
-            responsive: true,
-            dom: 'lTf<"row-datatable-user"ip>',
-            processing: true,
-            columnDefs: [{
-                    targets: [],
-                    render: function(data, type, row) {
-                        return data.length > 25 ? data.substr(0, 25) + '…' : data;
-                    }
-                },
-                {
-                    targets: [],
-                    orderable: true,
-                }
-            ],
-
-            oLanguage: {
-                "sEmptyTable": "Nenhum registro encontrado",
-                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "_MENU_ resultados por página",
-                "sLoadingRecords": "Carregando...",
-                "sProcessing": "Processando...",
-                "sZeroRecords": "Nenhum registro encontrado",
-                "sSearch": "Pesquisar",
-                "oPaginate": {
-                    "sNext": "Próximo",
-                    "sPrevious": "Anterior",
-                    "sFirst": "Primeiro",
-                    "sLast": "Último"
-                },
-                "oAria": {
-                    "sSortAscending": ": Ordenar colunas de forma ascendente",
-                    "sSortDescending": ": Ordenar colunas de forma descendente"
-                },
-                "select": {
-                    "rows": {
-                        "_": "Selecionado %d linhas",
-                        "0": "Nenhuma linha selecionada",
-                        "1": "Selecionado 1 linha"
-                    }
-                }
-            }
-        });
-        */
         $('.delete-row-js').on('click', function(e) {
             e.preventDefault();
 
@@ -430,5 +386,27 @@
 
             $('#view-files-modal').modal('show');
         });
+
+        $('#fonte_pagante').click(function () { 
+
+            var select = document.getElementById('fonte_pagante');
+			var option = select.options[select.selectedIndex].text;
+            if( option == 'Banco'){
+                $('#forma_pagamento').prop("disabled", true);
+                $('#forma_pagamento option[value=7]').attr('selected', 'selected');
+            } else if( option == 'Cartão de Credito') {
+                $('#forma_pagamento').prop("disabled", true);
+                $('#forma_pagamento option[value=7]').attr('selected', 'selected');
+             } else if( option == 'Diretor') {
+                $('#forma_pagamento').prop("disabled", false);
+                $('#forma_pagamento option[value=8]').attr('selected', 'selected');
+             }else {
+                $('#forma_pagamento').prop("disabled", false);
+             }
+
+            }
+            
+        );
     });
+   
 </script>

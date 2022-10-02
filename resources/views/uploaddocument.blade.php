@@ -14,7 +14,30 @@
             </ul>
         </div>
     @endif
-
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form action="{{ route('envio-documentos.index') }}" method="get">
+                @csrf
+                <h2>Filtros</h2>
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <label>Data Inicial</label>
+                            <input type="date" name="data_inicial_search" class="form-control-sm form-control">
+                        </div>
+                        <div class="col">
+                            <label>Data Final</label>
+                            <input type="date" name="data_final_search" class="form-control-sm form-control">
+                        </div>                          
+                        <div class="col">
+                            <label>..</label></br>
+                            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
         </div>

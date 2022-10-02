@@ -44,9 +44,24 @@ class InputController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+
+        $banco = str_replace('.','',$request->banco);
+        $banco = str_replace(',','.',$banco);
+
+        if($request->all()){
+            Input::create([
+                'status' =>$request->status = 'Entrada Efetuada',
+                'data' => $request->data,
+                'valor_payment7' => $banco,
+            ]);
+            return Redirect::route('entradas.index');
+        }
+        else
+        {
+            return Redirect::route('entradas.index');
+        }
     }
 
     /**

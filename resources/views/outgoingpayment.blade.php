@@ -6,7 +6,30 @@
         </h2>
     </x-slot>
     <!-- DataTales Example -->
-
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form action="{{ route('envio-documentos.index') }}" method="get">
+                @csrf
+                <h2>Filtros</h2>
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <label>Data Inicial</label>
+                            <input type="date" name="data_inicial_search" class="form-control-sm form-control">
+                        </div>
+                        <div class="col">
+                            <label>Data Final</label>
+                            <input type="date" name="data_final_search" class="form-control-sm form-control">
+                        </div>                          
+                        <div class="col">
+                            <label>..</label></br>
+                            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
         </div>
@@ -85,55 +108,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#table').DataTable({
-            pageLength: 25,
-            responsive: true,
-            dom: 'lTf<"row-datatable-user"ip>',
-            processing: true,
-            columnDefs: [{
-                    targets: [],
-                    render: function(data, type, row) {
-                        return data.length > 25 ? data.substr(0, 25) + '…' : data;
-                    }
-                },
-                {
-                    targets: [],
-                    orderable: true,
-                }
-            ],
-
-            oLanguage: {
-                "sEmptyTable": "Nenhum registro encontrado",
-                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "_MENU_ resultados por página",
-                "sLoadingRecords": "Carregando...",
-                "sProcessing": "Processando...",
-                "sZeroRecords": "Nenhum registro encontrado",
-                "sSearch": "Pesquisar",
-                "oPaginate": {
-                    "sNext": "Próximo",
-                    "sPrevious": "Anterior",
-                    "sFirst": "Primeiro",
-                    "sLast": "Último"
-                },
-                "oAria": {
-                    "sSortAscending": ": Ordenar colunas de forma ascendente",
-                    "sSortDescending": ": Ordenar colunas de forma descendente"
-                },
-                "select": {
-                    "rows": {
-                        "_": "Selecionado %d linhas",
-                        "0": "Nenhuma linha selecionada",
-                        "1": "Selecionado 1 linha"
-                    }
-                }
-            }
-        });
-
         $('.delete-row-js').on('click', function(e) {
             e.preventDefault();
 

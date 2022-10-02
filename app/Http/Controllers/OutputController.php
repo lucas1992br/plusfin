@@ -34,9 +34,18 @@ class OutputController extends Controller
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
+        $payments_methodcad = PaymentMethod::where('tipo','Saida')->where('status','Ativo')->get();
+        $payings_sourcecad = PayingSource::where('tipo','Saida')->where('status','Ativo')->get();;
 
         if($request->status){
             $methods = Output::where('status', $request->status)->get();
+        }
+        if($request->data_inicial_search && $request->data_final_search){
+
+            $data_inicio = $request->data_inicial_search;
+            $data_fim    = $request->data_final_search;
+
+            $methods = Output::whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->get();           
         }
         if($request->excluida_search){
             $methods = Output::where('status', $request->excluida_search)->get();
@@ -56,9 +65,11 @@ class OutputController extends Controller
             'activities',
             'origins',
             'payings_sources' ,
-            'payments_methods'
+            'payments_methods',
+            'payments_methodcad',
+            'payings_sourcecad'
         ]));
-
+        
     }
 
     /**

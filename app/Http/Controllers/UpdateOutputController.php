@@ -13,6 +13,10 @@ use App\Models\PaymentMethod;
 use App\Models\PayingSource;
 use App\Models\Output;
 
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
+
 class UpdateOutputController extends Controller
 {
     /**
@@ -20,7 +24,7 @@ class UpdateOutputController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $methods = Output::where('status', '=', 'Atualização Pendente')->get();            
         $activities = Activity::all('nome', 'id');
@@ -28,13 +32,20 @@ class UpdateOutputController extends Controller
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
+        
+        if($request->data_inicial_search && $request->data_final_search){
 
+            $data_inicio = $request->data_inicial_search;
+            $data_fim    = $request->data_final_search;
+
+            $methods = Output::where('data', '>=', $data_inicio)->where('data', '<=', $data_fim)->where('status', '=', 'Atualização Pendente')->get();           
+        }
         return view('updateoutput', compact([
             'methods',
             'activities',
             'origins',
             'payings_sources' ,
-            'payments_methods'
+            'payments_methods',
         ]));
     }
 
