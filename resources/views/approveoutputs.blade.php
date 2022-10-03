@@ -7,10 +7,12 @@
     </x-slot>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
+        </div>
         <div class="card-body">
             <form action="{{ route('aprovar-saidas.index') }}" method="get">
                 @csrf
-                <h2>Filtros</h2>
                 <div>
                     <div class="row">
                         <div class="col">
