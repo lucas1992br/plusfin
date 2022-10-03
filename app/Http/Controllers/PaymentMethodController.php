@@ -20,10 +20,22 @@ class PaymentMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         $methods = PaymentMethod::all();
         $activities = Activity::all('nome', 'id');
-
+        
+        if($request->tipo_search){
+            $methods = PaymentMethod::where('tipo', $request->tipo_search)->get();
+        }
+        if($request->status_search){
+            $methods = PaymentMethod::where('atividade', $request->status_search)->get();
+        }
+        if($request->atividade_search){
+            $methods = PaymentMethod::where('tipo', $request->atividade_search)->get();
+        }
+       
+       
+        
         return view('payment-method', compact([
             'methods',
             'activities'

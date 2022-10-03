@@ -21,12 +21,25 @@ class OriginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $methods = Origin::all();            
         $activities = Activity::all('nome', 'id');
         $costcenters = CostCenter::all('nome', 'id');
 
+        if($request->tipo_search){
+            $methods = Origin::where('tipo', $request->tipo_search)->get();
+        }
+        if($request->status_search){
+            $methods = Origin::where('status', $request->status_search)->get();
+        }
+        if($request->atividade_search){
+            $methods = Origin::where('activity_id', $request->atividade_search)->get();
+        }
+        if($request->costcenter_search){
+            $methods = Origin::where('costcenter_id', $request->costcenter_search)->get();
+        }
+        
         return view('origin', compact([
             'methods',
             'activities',

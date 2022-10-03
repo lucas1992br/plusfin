@@ -25,17 +25,52 @@ class InputController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $methods = Input::all();
         $origins = Origin::where('status','Ativo')->where('tipo','Entrada')->get();
         $payments_methods = PaymentMethod::where('status','Ativo')->where('tipo','Entrada')->get();
         $payings_sources = PayingSource::all('nome', 'id');
+        
+        $dinheiro = Input::where('valor_payment', '>', 0)->get()->sum->valor_payment;      
+
+        $pix = Input::where('valor_payment2', '>', 0)->get()->sum->valor_payment2;      
+
+        $cheque = Input::where('valor_payment3', '>', 0)->get()->sum->valor_payment3;
+
+        $debito = Input::where('valor_payment4', '>', 0)->get()->sum->valor_payment4;
+
+        $credito = Input::where('valor_payment5', '>', 0)->get()->sum->valor_payment5;
+
+        $recorrente = Input::where('valor_payment6', '>', 0)->get()->sum->valor_payment6;
+
+        $banco = Input::where('valor_payment7', '>', 0)->get()->sum->valor_payment7;
+
+        $total = Input::where('valor_payment_total', '>', 0)->get()->sum->valor_payment_total;
+
+        if($request->data_inicial_search && $request->data_final_search){
+
+            $data_inicio = $request->data_inicial_search;
+            $data_fim    = $request->data_final_search;
+
+            $methods = Input::where('data', '>=', $data_inicio)->where('data', '<=', $data_fim)->get();           
+        }
+        
+       
         return view('input', compact([
             'methods',
             'origins',
             'payments_methods',
-            'payings_sources'
+            'payings_sources',
+            'dinheiro',
+            'pix',
+            'cheque',
+            'debito',
+            'credito',
+            'recorrente',
+            'banco',
+            'total'
+
         ]));
     }
 
@@ -55,6 +90,7 @@ class InputController extends Controller
                 'status' =>$request->status = 'Entrada Efetuada',
                 'data' => $request->data,
                 'valor_payment7' => $banco,
+                'valor_payment_total' => $banco,
             ]);
             return Redirect::route('entradas.index');
         }
@@ -92,7 +128,7 @@ class InputController extends Controller
 
         $banco = str_replace('.','',$request->banco);
         $banco = str_replace(',','.',$banco);
-
+        
         if($request->all()){
             Input::create([
                 'status' =>$request->status = 'Entrada Pendente',

@@ -19,7 +19,7 @@ class CreateOriginsTable extends Migration
             $table->string('tipo');
             $table->string('status');
             $table->foreignId('activity_id');
-            $table->foreignId('costcenter_id');
+            $table->foreignId('costcenter_id')->nullable($value = true);
             $table->timestamps();
         });
     }

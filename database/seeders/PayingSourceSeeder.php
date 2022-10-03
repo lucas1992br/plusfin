@@ -20,11 +20,28 @@ class PayingSourceSeeder extends Seeder
        
        
         DB::table('paying_sources')->insert([
-            'nome' => 'Dinheiro',
-            'tipo'=> 'Entrada',
+            'nome' => 'Financeiro',
+            'tipo'=> 'Saida',
             'status'=> 'Ativo',
             'activity_id' => '1'
         ]);
-        
+        DB::table('paying_sources')->insert([
+            'nome' => 'Cartão de Crédito',
+            'tipo'=> 'Saida',
+            'status'=> 'Ativo',
+            'activity_id' => '1'
+        ]);
+        DB::table('paying_sources')->insert([
+            'nome' => 'Diretor',
+            'tipo'=> 'Saida',
+            'status'=> 'Ativo',
+            'activity_id' => '1'
+        ]);
+        DB::table('paying_sources')->insert([
+            'nome' => 'Banco',
+            'tipo'=> 'Saida',
+            'status'=> 'Ativo',
+            'activity_id' => '1'
+        ]);
     }
 }

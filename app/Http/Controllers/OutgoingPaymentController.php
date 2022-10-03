@@ -30,6 +30,8 @@ class OutgoingPaymentController extends Controller {
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
+        $payments_methodcad = PaymentMethod::where('tipo','Saida')->where('status','Ativo')->get();
+        $payings_sourcecad = PayingSource::where('tipo','Saida')->where('status','Ativo')->get();
 
         if($request->status){
             $methods = Output::where('status', $request->status)->get();
@@ -59,7 +61,9 @@ class OutgoingPaymentController extends Controller {
             'activities',
             'origins',
             'payings_sources' ,
-            'payments_methods'
+            'payments_methods',
+            'payments_methodcad',
+            'payings_sourcecad'
         ]));
     }
 

@@ -39,8 +39,8 @@ class CreateInputsTable extends Migration
             $table->decimal('valor_payment7', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('valor_payment8', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('valor_payment9', $precision = 8, $scale = 2)->nullable($value = true);
-            $table->decimal('valor_payment_total', $precision = 8, $scale = 2);
-            $table->text('origin_id');
+            $table->decimal('valor_payment_total', $precision = 8, $scale = 2)->nullable($value = true);
+            $table->text('origin_id')->nullable($value = true);
             $table->text('origin_id2')->nullable($value = true);
             $table->text('origin_id3')->nullable($value = true);
             $table->text('origin_id4')->nullable($value = true);
@@ -58,7 +58,7 @@ class CreateInputsTable extends Migration
             $table->decimal('valor_origin7', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('valor_origin8', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('valor_origin9', $precision = 8, $scale = 2)->nullable($value = true);
-            $table->decimal('valor_payment_origin', $precision = 8, $scale = 2);
+            $table->decimal('valor_payment_origin', $precision = 8, $scale = 2)->nullable($value = true);
             $table->timestamps();
         });
     }

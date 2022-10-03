@@ -7,6 +7,58 @@
     </x-slot>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('origem.index') }}" method="get">
+                @csrf
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <label>Tipo</label>
+                            <select class="form-select-item select form-control form-control-sm form-control form-control-sm-sm" name="tipo_search">
+                                <option value="">Selecione um Tipo</option> 
+                                <option value="Entrada">Entrada</option>
+                                <option value="Saida">Saida</option>
+                            </select>
+                        </div> 
+                        <div class="col">
+                            <label>Status</label>
+                            <select class="form-select-item select form-control form-control-sm form-control form-control-sm-sm" name="status_search">
+                                <option value="">Selecione um Status</option> 
+                                <option value="Ativo">Ativo</option>
+                                <option value="Inativo">Inativo</option>
+                            </select>  
+                        </div>    
+                        <div class="col">
+                            <label>Atividade</label>
+                            <select class="form-select-item select form-control form-control-sm form-control form-control-sm-sm" name="atividade_search">
+                                <option value="">Selecione uma Atividade</option>
+                                @foreach($activities as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                @endforeach                       
+                            </select>  
+                        </div>
+                        <div class="col">
+                            <label>Centro de Custo</label>
+                            <select class="form-select-item select form-control form-control-sm form-control form-control-sm-sm" name="costcenter_search">
+                                <option value="">Selecione um Centro de Custo</option>
+                                @foreach($costcenters as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                @endforeach                       
+                            </select>  
+                        </div>                      
+                        <div class="col">
+                            <label>..</label></br>
+                            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
             <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
                 data-target="#register-new-item-modal">
@@ -23,7 +75,7 @@
             <meta name="csrf-token" content="{{ csrf_token() }}">
             @component('components.dataTable',
                 [
-                    'headers' => ['id', 'Nome', 'Tipo', 'Status', 'Atividade', 'Centro de Custo', 'Ações'],
+                    'headers' => ['id', 'Nome', 'Tipo', 'Status', 'Atividade', 'Ações'],
                 ])
 
                 @slot('data')
@@ -33,8 +85,7 @@
                             <td title="{{ $item->nome }}">{{ $item->nome }}</td>
                             <td title="{{ $item->tipo }}">{{ $item->tipo }}</td>
                             <td title="{{ $item->status }}">{{ $item->status }}</td>
-                            <td title="{{ $item->atividade }}">{{ $item->activity->nome }}</td>
-                            <td title="{{ $item->atividade }}">{{ $item->costCenter->nome }}</td>                                          
+                            <td title="{{ $item->atividade }}">{{ $item->activity->nome }}</td>                                                                     
                             <td title="Ações">
                                 <a role="button" class="delete-row-js" data-route="{{route('origem.destroy',$item->id)}}">
                                     <i class="fa fa-trash _i text-danger"></i>
@@ -66,7 +117,7 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label>Nome</label>
-                                <input type="text" class="form-control" id="nome" name="nome"
+                                <input type="text" class="form-control form-control-sm" id="nome" name="nome"
                                     placeholder="Nome" >
                                 <div class="invalid-tooltip">
                                     Nome é obrigatório
@@ -75,7 +126,7 @@
 
                             <div class="col-md-12 mb-3">
                                 <label>Atividade</label>
-                                <select class="form-select-item select form-control" id="atividade" name="atividade" searchable="Search here.." required="true">
+                                <select class="form-select-item select form-control form-control-sm" id="atividade" name="atividade" searchable="Search here.." required="true">
                                     <option value="">Selecione uma atividade</option>
                                     @foreach($activities as $item)
                                         <option value="{{ $item->id }}">{{ $item->nome }}</option>
@@ -88,11 +139,10 @@
 
                             <div class="col-md-4 mb-3">
                                 <label>Tipo</label>
-                                <select class="form-select-item form-control" id="tipo" name="tipo" required="true">
+                                <select class="form-select-item form-control form-control-sm" id="tipo" name="tipo" required="true" onchange="TipoOrigem()">
                                     <option value="">Selecione um tipo</option>
                                     <option>Entrada</option>
                                     <option>Saída</option>
-                                    <option>Entrada/Saída</option>
                                 </select>
                                 <div class="invalid-tooltip">
                                     O tipo é obrigatório
@@ -101,7 +151,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <label>Status</label>
-                                <select class="form-select-item form-control" id="status" name="status" required="true">
+                                <select class="form-select-item form-control form-control-sm" id="status" name="status" required="true">
                                     <option value="">Selecione um Status</option>
                                     <option>Ativo</option>
                                     <option>Inativo</option>
@@ -113,7 +163,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <label>Centro de Custo</label>
-                                <select class="form-select-item select form-control" id="costcenter" name="costcenter" searchable="Search here.." required="true">
+                                <select class="form-select-item select form-control form-control-sm" id="costcenter" name="costcenter" searchable="Search here.." required="true">
                                     <option value="">Selecione Centro de Custo</option>
                                     @foreach($costcenters as $item)
                                         <option value="{{ $item->id }}">{{ $item->nome }}</option>
@@ -151,7 +201,7 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="validationTooltip01">Nome</label>
-                                <input type="text" class="form-control" id="edit-nome" name="nome" placeholder="Nome" value="" required>
+                                <input type="text" class="form-control form-control-sm" id="edit-nome" name="nome" placeholder="Nome" value="" required>
                                 <div class="invalid-tooltip">
                                     Nome é obrigatório
                                 </div>
@@ -159,7 +209,7 @@
 
                             <div class="col-md-12 mb-3">
                                 <label>Atividade</label>
-                                <select class="form-control" id="edit-atividade" name="atividade">
+                                <select class="form-control form-control-sm" id="edit-atividade" name="atividade">
                                     @foreach($activities as $item)
                                         <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                     @endforeach
@@ -168,16 +218,15 @@
 
                             <div class="col-md-4 mb-3">
                                 <label>Tipo</label>
-                                <select class="form-control" id="edit-tipo" name="tipo">
+                                <select class="form-control form-control-sm" id="edit-tipo" name="tipo">
                                     <option value="Entrada">Entrada</option>
                                     <option value="Saída">Saída</option>
-                                    <option value="Entrada/Saída">Entrada/Saída</option>
                                 </select>
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label>Status</label>
-                                <select class="form-select-item form-control" id="edit-status" name="status" required="true">
+                                <select class="form-select-item form-control form-control-sm" id="edit-status" name="status" required="true">
                                     <option value="">Selecione um Status</option>
                                     <option>Ativo</option>
                                     <option>Inativo</option>
@@ -189,7 +238,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <label>Centro de Custo</label>
-                                <select class="form-select-item select form-control" id="edit-costcenter" name="costcenter" required="true">
+                                <select class="form-select-item select form-control form-control-sm" id="edit-costcenter" name="costcenter" required="true">
                                     <option value="">Selecione um Centro de Custo</option>
                                     @foreach($costcenters as $item)
                                         <option value="{{ $item->id }}">{{ $item->nome }}</option>
@@ -214,55 +263,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#table').DataTable({
-            pageLength: 25,
-            responsive: true,
-            dom: 'lTf<"row-datatable-user"ip>',
-            processing: true,
-            columnDefs: [{
-                    targets: [],
-                    render: function(data, type, row) {
-                        return data.length > 25 ? data.substr(0, 25) + '…' : data;
-                    }
-                },
-                {
-                    targets: [],
-                    orderable: true,
-                }
-            ],
-
-            oLanguage: {
-                "sEmptyTable": "Nenhum registro encontrado",
-                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "_MENU_ resultados por página",
-                "sLoadingRecords": "Carregando...",
-                "sProcessing": "Processando...",
-                "sZeroRecords": "Nenhum registro encontrado",
-                "sSearch": "Pesquisar",
-                "oPaginate": {
-                    "sNext": "Próximo",
-                    "sPrevious": "Anterior",
-                    "sFirst": "Primeiro",
-                    "sLast": "Último"
-                },
-                "oAria": {
-                    "sSortAscending": ": Ordenar colunas de forma ascendente",
-                    "sSortDescending": ": Ordenar colunas de forma descendente"
-                },
-                "select": {
-                    "rows": {
-                        "_": "Selecionado %d linhas",
-                        "0": "Nenhuma linha selecionada",
-                        "1": "Selecionado 1 linha"
-                    }
-                }
-            }
-        });
-
         $('.delete-row-js').on('click', function(e) {
             e.preventDefault();
 
@@ -338,4 +338,19 @@
             });
         });
     });
+    function TipoOrigem(){
+        var select = document.getElementById("tipo");
+        var opcaoValor = select.options[select.selectedIndex].value;
+       
+        if(opcaoValor === 'Entrada'){
+            document.getElementById('costcenter').style.display = 'none';
+            document.getElementById('costcenter').required = false;
+            console.log('Capiturado');
+        } else {
+            document.getElementById('costcenter').style.display = 'block';
+            
+            console.log('Não Capiturado');
+        }
+    }
+    
 </script>

@@ -20,10 +20,20 @@ class PayingSourceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $methods = PayingSource::all();
         $activities = Activity::all('nome', 'id');
+
+        if($request->tipo_search){
+            $methods = PayingSource::where('tipo', $request->tipo_search)->get();
+        }
+        if($request->status_search){
+            $methods = PayingSource::where('status', $request->status_search)->get();
+        }
+        if($request->atividade_search){
+            $methods = PayingSource::where('activity_id', $request->atividade_search)->get();
+        }
 
         return view('paying-source', compact([
             'methods',

@@ -67,12 +67,23 @@
                                         <i class="fa fa-eye _i text-navy"></i>
                                     </a>
                                 @endif
-                            </td>
+                            </td>                           
                         </tr>
                     @endforeach
+                    <tfoot>
+                        <td class="bg-secondary"></td>
+                        <td class="bg-secondary"></td>
+                        <td class="bg-secondary"></td>
+                        <td class="bg-secondary"></td>
+                        <td class="bg-secondary text-light">Total</td>
+                        <td class="bg-secondary text-light">{{ 'R$ '.number_format($total, 2, ',', '.') }}</td>
+                        <td class="bg-secondary"></td>
+                        <td class="bg-secondary"></td>
+                    </tfoot>
                 @endslot
-
+               
             @endcomponent
+            
         </div>
     </div>
 
@@ -91,24 +102,20 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                          <label class="form-label">Fonte Pagante</label>
-                                         <select class="form-select-item select form-control form-control-sm " id="fonte_pagante" name="paying_sources_id" searchable="Search here.." required="true">
+                                         <select class="form-select-item select form-control form-control-sm " id="fonte_pagante" name="paying_sources_id" searchable="Search here.." required="true" onchange="Banco()">
                                             <option value="">Selecione uma Fonte Pagante</option>
                                             @foreach($payings_sourcecad as $item)
                                                 <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                             @endforeach
                                         </select>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3" id="f-pagamento">
                                         <label class="form-label">Forma Pagamento</label>
                                         <select class="form-select-item select form-control form-control-sm" id="forma_pagamento" name="payment_methods_id" searchable="Search here.." required="true">
                                             <option value="">Selecione uma Forma de Pagamento</option>
-                                            @foreach($payments_methodcad as $item)                                              
-                                                @if($item->nome  === 'Banco'){
-                                                    <option disabled></option>
-                                                  } @else {                                                 
+                                            @foreach($payments_methodcad as $item)                                                                                                                                  
                                                     <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                                  }
-                                                @endif
+                                               
                                             @endforeach
                                         </select>
                             </div>
@@ -227,14 +234,12 @@
                                         <label class="form-label" for="dinheiro" required="true">Valor:</label>
                                         <input type="number" id="edit-valor" name="valor" class="dinheiro form-control form-control-sm" style="display:inline-block" />
                             </div>
-
                             <div class="col-md-12 mb-3">
-                                         <label class="form-label">Estagio</label>
-                                         <select class="form-select-item select form-control form-control-sm" name="status" searchable="Search here.." id="edit-status">
-                                            @foreach($methods ?? '' as $item)
-                                                <option value="{{ $item->status }}">{{ $item->status }}</option>
-                                            @endforeach
-                                          </select>
+                                <label class="form-label" required="true">Atualizada</label>
+                                <select class="form-select-item select form-control form-control-sm" name="status" id="edit-status">
+                                   <option value="Aprovação Pendente">Sim</option>
+                                   <option value="Atualização Pendente">Não</option>
+                                 </select>
                             </div>
 
                             <div class="col-md-12 mb-3">
@@ -386,27 +391,29 @@
 
             $('#view-files-modal').modal('show');
         });
-
-        $('#fonte_pagante').click(function () { 
-
-            var select = document.getElementById('fonte_pagante');
-			var option = select.options[select.selectedIndex].text;
-            if( option == 'Banco'){
-                $('#forma_pagamento').prop("disabled", true);
-                $('#forma_pagamento option[value=7]').attr('selected', 'selected');
-            } else if( option == 'Cartão de Credito') {
-                $('#forma_pagamento').prop("disabled", true);
-                $('#forma_pagamento option[value=7]').attr('selected', 'selected');
-             } else if( option == 'Diretor') {
-                $('#forma_pagamento').prop("disabled", false);
-                $('#forma_pagamento option[value=8]').attr('selected', 'selected');
-             }else {
-                $('#forma_pagamento').prop("disabled", false);
-             }
-
-            }
-            
-        );
+        
     });
-   
+    function Banco(){
+        var select = document.getElementById("fonte_pagante");
+        var opcaoValor = select.options[select.selectedIndex].text;
+       
+        if(opcaoValor === 'Banco'){
+            document.getElementById('forma_pagamento').style.display = 'none';
+            document.getElementById('f-pagamento').style.display = 'none';
+            document.getElementById('forma_pagamento').required = false;
+            document.getElementById('forma_pagamento').value = 7;
+            console.log('Capiturado');
+        } else if(opcaoValor === 'Cartão de Crédito'){
+            document.getElementById('forma_pagamento').style.display = 'none';
+            document.getElementById('f-pagamento').style.display = 'none';
+            document.getElementById('forma_pagamento').value = 7;
+            document.getElementById('forma_pagamento').required = false;
+            console.log('Capiturado');
+        } 
+        else {
+            document.getElementById('forma_pagamento').style.display = 'block';
+            document.getElementById('f-pagamento').style.display = 'block';
+            console.log('Não Capiturado');
+        }
+        };
 </script>

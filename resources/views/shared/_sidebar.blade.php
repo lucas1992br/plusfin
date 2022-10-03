@@ -20,10 +20,12 @@
 
    
 
+    <!--
     <x-sidebar-item :href="route('clientes')" :active="request()->routeIs('clientes')">
         <i class="fas fa-fw fa-user-alt"></i>
         <span>Clientes</span>
     </x-sidebar-item>
+    -->
 
     <x-sidebar-item :href="route('entradas.index')" :active="request()->routeIs('entradas')">
         <i class="fas fa-fw fa-user-alt"></i>

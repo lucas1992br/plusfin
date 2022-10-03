@@ -23,9 +23,19 @@ class CostCenterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         $cost_centers = CostCenter::all();
         $activities = Activity::all('nome', 'id');
+
+        if($request->tipo_search){
+            $cost_centers = CostCenter::where('tipo', $request->tipo_search)->get();
+        }
+        if($request->status_search){
+            $cost_centers = CostCenter::where('atividade', $request->status_search)->get();
+        }
+        if($request->atividade_search){
+            $cost_centers = CostCenter::where('tipo', $request->atividade_search)->get();
+        }
 
         return view('cost-center', compact([
             'cost_centers',

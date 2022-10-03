@@ -3,8 +3,8 @@
     use App\Models\PaymentMethod;
     use App\Models\PayingSource; 
 
-    $payments_methods = PaymentMethod::all('nome', 'id');
-    $payings_sources = PayingSource::all('nome', 'id');
+    $payments_methods = PaymentMethod::where('tipo','Saida')->where('status','Ativo')->get();
+    $payings_sources = PayingSource::where('tipo','Saida')->where('status','Ativo')->get();
     $origins = Origin::all('nome', 'id');    
 @endphp
 <div class="card shadow mb-4">

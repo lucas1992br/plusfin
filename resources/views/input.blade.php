@@ -5,7 +5,32 @@
         </h2>
     </x-slot>
     <!-- DataTales Example -->
-
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('entradas.index') }}" method="get">
+                @csrf
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <label>Data Inicial</label>
+                            <input type="date" name="data_inicial_search" class="form-control-sm form-control">
+                        </div>
+                        <div class="col">
+                            <label>Data Final</label>
+                            <input type="date" name="data_final_search" class="form-control-sm form-control">
+                        </div>                          
+                        <div class="col">
+                            <label>..</label></br>
+                            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
             <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
@@ -36,6 +61,7 @@
                             <th>Cartão Debito</th>
                             <th>Cartão Credito</th>
                             <th>Cartão Recorrente</th>
+                            <th>Banco</th>
                             <th>Total</th>
                             <th>Ações</th>
                         </tr>
@@ -50,6 +76,7 @@
                                 <td title="{{ $item->valor_payment4 }}">{{ 'R$ '.number_format($item->valor_payment4, 2, ',', '.') }}</td>
                                 <td title="{{ $item->valor_payment5 }}">{{ 'R$ '.number_format($item->valor_payment5, 2, ',', '.') }}</td>
                                 <td title="{{ $item->valor_payment6 }}">{{ 'R$ '.number_format($item->valor_payment6, 2, ',', '.') }}</td>
+                                <td title="{{ $item->valor_payment7 }}">{{ 'R$ '.number_format($item->valor_payment7, 2, ',', '.') }}</td>
                                 <td title="{{ $item->valor_payment_total }}">{{ 'R$ '.number_format($item->valor_payment_total, 2, ',', '.') }}</td>
                                 <td title="Ações">
                                     <a role="button" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
@@ -65,8 +92,23 @@
                                     @endif
                                 </td>
                             </tr>
+                            
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr class="bg-light">
+                            <td>Totais</td>
+                            <td>{{ 'R$ '.number_format("$dinheiro",2,",",".") }}</td>
+                            <td>{{ 'R$ '.number_format("$pix",2,",",".") }}</td>
+                            <td>{{ 'R$ '.number_format("$cheque",2,",",".") }}</td>
+                            <td>{{ 'R$ '.number_format("$debito",2,",",".") }}</td>
+                            <td>{{ 'R$ '.number_format("$credito",2,",",".") }}</td>
+                            <td>{{ 'R$ '.number_format("$recorrente",2,",",".") }}</td>
+                            <td>{{ 'R$ '.number_format("$banco",2,",",".") }}</td>
+                            <td>{{ 'R$ '.number_format("$total",2,",",".") }}</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -230,7 +272,7 @@
             </div>
         </div>
     </div>
-
+<!-- Modal Banco -->
     <div class="modal fade" id="register-bank-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
@@ -245,18 +287,16 @@
                     @method('PATCH')
                     <div class="modal-body">
                         <div class="container">
-                            
-                            <div class="row">
-                                <label>Entrada Bancaria</label>
-                                <div class="col mb-2">
-                                <input type="text" id="valor" name="banco" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div> 
-                                
-                            </div>
                             <div class="row mb-3">
                                 <label class="form-label">Data:</label>
                                 <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
                             </div>
+                            <div class="row">
+                                <label>Entrada Bancaria</label>
+                                <div class="col mb-2">
+                                <input type="text" id="valor" name="banco" class="valor form-control-sm form-control b6" style="display:inline-block" onkeyup="SomaBanco()">
+                                </div>                              
+                            </div>                      
                         </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="submit">Salvar</button>
@@ -269,23 +309,23 @@
     </div>
 
     <!-- Modal Editar -->
-    <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="update-modal" aria-hidden="true">
+    <div class="modal fade" id="register-new-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="update-modal">Editar Origens</h5>
+                    <h5 class="modal-title" id="register-modal">Cadastro Entradas</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="edit-form" class="needs-validation" method="POST" novalidate>
+                <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
+                    @csrf
                     <div class="modal-body">
-                        @method('PUT')
-                        @csrf
+                       
                         <div class="container">
                             <div class="col-sm mb-3">
                                 <label class="form-label">Data:</label>
-                                <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
+                                <input type="date" class="form-control form-control-sm" name="data" id="edit-data" row='3' required="true">
                             </div>
                             <hr class="sidebar-divider">
                             <p class="text-center">Origens</p>                          
@@ -304,7 +344,7 @@
                                     <input type="text" id="valor" name="valor_origin" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
                                 <div class="col-sm-8 mt-2">
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id2" searchable="Search here.." required="true">
+                                    <select class="form-select-item select form-control form-control-sm" name="origin_id2" searchable="Search here..">
                                         <option value="">Selecione uma Origem</option>
                                         @foreach($origins as $item)
                                             <option value="{{ $item->nome }}">{{ $item->nome }}</option>
@@ -315,7 +355,7 @@
                                     <input type="text" id="valor" name="valor_origin2" class="valor form-control-sm form-control o2" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
                                 <div class="col-sm-8 mt-2">                                   
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id3" searchable="Search here.." required="true">
+                                    <select class="form-select-item select form-control form-control-sm" name="origin_id3" searchable="Search here..">
                                         <option value="">Selecione uma Origem</option>
                                         @foreach($origins as $item)
                                             <option value="{{ $item->nome }}">{{ $item->nome }}</option>
@@ -326,7 +366,7 @@
                                     <input type="text" id="valor" name="valor_origin3" class="valor form-control-sm form-control o3" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
                                 <div class="col-sm-8 mt-2">                                  
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id4" searchable="Search here.." required="true">
+                                    <select class="form-select-item select form-control form-control-sm" name="origin_id4" searchable="Search here..">
                                         <option value="">Selecione uma Origem</option>
                                         @foreach($origins as $item)
                                             <option value="{{ $item->nome }}">{{ $item->nome }}</option>
@@ -337,7 +377,7 @@
                                     <input type="text" id="valor" name="valor_origin4" class="valor form-control-sm form-control o4" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
                                 <div class="col-sm-8 mt-2">                                  
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id5" searchable="Search here.." required="true">
+                                    <select class="form-select-item select form-control form-control-sm" name="origin_id5" searchable="Search here..">
                                         <option value="">Selecione uma Origem</option>
                                         @foreach($origins as $item)
                                             <option value="{{ $item->nome }}">{{ $item->nome }}</option>
@@ -350,7 +390,7 @@
                             </div>
                             <div class="form-row col-sm">  
                                 <label class="form-label col-sm-8 mt-3" for="valor">Valor Total Origem:</label>
-                                <input type="text" id="OrigenResult" name="valor_payment_origin" class="valor form-control-sm form-control OrigenResult col-sm mt-2" >
+                                <input type="text" name="valor_payment_origin" class="valor form-control-sm form-control OrigenResult col-sm mt-2" readonly >
                             </div>
                             <!-- Formas de Recebimento -->
                             <p class="text-center mt-2">Formas de Recebimento</p>                          
@@ -392,14 +432,11 @@
                                 </div>
                                 <div class="col-sm mt-2">  
                                     <input type="text" id="valor" name="cartao_recorrente" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="banco" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>                    
+                                </div>                  
                             </div>
                             <div class="form-row col-sm">  
                                 <label class="form-label col-sm-8 mt-3" for="valor">Valor Total Recebimento:</label>
-                                <input type="text" id="valorPaymentTotal" name="valor_payment_total" class="valor form-control-sm form-control formaRecebimentoResut col-sm mt-2" >
+                                <input type="text" id="valorPaymentTotal" name="valor_payment_total" class="valor form-control-sm form-control formaRecebimentoResut col-sm mt-2" readonly>
                             </div>
                             <!-- /Forma Recebimento -->
                             <!-- observações -->
@@ -422,10 +459,11 @@
                           </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="js-edit-submit" class="btn btn-primary">Salvar</button>
+                        <button class="btn btn-primary" type="submit">Salvar</button>
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -578,14 +616,10 @@
         var r3 = document.querySelector(".o3").value.replace('.','').replace(',','.');
         var r4 = document.querySelector(".o4").value.replace('.','').replace(',','.');
         var r5 = document.querySelector(".o5").value.replace('.','').replace(',','.');
-        
-
-        
-       
-        
+                
         var result = parseFloat(r1 || 0) + parseFloat(r2 || 0) + parseFloat(r3 || 0) + parseFloat(r4 || 0) + parseFloat(r5 || 0);
-        console.log(r1);
-        if(result == ''){
+        
+        if(result === ''){
             document.querySelector(".OrigenResult").innerHTML = 'Valor Incorreto';
         } else {
             document.querySelector(".OrigenResult").value = result;
@@ -593,4 +627,5 @@
         }
         
     }
+    
 </script>
