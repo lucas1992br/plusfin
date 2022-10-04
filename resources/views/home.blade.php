@@ -268,7 +268,7 @@ use Illuminate\Support\Facades\DB;
                                     @php
                                     $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment7', '>', 0)->get()->sum->valor_payment7;
                                     $input2 = Output::where('payment_methods_id', '=', 	'7')->where('status', '=', 	'Paga')->get()->sum->valor;
-                                    $banco = $input - $input2;
+                                    $banco = $input - $input2;                             
                                     @endphp
                                     <td>{{ 'R$ '.number_format("$banco",2,",",".") }}</td>
                                     <td>0</td>
@@ -306,7 +306,7 @@ use Illuminate\Support\Facades\DB;
                 <meta name="csrf-token" content="{{ csrf_token() }}">
                 @component('components.dataTable',
                     [
-                        'headers' => ['Data', 'Conta', 'Origem', 'Fonte Pagante', 'Forma de Pagamento', 'Valor', 'Estagio', 'Ações'],
+                        'headers' => ['Data', 'Conta', 'Origem', 'Fonte Pagante', 'Forma de Pagamento', 'Valor', 'Estagio'],
                     ])
     
                     @slot('data')
@@ -337,19 +337,6 @@ use Illuminate\Support\Facades\DB;
                                     @default
     
                                 @endswitch
-                                <td title="Ações">
-                                    <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
-                                        <i class="fa fa-trash _i text-danger"></i>
-                                    </a>                             
-                                    <a role="button" class="edit-row-js" data-route="{{route('saidas.show', $item->id)}}">
-                                        <i class="fa fa-edit _i text-navy"></i>
-                                    </a>
-                                    @if (count($item->files) > 0)
-                                        <a role="button" class="view-row-js" data-files="{{$item->files}}">
-                                            <i class="fa fa-eye _i text-navy"></i>
-                                        </a>
-                                    @endif
-                                </td>
                             </tr>
                         @endforeach
                     @endslot

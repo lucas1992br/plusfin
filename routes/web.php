@@ -15,6 +15,8 @@ use App\Http\Controllers\OutgoingPaymentController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UploadDocumentInputController;
+use App\Http\Controllers\AporteController;
+use App\Http\Controllers\RetiradaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,4 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('entradas', InputController::class);
 
     Route::resource('entradas-documentos', UploadDocumentInputController::class);
+
+    Route::resource('aporte', AporteController::class);
+
+    Route::resource('retirada', RetiradaController::class);
 });

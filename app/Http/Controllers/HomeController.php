@@ -17,6 +17,8 @@ use App\Models\CostCenter;
 use App\Models\PaymentMethod;
 use App\Models\PayingSource;
 use App\Models\Output;
+use App\Models\Retirada;
+use App\Models\Aporte;
 use App\Models\Input;
 use Illuminate\Support\Facades\DB;
 
@@ -36,6 +38,7 @@ class HomeController extends Controller
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
+        $aporte = Aporte::all();
         
         return view('home', compact([
             'methods',
@@ -43,7 +46,7 @@ class HomeController extends Controller
             'origins',
             'payings_sources' ,
             'payments_methods',
-            'input', 'input2'
+            'input', 'input2', 'aporte'
         ]));
     }
 

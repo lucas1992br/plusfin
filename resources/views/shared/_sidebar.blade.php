@@ -17,16 +17,7 @@
         <i class="fas fa-fw fa-chart-pie"></i>
         <span>Home</span>
     </x-sidebar-item>
-
    
-
-    <!--
-    <x-sidebar-item :href="route('clientes')" :active="request()->routeIs('clientes')">
-        <i class="fas fa-fw fa-user-alt"></i>
-        <span>Clientes</span>
-    </x-sidebar-item>
-    -->
-
     <x-sidebar-item :href="route('entradas.index')" :active="request()->routeIs('entradas')">
         <i class="fas fa-fw fa-user-alt"></i>
         <span>Entradas</span>
@@ -94,6 +85,25 @@
             </div>
         </div>   
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#caixa"
+            aria-expanded="true" aria-controls="caixa">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Caixa</span>
+        </a>
+        <div id="caixa" class="collapse" aria-labelledby="caixa" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded">
+                <a class="text-light collapse-item" href="{{route('aporte.index')}}">Aporte</a>
+            </div>
+        </div>
+        <div id="caixa" class="collapse" aria-labelledby="caixa" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded">
+                <a class="text-light collapse-item" href="{{route('retirada.index')}}">Retirada</a>
+            </div>
+        </div>   
+    </li>
+
 
     <!-- Divider --> <hr class="sidebar-divider">
 
