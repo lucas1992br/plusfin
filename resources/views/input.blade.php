@@ -309,7 +309,7 @@
     </div>
 
     <!-- Modal Editar -->
-    <div class="modal fade" id="register-new-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
+    <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -548,7 +548,7 @@
                 url: $(this).data('route'),
                 success: (response, textStatus, xhr) => {
                     editItemId = response.id;
-                    $('#edit-status').val(response.status);
+
                     $('#edit-data').val(response.data);
                     $('#edit-conta').val(response.conta);
                     $('#edit-observacao').val(response.observacao);
@@ -558,7 +558,7 @@
                     $('#edit-paying_sources_id').val(response.paying_sources_id);
                     $('#edit-payment_methods_id').val(response.payment_methods_id);
                     $('#edit-origin_id').val(response.payment_methods_id);
-                    $('#edit-form').attr('action', `saidas/${editItemId}`);
+                    $('#edit-form').attr('action', `entradas/${editItemId}`);
 
                     $('#edit-item-modal').modal('show');
                 },

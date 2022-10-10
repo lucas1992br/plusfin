@@ -217,10 +217,10 @@
     <!-- Divider -->
     <hr class="sidebar-divider d-none">
 
-    <!-- Sidebar Toggler (Sidebar) 
+    <!--
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div> -->
+    </div>-->
 
     <!-- Sidebar Message -->
     {{-- <div class="sidebar-card d-none d-lg-flex">
