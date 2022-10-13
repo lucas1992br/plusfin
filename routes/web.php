@@ -17,6 +17,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UploadDocumentInputController;
 use App\Http\Controllers\AporteController;
 use App\Http\Controllers\RetiradaController;
+use App\Http\Controllers\GoalController;
+use App\Http\Controllers\ReportAporteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,6 +53,8 @@ Route::middleware('auth')->group(function () {
     // Route::post('centro-de-custo-update/{id}', [CostCenterController::class, 'update'])->name('cost-center.update');
     Route::get('centro-de-custo/export', [CostCenterController::class, 'export'])->name('cost-center.export');
 
+    Route::get('relatorio-aporte/export', [ReportAporteController::class, 'export'])->name('relatorio-aporte.export');
+
     Route::resource('centro-de-custo', CostCenterController::class);
 
     Route::resource('atividade', ActivityController::class);
@@ -78,4 +82,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('aporte', AporteController::class);
 
     Route::resource('retirada', RetiradaController::class);
+
+    Route::resource('metas', GoalController::class);
+
+    Route::resource('relatorio-aporte', ReportAporteController::class);
+
+
+
+
+
+   
 });
