@@ -1,13 +1,13 @@
 <div class="table-responsive">
     <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
-        <thead>
+        <thead class="small">
             <tr>
                 @foreach ($headers as $header)
                     <th>{{ $header }}</th>
                 @endforeach
             </tr>
         </thead>
-        <tbody>
+        <tbody class="small">
             {{ $data }}
         </tbody>
     </table>

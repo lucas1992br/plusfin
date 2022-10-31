@@ -19,6 +19,9 @@ use App\Http\Controllers\AporteController;
 use App\Http\Controllers\RetiradaController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\ReportAporteController;
+use App\Http\Controllers\DRE;
+use App\Http\Controllers\ReportAccountingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -87,7 +90,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('relatorio-aporte', ReportAporteController::class);
 
+    Route::resource('dre', DRE::class);
 
+    Route::resource('planilha-contabilidade', ReportAccountingController::class);
 
 
 

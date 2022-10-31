@@ -39,14 +39,14 @@ class HomeController extends Controller
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
         $aporte = Aporte::all();
-        
+        $saidas = Input::all();
         return view('home', compact([
             'methods',
             'activities',
             'origins',
             'payings_sources' ,
             'payments_methods',
-            'input', 'input2', 'aporte'
+            'input', 'input2', 'aporte', 'saidas'
         ]));
     }
 

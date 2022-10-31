@@ -6,36 +6,40 @@
         </h2>
     </x-slot>
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('retirada.index') }}" method="get">
-                @csrf
-                <div>
-                    <div class="row">
-                        <div class="col">
-                            <label>Data Inicial</label>
-                            <input type="date" name="data_inicial_search" class="form-control-sm form-control">
-                        </div>
-                        <div class="col">
-                            <label>Data Final</label>
-                            <input type="date" name="data_final_search" class="form-control-sm form-control">
-                        </div>                          
-                        <div class="col">
-                            <label>..</label></br>
-                            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+    <p>
+        <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Filtros <i class="fa fa-filter" aria-hidden="true"></i>
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <form action="{{ route('retirada.index') }}" method="get">
+                    @csrf
+                    <div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Data Inicial</label>
+                                <input type="date" name="data_inicial_search" class="form-control-sm form-control">
+                            </div>
+                            <div class="col">
+                                <label>Data Final</label>
+                                <input type="date" name="data_final_search" class="form-control-sm form-control">
+                            </div>                          
+                            <div class="col">
+                                <label>..</label></br>
+                                <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+      </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
             <div class="card-header py-3 d-flex justify-content-end">
-                <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
+                <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
                     data-target="#register-new-item-modal">
                     <i class="fa-plus-circle fas mr-2"></i>
                     Retirada
@@ -51,7 +55,7 @@
 
                 @slot('data')
                     @foreach ($methods ?? '' as $item)
-                        <tr>
+                        <tr class="small">
                             <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
                             <td title="{{ $item->observacao }}">{{ $item->observacao }}</td>
                             <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
@@ -66,7 +70,7 @@
                             </td>
                         </tr>
                     @endforeach
-                    <tfoot>
+                    <tfoot class="small">
                         <td class="bg-light"></td>
                         <td class="bg-light"></td>
                         <td class="bg-light">Total</td>
@@ -88,7 +92,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('aporte.store') }}" class="needs-validation" novalidate>
+                <form method="POST" action="{{ route('retirada.store') }}" class="needs-validation" novalidate>
                     @csrf
                     <div class="modal-body">
                         <div class="container">

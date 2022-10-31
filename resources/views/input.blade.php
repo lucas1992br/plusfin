@@ -5,40 +5,44 @@
         </h2>
     </x-slot>
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('entradas.index') }}" method="get">
-                @csrf
-                <div>
-                    <div class="row">
-                        <div class="col">
-                            <label>Data Inicial</label>
-                            <input type="date" name="data_inicial_search" class="form-control-sm form-control">
-                        </div>
-                        <div class="col">
-                            <label>Data Final</label>
-                            <input type="date" name="data_final_search" class="form-control-sm form-control">
-                        </div>                          
-                        <div class="col">
-                            <label>..</label></br>
-                            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+    <p>
+        <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Filtros <i class="fa fa-filter" aria-hidden="true"></i>
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <form action="{{ route('entradas.index') }}" method="get">
+                    @csrf
+                    <div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Data Inicial</label>
+                                <input type="date" name="data_inicial_search" class="form-control-sm form-control">
+                            </div>
+                            <div class="col">
+                                <label>Data Final</label>
+                                <input type="date" name="data_final_search" class="form-control-sm form-control">
+                            </div>                          
+                            <div class="col">
+                                <label>..</label></br>
+                                <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+      </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
-            <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
+            <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
                 data-target="#register-new-item-modal">
                 <i class="fa-plus-circle fas mr-2"></i>
                 Entrada
             </a>
-            <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
+            <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
                 data-target="#register-bank-item-modal">
                 <i class="fa-plus-circle fas mr-2"></i>
                 Entrada Banco
@@ -53,7 +57,7 @@
                 <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
                     
                     <thead>
-                        <tr>
+                        <tr class="small">
                             <th>Data</th>
                             <th>Dinheiro</th>
                             <th>Pix</th>
@@ -68,7 +72,7 @@
                     </thead>
                     <tbody>
                         @foreach ($methods ?? '' as $item)
-                            <tr>
+                            <tr class="small">
                                 <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
                                 <td title="{{ $item->valor_payment }}">{{ 'R$ '.number_format($item->valor_payment, 2, ',', '.') }}</td>
                                 <td title="{{ $item->valor_payment2 }}">{{ 'R$ '.number_format($item->valor_payment2, 2, ',', '.') }}</td>
@@ -96,7 +100,7 @@
                         @endforeach
                     </tbody>
                     <tfoot>
-                        <tr class="bg-light">
+                        <tr class="bg-light small">
                             <td>Totais</td>
                             <td>{{ 'R$ '.number_format("$dinheiro",2,",",".") }}</td>
                             <td>{{ 'R$ '.number_format("$pix",2,",",".") }}</td>
@@ -156,6 +160,7 @@
                                         @endforeach
                                     </select>                                     
                                 </div>
+                                
                                 <div class="col-sm mt-2">  
                                     <input type="text" id="valor" name="valor_origin2" class="valor form-control-sm form-control o2" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
@@ -271,42 +276,7 @@
 
             </div>
         </div>
-    </div>
-<!-- Modal Banco -->
-    <div class="modal fade" id="register-bank-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="register-modal">Cadastro Entradas Bancarias</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <form method="PATCH" action="{{ route('entradas.create') }}" class="needs-validation" novalidate>
-                    @csrf
-                    @method('PATCH')
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row mb-3">
-                                <label class="form-label">Data:</label>
-                                <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
-                            </div>
-                            <div class="row">
-                                <label>Entrada Bancaria</label>
-                                <div class="col mb-2">
-                                <input type="text" id="valor" name="banco" class="valor form-control-sm form-control b6" style="display:inline-block" onkeyup="SomaBanco()">
-                                </div>                              
-                            </div>                      
-                        </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Salvar</button>
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
+    </div> 
 
     <!-- Modal Editar -->
     <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
@@ -332,7 +302,7 @@
                             <div class="form-row col-sm" id="formulario_origin">
                                 <div class="col-sm-8">
                                     <label class="form-label">Origens:</label>
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id" searchable="Search here.." required="true">
+                                    <select class="form-select-item select form-control form-control-sm origin_id" name="origin_id" searchable="Search here.." required="true">
                                         <option value="">Selecione uma Origem</option>
                                         @foreach($origins as $item)
                                             <option value="{{ $item->nome }}">{{ $item->nome }}</option>
@@ -341,7 +311,7 @@
                                 </div>
                                 <div class="col-sm">  
                                     <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="valor_origin" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                                    <input type="text" id="valor" name="valor_origin" class="valor form-control-sm form-control o1 valor_origin" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
                                 <div class="col-sm-8 mt-2">
                                     <select class="form-select-item select form-control form-control-sm" name="origin_id2" searchable="Search here..">
@@ -468,6 +438,7 @@
         </div>
     </div>
     
+    
     <div class="modal fade" id="view-files-modal" aria-labelledby="view-modal" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -488,6 +459,42 @@
           </div>
         </div>
       </div>
+
+      <div class="modal fade" id="register-bank-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="register-modal">Cadastro Entradas Bancarias</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form method="PATCH" action="{{ route('entradas.create') }}" class="needs-validation" novalidate>
+                    @csrf
+                    @method('PATCH')
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row mb-3">
+                                <label class="form-label">Data:</label>
+                                <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
+                            </div>
+                            <div class="row">
+                                <label>Entrada Bancaria</label>
+                                <div class="col mb-2">
+                                <input type="text" id="valor" name="banco" class="valor form-control-sm form-control b6" style="display:inline-block" onkeyup="SomaBanco()">
+                                </div>                              
+                            </div>                      
+                        </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Salvar</button>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 </x-aplicativo-layout>
 
 <script type="text/javascript">
@@ -550,14 +557,7 @@
                     editItemId = response.id;
 
                     $('#edit-data').val(response.data);
-                    $('#edit-conta').val(response.conta);
-                    $('#edit-observacao').val(response.observacao);
-                    $('#edit-observacao_atuditoria').val(response.observacao_atuditoria);
-                    $('#edit-observacao2').val(response.observacao2);
-                    $('#edit-valor').val(response.valor);
-                    $('#edit-paying_sources_id').val(response.paying_sources_id);
-                    $('#edit-payment_methods_id').val(response.payment_methods_id);
-                    $('#edit-origin_id').val(response.payment_methods_id);
+                    
                     $('#edit-form').attr('action', `entradas/${editItemId}`);
 
                     $('#edit-item-modal').modal('show');

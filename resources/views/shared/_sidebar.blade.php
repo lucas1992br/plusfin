@@ -84,11 +84,11 @@
                 <a class="collapse-item text-light" href="{{ route('entradas-documentos.index') }}">Efetivar Entradas</a>
             </div>
         </div>   
-        <div id="gerenciamento" class="collapse" aria-labelledby="gerenciamento" data-parent="#accordionSidebar">
+        <!--<div id="gerenciamento" class="collapse" aria-labelledby="gerenciamento" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded">
                 <a class="collapse-item text-light" href="{{ route('entradas-documentos.index') }}">Metas</a>
             </div>
-        </div> 
+        </div> -->
     </li>
 
     <li class="nav-item">
@@ -121,7 +121,7 @@
         </div>
         <div id="relatorios" class="collapse" aria-labelledby="relatorios" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded">
-                <a class="text-light collapse-item" href="{{route('retirada.index')}}">DRE</a>
+                <a class="text-light collapse-item" href="{{route('dre.index')}}">DRE</a>
             </div>
         </div>  
         <div id="relatorios" class="collapse" aria-labelledby="relatorios" data-parent="#accordionSidebar">
@@ -131,7 +131,7 @@
         </div> 
         <div id="relatorios" class="collapse" aria-labelledby="relatorios" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded">
-                <a class="text-light collapse-item" href="{{route('retirada.index')}}">Planilha Contabilidade</a>
+                <a class="text-light collapse-item" href="{{route('planilha-contabilidade.index')}}">Planilha Contabilidade</a>
             </div>
         </div>
     </li>

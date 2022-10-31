@@ -8,18 +8,16 @@
     @component('components.search')
     @endcomponent
     <div class="card shadow mb-4">
+       
         <div class="card-header py-3 d-flex justify-content-end">
-            <a class="btn-success p-2 rounded text-decoration-none mr-4" href="javascript:void(0)" data-toggle="modal"
+            
+            <a class="btn-success p-2 rounded text-decoration-none mr-4 small" href="javascript:void(0)" data-toggle="modal"
                 data-target="#register-new-item-modal">
                 <i class="fa-plus-circle fas mr-2"></i>
                 Cadastrar
-            </a>
-            <a class="btn-primary p-2 rounded text-decoration-none" href="{{ route('cost-center.export') }}">
-                <i class="fa-download fas mr-2"></i>
-                Exportar
-            </a>
+            </a>            
         </div>
-
+        
         <div class="card-body">
             <meta name="csrf-token" content="{{ csrf_token() }}">
             @component('components.dataTable',
@@ -30,27 +28,27 @@
                 @slot('data')
                     @foreach ($methods ?? '' as $item)
                         <tr>
-                            <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
-                            <td title="{{ $item->conta }}">{{ $item->conta }}</td>
-                            <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
-                            <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
-                            <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
-                            <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
+                            <td title="{{ $item->data }}"><small>{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</small></td>
+                            <td title="{{ $item->conta }}"><small>{{ $item->conta }}</small></td>
+                            <td title="{{ $item->origin->nome }}"><small>{{ $item->origin->nome }}</small></td>
+                            <td title="{{ $item->payings_sources->nome }}"><small>{{ $item->payings_sources->nome }}</small></td>
+                            <td title="{{ $item->payments_methods->nome }}"><small>{{ $item->payments_methods->nome }}</small></td>
+                            <td title="{{ $item->valor }}"><small>{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</small></td>                
                             @switch($item->status)
                                 @case('Atualização Pendente')
-                                    <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td>
+                                    <td title="{{$item->status}}"><small class="badge bg-warning text-white rounded align-middle">{{$item->status}}</small></td>
                                     @break
                                 @case('Aprovação Pendente')
-                                    <td class="bg-dark text-white rounded align-middle">Aprovação Pendente</td>
+                                    <td title="{{$item->status}}"><small class="badge bg-dark text-white rounded align-middle">{{$item->status}}</small></td>
                                     @break
                                 @case('Pagamento Pendente')
-                                    <td class="bg-success text-white rounded align-middle">Pagamento Pendente</td>
+                                    <td title="{{$item->status}}"><small class="badge bg-success text-white rounded align-middle">{{$item->status}}</small></td>
                                     @break
                                 @case('Envio De Documentos Pendente')
-                                    <td class="bg-primary text-white rounded align-middle">Envio De Documentos Pendente</td>
+                                    <td title="{{$item->status}}"><small class="badge bg-primary text-white rounded align-middle">{{$item->status}}</small></td>
                                     @break
-                                @case('Paga')
-                                    <td class="bg-primary text-white rounded align-middle">Paga</td>
+                                @case('Paga')                              
+                                    <td title="{{$item->status}}"><small class="badge bg-primary text-white">{{$item->status}}</small></td>
                                     @break
                                 @default
 
@@ -75,8 +73,8 @@
                         <td class="bg-secondary"></td>
                         <td class="bg-secondary"></td>
                         <td class="bg-secondary"></td>
-                        <td class="bg-secondary text-light">Total</td>
-                        <td class="bg-secondary text-light">{{ 'R$ '.number_format($total, 2, ',', '.') }}</td>
+                        <td class="bg-secondary text-light small">Total</td>
+                        <td class="bg-secondary text-light small">{{ 'R$ '.number_format($total, 2, ',', '.') }}</td>
                         <td class="bg-secondary"></td>
                         <td class="bg-secondary"></td>
                     </tfoot>
@@ -402,18 +400,15 @@
             document.getElementById('f-pagamento').style.display = 'none';
             document.getElementById('forma_pagamento').required = false;
             document.getElementById('forma_pagamento').value = 7;
-            console.log('Capiturado');
         } else if(opcaoValor === 'Cartão de Crédito'){
             document.getElementById('forma_pagamento').style.display = 'none';
             document.getElementById('f-pagamento').style.display = 'none';
             document.getElementById('forma_pagamento').value = 7;
             document.getElementById('forma_pagamento').required = false;
-            console.log('Capiturado');
         } 
         else {
             document.getElementById('forma_pagamento').style.display = 'block';
             document.getElementById('f-pagamento').style.display = 'block';
-            console.log('Não Capiturado');
         }
         };
 </script>

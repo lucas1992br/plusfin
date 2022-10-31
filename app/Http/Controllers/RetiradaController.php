@@ -31,7 +31,8 @@ class RetiradaController extends Controller
             $data_inicio = $request->data_inicial_search;
             $data_fim    = $request->data_final_search;
 
-            $methods = Retirada::whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->get();           
+            $methods = Retirada::whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->get();
+            $somatoria = Retirada::whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->where('valor','>', '0')->get()->sum->valor;           
         }        
         return view('retirada', compact([
             'methods',

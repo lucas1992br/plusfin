@@ -6,32 +6,37 @@
         </h2>
     </x-slot>
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('aprovar-saidas.index') }}" method="get">
-                @csrf
-                <div>
-                    <div class="row">
-                        <div class="col">
-                            <label>Data Inicial</label>
-                            <input type="date" name="data_inicial_search" class="form-control-sm form-control">
-                        </div>
-                        <div class="col">
-                            <label>Data Final</label>
-                            <input type="date" name="data_final_search" class="form-control-sm form-control">
-                        </div>                          
-                        <div class="col">
-                            <label>..</label></br>
-                            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+    <p>
+        <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Filtros <i class="fa fa-filter" aria-hidden="true"></i>
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <form action="{{ route('aprovar-saidas.index') }}" method="get">
+                    @csrf
+                    <div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Data Inicial</label>
+                                <input type="date" name="data_inicial_search" class="form-control-sm form-control">
+                            </div>
+                            <div class="col">
+                                <label>Data Final</label>
+                                <input type="date" name="data_final_search" class="form-control-sm form-control">
+                            </div>                          
+                            <div class="col">
+                                <label>..</label></br>
+                                <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+      </div>
+    
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
         </div>
@@ -52,7 +57,7 @@
                             <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
                             <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
                             <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
-                            <td class="bg-dark text-white rounded align-middle">{{ $item->status }}</td>
+                            <td title="{{$item->status}}"><small class="badge bg-dark text-white rounded align-middle">{{$item->status}}</small></td>
                             <td title="Ações">
                                 <a role="button" class="delete-row-js" data-route="{{route('saidas.destroy',$item->id)}}">
                                     <i class="fa fa-trash _i text-danger"></i>

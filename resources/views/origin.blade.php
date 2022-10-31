@@ -75,7 +75,7 @@
             <meta name="csrf-token" content="{{ csrf_token() }}">
             @component('components.dataTable',
                 [
-                    'headers' => ['id', 'Nome', 'Tipo', 'Status', 'Atividade', 'Ações'],
+                    'headers' => ['id', 'Nome', 'Tipo', 'Status', 'Atividade', 'Centro de Custo','Ações'],
                 ])
 
                 @slot('data')
@@ -85,7 +85,8 @@
                             <td title="{{ $item->nome }}">{{ $item->nome }}</td>
                             <td title="{{ $item->tipo }}">{{ $item->tipo }}</td>
                             <td title="{{ $item->status }}">{{ $item->status }}</td>
-                            <td title="{{ $item->atividade }}">{{ $item->activity->nome }}</td>                                                                     
+                            <td title="{{ $item->atividade }}">{{ $item->activity->nome }}</td>
+                            <td title="{{ $item->CostCenter }}">{{ $item->CostCenter->nome }}</td>                                                                     
                             <td title="Ações">
                                 <a role="button" class="delete-row-js" data-route="{{route('origem.destroy',$item->id)}}">
                                     <i class="fa fa-trash _i text-danger"></i>

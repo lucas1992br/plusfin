@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class Report.aporteSeeder extends Seeder
+class ReportAccountingSeeder extends Seeder
 {
     /**
      * Run the database seeds.

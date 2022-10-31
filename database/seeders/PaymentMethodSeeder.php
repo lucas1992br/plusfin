@@ -65,13 +65,7 @@ class PaymentMethodSeeder extends Seeder
             'activity_id' => '1',
         ]);
         DB::table('payment_methods')->insert([
-            'nome' => 'Cheque a Vista',
-            'tipo'=> 'Saida',
-            'status'=> 'Ativo',
-            'activity_id' => '1',
-        ]);
-        DB::table('payment_methods')->insert([
-            'nome' => 'Cheque Pre',
+            'nome' => 'Cheque',
             'tipo'=> 'Saida',
             'status'=> 'Ativo',
             'activity_id' => '1',

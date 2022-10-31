@@ -32,8 +32,6 @@ class ReportAporteController extends Controller
     {
           
         $methods = Aporte::all();
-        $retirada = Retirada::all();
-
         $payments_methodcad = PaymentMethod::where('tipo','Saida')->where('status','Ativo')->get();
         $somatoria = Aporte::where('valor','>', '0')->get()->sum->valor;
         if($request->data_inicial_search && $request->data_final_search){
@@ -43,11 +41,18 @@ class ReportAporteController extends Controller
 
             $methods = Aporte::whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->get();
             $somatoria = Aporte::where('valor','>', '0')->whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->get()->sum->valor;         
-        }        
-
+        }
+        if($request->data_inicial_search && $request->data_final_search && $request->tipo_search = 'Retirada'){
+                $data_inicio = $request->data_inicial_search;
+                $data_fim    = $request->data_final_search;
+    
+                $methods = Retirada::whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->get();
+                $somatoria = Retirada::whereDate('data', '>=', $data_inicio)->whereDate('data', '<=', $data_fim)->where('valor','>', '0')->get()->sum->valor;           
+                 
+        }
+       
         return view('report_aporte', compact([
             'methods',
-            'retirada',
             'somatoria'
         ]));
     }
