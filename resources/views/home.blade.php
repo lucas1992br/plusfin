@@ -33,7 +33,6 @@ use Illuminate\Support\Facades\DB;
                                     <th>Estagios</th>
                                     <th class="bg-danger text-light">Vencidos</th>
                                     <th class="bg-warning text-light">Hoje</th>
-                                    <th>Periodo</th>
                                     <th>Mês</th>                                 
                                 </tr>
                             </thead>
@@ -120,35 +119,30 @@ use Illuminate\Support\Facades\DB;
                                         <th>Atualização Pendente</th>
                                         <td class="bg-danger text-light">{{$atualPendente[0]}}</td>
                                         <td class="bg-warning text-light">{{$atualPendente[1]}}</td>
-                                        <td>0</td>
                                         <td>{{$atualPendente[2]}}</td>
                                     </tr>                             
                                     <tr>
                                         <th>Aprovação Pendente</th>
                                         <td class="bg-danger text-light">{{$aprovPendente[0]}}</td>
                                         <td class="bg-warning text-light">{{$aprovPendente[1]}}</td>
-                                        <td>0</td>
                                         <td>{{$aprovPendente[2]}}</td>
                                     </tr>
                                     <tr>
                                         <th>Envio de Documentos Pendente</th>
                                         <td class="bg-danger text-light">{{$docPendente[0]}}</td>
                                         <td class="bg-warning text-light">{{$docPendente[1]}}</td>
-                                        <td>0</td>
                                         <td>{{$docPendente[2]}}</td>
                                     </tr>
                                     <tr>
                                         <th>Pagamento Pendente</th>
                                         <td class="bg-danger text-light">{{$pgPendente[0]}}</td>
                                         <td class="bg-warning text-light">{{$pgPendente[1]}}</td>
-                                        <td>0</td>
                                         <td>{{$pgPendente[2]}}</td>
                                     </tr>
                                     <tr>
                                         <th>Entradas Pendentes</th>
                                         <td class="bg-danger text-light">{{$entadaPendente[0]}}</td>
                                         <td class="bg-warning text-light">{{$entadaPendente[1]}}</td>
-                                        <td>0</td>
                                         <td>{{$entadaPendente[2]}}</td>
                                     </tr>
                                     <tr>
@@ -156,13 +150,11 @@ use Illuminate\Support\Facades\DB;
                                         <td class="bg-danger text-light">0</td>
                                         <td class="bg-warning text-light">0</td>
                                         <td>0</td>
-                                        <td>0</td>
                                     </tr> 
                                     <tr>
                                         <th>Auditorias Saida Pendentes</th>
                                         <td class="bg-danger text-light">0</td>
                                         <td class="bg-warning text-light">0</td>
-                                        <td>0</td>
                                         <td>0</td>
                                     </tr>                                                                                                                                            
                             </tbody>

@@ -4,7 +4,6 @@
 </h2>
 @stop
 <x-aplicativo-layout>
-
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-end">
@@ -45,30 +44,34 @@
             <meta name="csrf-token" content="{{ csrf_token() }}">
             @component('components.dataTable',
                 [
-                    'headers' => ['Origen', 'Conta'],
+                    'headers' => ['Origen', 'Valor'],
                 ])
     
                 @slot('data')
                     @foreach ($input_origins ?? '' as $item)
-                        <tr>
-                           <td>{{ $item->origin_id}}</td>
-                           <td>{{ $item->origin_valor}}</td>
-
-                        </tr>
-                            
-                    @endforeach
-                    
+                    <tr>
+                        <td title="{{ $item->origin_id }}">{{ $item->origin_id }}</td>
+                        <td title="{{ $item->Total }}">{{ 'R$ '.number_format($item->Total, 2, ',', '.') }}</td>                
+                    </tr>
+                    @endforeach 
+                    <tr>
+                        <td><b>Formas de Recebimento</b></td>
+                        <td><b>Valor</b></td>                
+                    </tr>
+                    @foreach ($input_payment ?? '' as $item)
+                    <tr>
+                        <td title="{{ $item->payment_methods_id }}">{{ $item->payment_methods_id }}</td>
+                        <td title="{{ $item->Total }}">{{ 'R$ '.number_format($item->Total, 2, ',', '.') }}</td>                
+                    </tr>
+                    @endforeach                  
                 @endslot
                
             @endcomponent
             
+            
         </div>
     </div>
 
-    @foreach ( $input as $key => $value )
-    
-        {{ $grafico[(int)$value] = (int)$key}}         
-    @endforeach
 </x-aplicativo-layout>
 
 <script type="text/javascript">
