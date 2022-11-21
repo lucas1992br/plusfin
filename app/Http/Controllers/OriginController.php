@@ -40,7 +40,7 @@ class OriginController extends Controller
             $methods = Origin::where('costcenter_id', $request->costcenter_search)->get();
         }
         
-        return view('origin', compact([
+        return view('cadastros.origin', compact([
             'methods',
             'activities',
             'costcenters'

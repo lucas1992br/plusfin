@@ -1,502 +1,300 @@
-<x-aplicativo-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Entradas
-        </h2>
-    </x-slot>
-    <!-- DataTales Example -->
-    <p>
-        <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-          Filtros <i class="fa fa-filter" aria-hidden="true"></i>
-        </a>
-    </p>
-    <div class="collapse" id="collapseExample">
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <form action="{{ route('entradas.index') }}" method="get">
-                    @csrf
-                    <div>
-                        <div class="row">
-                            <div class="col">
-                                <label>Data Inicial</label>
-                                <input type="date" name="data_inicial_search" class="form-control-sm form-control">
-                            </div>
-                            <div class="col">
-                                <label>Data Final</label>
-                                <input type="date" name="data_final_search" class="form-control-sm form-control">
-                            </div>                          
-                            <div class="col">
-                                <label>..</label></br>
-                                <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-      </div>
+
+@extends('adminlte::page')
+
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1>Entrada</h1>
+@stop
+
+@section('content')
+
+<p>
+    <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#filtro" role="button" aria-expanded="false" aria-controls="filtro">
+      Filtros <i class="fa fa-filter" aria-hidden="true"></i>
+    </a>
+</p>
+<div class="collapse" id="filtro">
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-end">
-            <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
-                data-target="#register-new-item-modal">
-                <i class="fa-plus-circle fas mr-2"></i>
-                Entrada
-            </a>
-            <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
-                data-target="#register-bank-item-modal">
-                <i class="fa-plus-circle fas mr-2"></i>
-                Entrada Banco
-            </a>
-        </div>
-
         <div class="card-body">
-            <meta name="csrf-token" content="{{ csrf_token() }}">
-            <h2>Formas de Recebimento</h2>
-            <div class="table-responsive">
-                
-                <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
-                    
-                    <thead>
-                        <tr class="small">
-                            <th>Data</th>
-                            <th>Dinheiro</th>
-                            <th>Pix</th>
-                            <th>Cheque</th>
-                            <th>Cartão Debito</th>
-                            <th>Cartão Credito</th>
-                            <th>Cartão Recorrente</th>
-                            <th>Banco</th>
-                            <th>Total</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($methods ?? '' as $item)
-                            <tr class="small">
-                                <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
-                                <td title="{{ $item->valor_payment }}">{{ 'R$ '.number_format($item->valor_payment, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment2 }}">{{ 'R$ '.number_format($item->valor_payment2, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment3 }}">{{ 'R$ '.number_format($item->valor_payment3, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment4 }}">{{ 'R$ '.number_format($item->valor_payment4, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment5 }}">{{ 'R$ '.number_format($item->valor_payment5, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment6 }}">{{ 'R$ '.number_format($item->valor_payment6, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment7 }}">{{ 'R$ '.number_format($item->valor_payment7, 2, ',', '.') }}</td>
-                                <td title="{{ $item->valor_payment_total }}">{{ 'R$ '.number_format($item->valor_payment_total, 2, ',', '.') }}</td>
-                                <td title="Ações">
-                                    <a role="button" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
-                                        <i class="fa fa-trash _i text-danger"></i>
-                                    </a>                             
-                                    <a role="button" class="edit-row-js" data-route="{{route('entradas.show', $item->id)}}">
-                                        <i class="fa fa-edit _i text-navy"></i>
-                                    </a>
-                                    @if (count($item->files) > 0)
-                                    <a role="button" class="view-row-js" data-files="{{$item->files}}">
-                                        <i class="fa fa-eye _i text-navy"></i>
-                                    </a>
-                                    @endif
-                                </td>
-                            </tr>
-                            
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr class="bg-light small">
-                            <td>Totais</td>
-                            <td>{{ 'R$ '.number_format("$dinheiro",2,",",".") }}</td>
-                            <td>{{ 'R$ '.number_format("$pix",2,",",".") }}</td>
-                            <td>{{ 'R$ '.number_format("$cheque",2,",",".") }}</td>
-                            <td>{{ 'R$ '.number_format("$debito",2,",",".") }}</td>
-                            <td>{{ 'R$ '.number_format("$credito",2,",",".") }}</td>
-                            <td>{{ 'R$ '.number_format("$recorrente",2,",",".") }}</td>
-                            <td>{{ 'R$ '.number_format("$banco",2,",",".") }}</td>
-                            <td>{{ 'R$ '.number_format("$total",2,",",".") }}</td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="register-new-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="register-modal">Cadastro Entradas</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
-                    @csrf
-                    <div class="modal-body">
-                       
-                        <div class="container">
-                            <div class="col-sm mb-3">
-                                <label class="form-label">Data:</label>
-                                <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
-                            </div>
-                            <hr class="sidebar-divider">
-                            <p class="text-center">Origens</p>                          
-                            <div class="form-row col-sm" id="formulario_origin">
-                                <div class="col-sm-8">
-                                    <label class="form-label">Origens:</label>
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id" searchable="Search here.." required="true">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                      
-                                </div>
-                                <div class="col-sm">  
-                                    <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="valor_origin" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>
-                                <div class="col-sm-8 mt-2">
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id2" searchable="Search here..">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                     
-                                </div>
-                                
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="valor_origin2" class="valor form-control-sm form-control o2" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                   
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id3" searchable="Search here..">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                     
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="valor_origin3" class="valor form-control-sm form-control o3" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                  
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id4" searchable="Search here..">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                      
-                                </div>
-                                <div class="col-sm mt-2">                                 
-                                    <input type="text" id="valor" name="valor_origin4" class="valor form-control-sm form-control o4" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                  
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id5" searchable="Search here..">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                      
-                                </div>
-                                <div class="col-sm mt-2">                                 
-                                    <input type="text" id="valor" name="valor_origin5" class="valor form-control-sm form-control o5" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>                   
-                            </div>
-                            <div class="form-row col-sm">  
-                                <label class="form-label col-sm-8 mt-3" for="valor">Valor Total Origem:</label>
-                                <input type="text" name="valor_payment_origin" class="valor form-control-sm form-control OrigenResult col-sm mt-2" readonly >
-                            </div>
-                            <!-- Formas de Recebimento -->
-                            <p class="text-center mt-2">Formas de Recebimento</p>                          
-                            <div class="form-row col-sm" id="formulario_formapg">
-                                <div class="col-sm-8">
-                                    <label class="form-label">Forma de Recebimento</label>
-                                    <input class="form-select-item select form-control form-control-sm"  name="dinheiro" value="Dinheiro" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm">  
-                                    <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="dinheiro" class="valor form-control-sm form-control v1" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">
-                                    <input class="form-select-item select form-control form-control-sm" value="Pix" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="pix" class="valor form-control-sm form-control v2" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                   
-                                    <input class="form-select-item select form-control form-control-sm" value="Cheque" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="cheque" class="valor form-control-sm form-control v3" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                  
-                                    <input class="form-select-item select form-control form-control-sm" value="Cartão Debito" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">                                 
-                                    <input type="text" id="valor" name="cartao_debito" class="valor form-control-sm form-control v4" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                   
-                                    <input class="form-select-item select form-control form-control-sm" value="Cartão Credito" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="cartao_credito" class="valor form-control-sm form-control v5" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>       
-                                <div class="col-sm-8 mt-2">                                   
-                                    <input class="form-select-item select form-control form-control-sm" value="Cartão Recorrente" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="cartao_recorrente" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>                  
-                            </div>
-                            <div class="form-row col-sm">  
-                                <label class="form-label col-sm-8 mt-3" for="valor">Valor Total Recebimento:</label>
-                                <input type="text" id="valorPaymentTotal" name="valor_payment_total" class="valor form-control-sm form-control formaRecebimentoResut col-sm mt-2" readonly>
-                            </div>
-                            <!-- /Forma Recebimento -->
-                            <!-- observações -->
-                            <div class="col-sm-12 mb-3">
-                              <label class="form-label">Observação - Administrativo</label>
-                              <textarea class="form-control form-control-sm" name="observacao"></textarea>
-                            </div>
-                            <div class="col-sm-12 mb-3">
-                                <label class="form-label">Observação - Gestor</label>
-                                <textarea class="form-control form-control-sm" name="observacao2"></textarea>
-                              </div>
-                            <div class="col-sm-12 mb-3">
-                                <label class="form-label" >Observação Auditoria</label>
-                                <textarea class="form-control form-control-sm" name="observacao_atuditoria"></textarea>
-                            </div>
-                            <div class="col-sm-12 mb-3">
-                                <label class="form-label">Observação Auditoria</label>
-                                <textarea class="form-control form-control-sm" name="observacao_atuditoria2"></textarea>
-                            </div>
-                          </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Salvar</button>
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div> 
-
-    <!-- Modal Editar -->
-    <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="register-modal">Cadastro Entradas</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
-                    @csrf
-                    <div class="modal-body">
-                       
-                        <div class="container">
-                            <div class="col-sm mb-3">
-                                <label class="form-label">Data:</label>
-                                <input type="date" class="form-control form-control-sm" name="data" id="edit-data" row='3' required="true">
-                            </div>
-                            <hr class="sidebar-divider">
-                            <p class="text-center">Origens</p>                          
-                            <div class="form-row col-sm" id="formulario_origin">
-                                <div class="col-sm-8">
-                                    <label class="form-label">Origens:</label>
-                                    <select class="form-select-item select form-control form-control-sm origin_id" name="origin_id" searchable="Search here.." required="true">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                      
-                                </div>
-                                <div class="col-sm">  
-                                    <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="valor_origin" class="valor form-control-sm form-control o1 valor_origin" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>
-                                <div class="col-sm-8 mt-2">
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id2" searchable="Search here..">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                     
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="valor_origin2" class="valor form-control-sm form-control o2" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                   
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id3" searchable="Search here..">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                     
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="valor_origin3" class="valor form-control-sm form-control o3" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                  
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id4" searchable="Search here..">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                      
-                                </div>
-                                <div class="col-sm mt-2">                                 
-                                    <input type="text" id="valor" name="valor_origin4" class="valor form-control-sm form-control o4" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                  
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id5" searchable="Search here..">
-                                        <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
-                                            <option value="{{ $item->nome }}">{{ $item->nome }}</option>
-                                        @endforeach
-                                    </select>                                      
-                                </div>
-                                <div class="col-sm mt-2">                                 
-                                    <input type="text" id="valor" name="valor_origin5" class="valor form-control-sm form-control o5" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                                </div>                   
-                            </div>
-                            <div class="form-row col-sm">  
-                                <label class="form-label col-sm-8 mt-3" for="valor">Valor Total Origem:</label>
-                                <input type="text" name="valor_payment_origin" class="valor form-control-sm form-control OrigenResult col-sm mt-2" readonly >
-                            </div>
-                            <!-- Formas de Recebimento -->
-                            <p class="text-center mt-2">Formas de Recebimento</p>                          
-                            <div class="form-row col-sm" id="formulario_formapg">
-                                <div class="col-sm-8">
-                                    <label class="form-label">Forma de Recebimento</label>
-                                    <input class="form-select-item select form-control form-control-sm"  name="dinheiro" value="Dinheiro" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm">  
-                                    <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="dinheiro" class="valor form-control-sm form-control v1" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">
-                                    <input class="form-select-item select form-control form-control-sm" value="Pix" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="pix" class="valor form-control-sm form-control v2" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                   
-                                    <input class="form-select-item select form-control form-control-sm" value="Cheque" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="cheque" class="valor form-control-sm form-control v3" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                  
-                                    <input class="form-select-item select form-control form-control-sm" value="Cartão Debito" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">                                 
-                                    <input type="text" id="valor" name="cartao_debito" class="valor form-control-sm form-control v4" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>
-                                <div class="col-sm-8 mt-2">                                   
-                                    <input class="form-select-item select form-control form-control-sm" value="Cartão Credito" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="cartao_credito" class="valor form-control-sm form-control v5" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>       
-                                <div class="col-sm-8 mt-2">                                   
-                                    <input class="form-select-item select form-control form-control-sm" value="Cartão Recorrente" searchable="Search here.." required="true" disabled>                                      
-                                </div>
-                                <div class="col-sm mt-2">  
-                                    <input type="text" id="valor" name="cartao_recorrente" class="valor form-control-sm form-control v6" style="display:inline-block" onkeyup="SomatoriaformaRecebimento()">
-                                </div>                  
-                            </div>
-                            <div class="form-row col-sm">  
-                                <label class="form-label col-sm-8 mt-3" for="valor">Valor Total Recebimento:</label>
-                                <input type="text" id="valorPaymentTotal" name="valor_payment_total" class="valor form-control-sm form-control formaRecebimentoResut col-sm mt-2" readonly>
-                            </div>
-                            <!-- /Forma Recebimento -->
-                            <!-- observações -->
-                            <div class="col-sm-12 mb-3">
-                              <label class="form-label">Observação - Administrativo</label>
-                              <textarea class="form-control form-control-sm" name="observacao"></textarea>
-                            </div>
-                            <div class="col-sm-12 mb-3">
-                                <label class="form-label">Observação - Gestor</label>
-                                <textarea class="form-control form-control-sm" name="observacao2"></textarea>
-                              </div>
-                            <div class="col-sm-12 mb-3">
-                                <label class="form-label" >Observação Auditoria</label>
-                                <textarea class="form-control form-control-sm" name="observacao_atuditoria"></textarea>
-                            </div>
-                            <div class="col-sm-12 mb-3">
-                                <label class="form-label">Observação Auditoria</label>
-                                <textarea class="form-control form-control-sm" name="observacao_atuditoria2"></textarea>
-                            </div>
-                          </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Salvar</button>
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-    
-    
-    <div class="modal fade" id="view-files-modal" aria-labelledby="view-modal" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Arquivos</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <ul id="files-list-js" class="list-group">
-
-                </ul>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="register-bank-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="register-modal">Cadastro Entradas Bancarias</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <form method="PATCH" action="{{ route('entradas.create') }}" class="needs-validation" novalidate>
-                    @csrf
-                    @method('PATCH')
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row mb-3">
-                                <label class="form-label">Data:</label>
-                                <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
-                            </div>
-                            <div class="row">
-                                <label>Entrada Bancaria</label>
-                                <div class="col mb-2">
-                                <input type="text" id="valor" name="banco" class="valor form-control-sm form-control b6" style="display:inline-block" onkeyup="SomaBanco()">
-                                </div>                              
-                            </div>                      
+            <form action="{{ route('entradas.index') }}" method="get">
+                @csrf
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <label>Data Inicial</label>
+                            <input type="date" name="data_inicial_search" class="form-control-sm form-control">
                         </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Salvar</button>
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <div class="col">
+                            <label>Data Final</label>
+                            <input type="date" name="data_final_search" class="form-control-sm form-control">
+                        </div>                          
+                        <div class="col">
+                            <label>..</label></br>
+                            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
+                        </div>
                     </div>
-                </form>
-
-            </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-</x-aplicativo-layout>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-end">
+        <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
+            data-target="#register-new-item-modal">
+            <i class="fa-plus-circle fas mr-2"></i>
+            Entrada
+        </a>
+        <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
+            data-target="#register-bank-item-modal">
+            <i class="fa-plus-circle fas mr-2"></i>
+            Entrada Banco
+        </a>
+    </div>
+    <div class="card-body">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <h2>Formas de Recebimento</h2>
+        <div class="table-responsive">
+            
+            <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
+                
+                <thead>
+                    <tr class="small">
+                        <th>Entradas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($methods ?? '' as $item)
+                    <tr class="expandable-body">
+                        <td>
+                          <div class="p-0">
+                            <table class="table table-hover">
+                              <tbody>
+                                <tr data-widget="expandable-table" aria-expanded="false">
+                                  <td class="small">
+                                    <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+                                    <b>{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</b>
+                                    Valor total da entrada 
+                                    @php                                                                     
+                                    $origem = 0;
+                                    foreach ($item->receipts as $key) {                                    
+                                        $origem += $key->origin_valor;                                                                         
+                                    }
+                                    $recebimento = 0;
+                                    foreach ($item->payments as $key) {                                    
+                                        $recebimento += $key->payment_valor;                                                                         
+                                    }
+                                    $total = $origem + $recebimento;
+                                    @endphp
+                                    - <b>{{ 'R$ '.number_format($total, 2, ',', '.') }}</b>
+                                  </td>
+                                  
+                                </tr>
+                                <tr class="expandable-body d-none">
+                                  <td>
+                                    <div class="p-0" style="display: none;">
+                                      <table class="table table-hover">
+                                        <thead>
+                                            <tr class="small">
+                                                <th>Origem</th>
+                                                @php                                                                     
+                                                $base = 0;
+                                                foreach ($item->receipts as $key) {                                    
+                                                    $base += $key->origin_valor;                                                                         
+                                                }
+                                                @endphp
+                                                
+                                                <th>Valor R$ <b>{{ 'R$ '.number_format($base, 2, ',', '.') }}</b></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>       
+                                            @foreach ($item->receipts as $key)
+                                            <tr class="small">
+                                                <td>{{ $key->origin->nome }}</td>                                            
+                                                <td> {{ 'R$ '.number_format($key->origin_valor, 2, ',', '.') }}</td>  
+                                            </tr>
+                                            @endforeach                        
+                                        </tbody>
+                                        <thead>
+                                            <tr class="small">
+                                                <th>Forma de Recebimento</th>
+                                                @php                                                                     
+                                                $base = 0;
+                                                foreach ($item->payments as $key) {                                    
+                                                    $base += $key->payment_valor;                                                                         
+                                                }
+                                                @endphp
+                                                
+                                                <th>Valor R$ <b>{{ 'R$ '.number_format($base, 2, ',', '.') }}</b></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                      
+                                            @foreach ($item->payments as $key)
+                                            <tr class="small">
+                                                <td>{{ $key->payments_methods->nome }}</td>                                            
+                                                <td> {{ 'R$ '.number_format($key->payment_valor, 2, ',', '.') }}</td>  
+                                            </tr>
+                                            @endforeach                                       
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>                
+                        <tr class="small">                                  
+                            <td>
+                                <!--<a role="button" title="Deletar" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
+                                    <i class="fa fa-trash _i text-danger"></i>
+                                </a>-->                             
+                                <a role="button" title="Editar" class="edit-row-js ml-2" data-route="{{route('entradas.show', $item->id)}}">
+                                    <i class="fas fa-plus"> Adicionar entradas</i> 
+                                </a>
+                                @if (count($item->files) > 0)
+                                <a role="button" title="Arquivos" class="view-row-js ml-2" data-files="{{$item->files}}">
+                                    <i class="fa fa-eye _i text-navy"></i>
+                                </a>
+                                @endif
+                            </td>
+                        </tr>
+                        
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
+<div class="modal fade" id="register-new-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="register-modal">Cadastro Entradas</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
+                @csrf
+                <div class="modal-body">
+                   
+                    <div class="container">
+                        <div class="col-sm mb-3">
+                            <label class="form-label">Data:</label>
+                            <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
+                        </div>
+                    </div>                       
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Salvar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+<!-- Modal Editar -->
+<div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="register-modal">Adicionar Entradas</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="edit-form" class="needs-validation" method="POST" novalidate>                
+                <div class="modal-body">
+                    @method('PUT')
+                    @csrf
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label>Data</label>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="date" name="data" class="form-control form-control-sm" id='edit_data'>
+                            </div>
+                        </div>   
+                        <div class="form-row col-sm">
+                            <div class="col-sm-8">
+                                <label class="form-label">Origens:</label>
+                                <select class="form-select-item select form-control form-control-sm" name="origin_id" searchable="Search here.." required="true">
+                                    <option value="">Selecione uma Origem</option>
+                                    @foreach($origins as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                    @endforeach
+                                </select>                                      
+                            </div>
+                            <div class="col-sm">  
+                                <label class="form-label" for="valor">Valor:</label>
+                                <input type="text" id="valor" name="origin_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                            </div>
+                        </div> 
+                        <div class="form-row col-sm mt-2">
+                            <div class="col-sm-8">
+                                <label class="form-label">Forma de Recebimento:</label>
+                                <select class="form-select-item select form-control form-control-sm" name="payment_methods_id" searchable="Search here.." required="true">
+                                    <option value="">Selecione um recebimento</option>
+                                    @foreach($payments_methods as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                    @endforeach
+                                </select>                                      
+                            </div>
+                            <div class="col-sm">  
+                                <label class="form-label" for="valor">Valor:</label>
+                                <input type="text" id="valor" name="payment_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                            </div>
+                        </div>
+                    </div>                                                                         
+                    
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Salvar</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+ 
+<!-- Modal Visualização de arquivos -->
+<div class="modal fade" id="view-files-modal" aria-labelledby="view-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Arquivos</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <ul id="files-list-js" class="list-group">
+
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+@stop
+
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/chart.js/Chart.min.js"></script>
+<script src="js/jquery/jquery.min.js"></script>
+<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
+<script src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
        $('.valor').mask('#.##0,00', {reverse: true});
@@ -554,12 +352,9 @@
                 },
                 url: $(this).data('route'),
                 success: (response, textStatus, xhr) => {
-                    editItemId = response.id;
-
-                    $('#edit-data').val(response.data);
-                    
+                    editItemId = response.id;                  
+                    $('#edit_data').val(response.data);               
                     $('#edit-form').attr('action', `entradas/${editItemId}`);
-
                     $('#edit-item-modal').modal('show');
                 },
                 error: (response) => {
@@ -588,44 +383,7 @@
 
        
     });
-    function SomatoriaformaRecebimento(){
-        var r1 = document.querySelector(".v1").value.replace('.','').replace(',','.');
-        var r2 = document.querySelector(".v2").value.replace('.','').replace(',','.');
-        var r3 = document.querySelector(".v3").value.replace('.','').replace(',','.');
-        var r4 = document.querySelector(".v4").value.replace('.','').replace(',','.');
-        var r5 = document.querySelector(".v5").value.replace('.','').replace(',','.');
-        var r6 = document.querySelector(".v6").value.replace('.','').replace(',','.');
-
-        
-       
-        
-        var result = parseFloat(r1 || 0) + parseFloat(r2 || 0) + parseFloat(r3 || 0) + parseFloat(r4 || 0) + parseFloat(r5 || 0) + parseFloat(r6 || 0);
-        console.log(r1);
-        if(result == ''){
-            document.querySelector(".formaRecebimentoResut").innerHTML = 'Valor Incorreto';
-        } else {
-            document.querySelector(".formaRecebimentoResut").value = result;
-            
-        }
-        
-    }
-
-    function SomatoriaOrigens(){
-        var r1 = document.querySelector(".o1").value.replace('.','').replace(',','.');
-        var r2 = document.querySelector(".o2").value.replace('.','').replace(',','.');
-        var r3 = document.querySelector(".o3").value.replace('.','').replace(',','.');
-        var r4 = document.querySelector(".o4").value.replace('.','').replace(',','.');
-        var r5 = document.querySelector(".o5").value.replace('.','').replace(',','.');
-                
-        var result = parseFloat(r1 || 0) + parseFloat(r2 || 0) + parseFloat(r3 || 0) + parseFloat(r4 || 0) + parseFloat(r5 || 0);
-        
-        if(result === ''){
-            document.querySelector(".OrigenResult").innerHTML = 'Valor Incorreto';
-        } else {
-            document.querySelector(".OrigenResult").value = result;
-            
-        }
-        
-    }
-    
+   
 </script>
+@stop
+

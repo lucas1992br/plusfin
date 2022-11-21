@@ -31,22 +31,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $methods = Output::all();  
-        $input = Input::where('valor_payment', '>', 0)->get()->sum->valor_payment;
-        $input2 = Output::where('valor', '>', 0)->get()->sum->valor;            
+        $methods = Output::all();             
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
         $aporte = Aporte::all();
-        $saidas = Input::all();
+        
         return view('home', compact([
             'methods',
             'activities',
             'origins',
             'payings_sources' ,
             'payments_methods',
-            'input', 'input2', 'aporte', 'saidas'
+            'aporte'
         ]));
     }
 

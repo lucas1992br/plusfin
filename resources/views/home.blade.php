@@ -19,14 +19,14 @@ use Illuminate\Support\Facades\DB;
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary small">Pendências</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Pendências</h6>
                 </div>
                 <div class="card-body">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                    
                     <div class="table-responsive table-sm">
                         
-                        <table id="table" class="table table-sm table-striped table-bordered table-hover small" width="100%" cellspacing="0">
+                        <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
                             
                             <thead>
                                 <tr>
@@ -102,16 +102,8 @@ use Illuminate\Support\Facades\DB;
                                             $pgPendente[2]+=1;
                                         }                                           
                                     }    
-                                                      
-                                    ?>         
-                                @endforeach   
-                                @foreach ( $saidas as $saida)
-                                    <?php
-                                        $today = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));                                
-                                        $dateRegister = new \DateTime($saida->data, new \DateTimeZone('America/Sao_Paulo'));                                    
-                                        $diff = $today->diff($dateRegister);  
-                                        //Entradas Pendentes                                    
-                                        if($saida->status == 'Entrada Pendente'){
+                                    //Entradas Pendentes                                    
+                                    if($method->status == 'Entradas Pendentes'){
                                         if($diff->invert == 1 && $diff->d > 0){                                            
                                             $entadaPendente[0]+=1;
                                         } 
@@ -121,9 +113,9 @@ use Illuminate\Support\Facades\DB;
                                         if($today->format('m/Y') == $dateRegister->format('m/Y')){
                                             $entadaPendente[2]+=1;
                                         }                                           
-                                    }            
-                                    ?>
-                                @endforeach
+                                    }                          
+                                    ?>         
+                                @endforeach   
                                     <tr>
                                         <th>Atualização Pendente</th>
                                         <td class="bg-danger text-light">{{$atualPendente[0]}}</td>
@@ -186,7 +178,7 @@ use Illuminate\Support\Facades\DB;
             <!-- Illustrations -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary small">Recebimentos</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Recebimentos</h6>
                 </div>
                 <div class="card-body">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -196,7 +188,7 @@ use Illuminate\Support\Facades\DB;
                         <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
                             
                             <thead>
-                                <tr class="small">
+                                <tr>
                                     <th>Formas de Recebimento</th>
                                     <th>Valor</th>
                                     <th>Aporte</th>
@@ -204,94 +196,7 @@ use Illuminate\Support\Facades\DB;
                                 </tr>
                             </thead>
                             <tbody>                           
-                                <tr class="small">
-                                    <th>Dinheiro</th>
-                                    @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment', '>', 0)->get()->sum->valor_payment;
-                                    $input2 = Output::where('payment_methods_id', '=', 	'1')->where('status', '=', 	'Paga')->get()->sum->valor;
-                                    $dinheiro = $input - $input2;
-                                    @endphp
-                                    <td>{{ 'R$ '.number_format("$dinheiro",2,",",".") }}</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr class="small">
-                                    <th>Pix</th>
-                                    @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment2', '>', 0)->get()->sum->valor_payment2;
-                                    $input2 = Output::where('payment_methods_id', '=', 	'2')->where('status', '=', 	'Paga')->get()->sum->valor;
-                                    $pix = $input - $input2;
-                                    @endphp
-                                    <td>{{ 'R$ '.number_format("$pix",2,",",".") }}</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr class="small">
-                                    <th>Cheque</th>
-                                    @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment3', '>', 0)->get()->sum->valor_payment3;
-                                    $input2 = Output::where('payment_methods_id', '=', 	'3')->where('status', '=', 	'Paga')->get()->sum->valor;
-                                    $cheque = $input - $input2;
-                                    @endphp                                     
-                                    <td>{{ 'R$ '.number_format("$cheque",2,",",".") }}</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                        
-                                </tr>
-                                <tr class="small">
-                                    <th>Cartão Debito</th>
-                                    @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment4', '>', 0)->get()->sum->valor_payment4;
-                                    $input2 = Output::where('payment_methods_id', '=', 	'4')->where('status', '=', 	'Paga')->get()->sum->valor;
-                                    $debito = $input - $input2;
-                                    @endphp
-                                    <td>{{ 'R$ '.number_format("$debito",2,",",".") }}</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr class="small">
-                                    <th>Cartão Credito</th>
-                                    @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment5', '>', 0)->get()->sum->valor_payment5;
-                                    $input2 = Output::where('payment_methods_id', '=', 	'5')->where('status', '=', 	'Paga')->get()->sum->valor;
-                                    $credito = $input - $input2;
-                                    @endphp
-                                    <td>{{ 'R$ '.number_format("$credito",2,",",".") }}</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <th class="small"> Cartão Recorrente</th>
-                                    @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment6', '>', 0)->get()->sum->valor_payment6;
-                                    $input2 = Output::where('payment_methods_id', '=', 	'6')->where('status', '=', 	'Paga')->get()->sum->valor;
-                                    $recorrente = $input - $input2;
-                                    @endphp
-                                    <td class="small">{{ 'R$ '.number_format("$recorrente",2,",",".") }}</td>
-                                    <td class="small">0</td>
-                                    <td class="small">0</td>
-                                </tr>
-                                <tr>
-                                    <th class="small">Banco</th>
-                                    @php
-                                    $input = Input::where('status', 'Entrada Efetuada')->where('valor_payment7', '>', 0)->get()->sum->valor_payment7;
-                                    $input2 = Output::where('payment_methods_id', '=', 	'7')->where('status', '=', 	'Paga')->get()->sum->valor;
-                                    $banco = $input - $input2;                             
-                                    @endphp
-                                    <td class="small">{{ 'R$ '.number_format("$banco",2,",",".") }}</td>
-                                    <td class="small">0</td>
-                                    <td class="small">0</td>
-                                </tr> 
-                                <tr class="small">
-                                    <th>Total</th>
-                                    @php
-                                   
-                                    $total = $dinheiro + $pix + $cheque + $debito +  $credito + $recorrente + $banco
-                                    @endphp                                  
-                                    <td>{{ 'R$ '.number_format("$total",2,",",".") }}</td>                                    
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>                           
+                                                         
                             </tbody>
                         </table>
                     </div>
@@ -309,7 +214,7 @@ use Illuminate\Support\Facades\DB;
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary text-center small">Lista de Saidas Pendentes para Hoje</h6>
+                    <h6 class="m-0 font-weight-bold text-primary text-center">Lista de Saidas Pendentes para Hoje</h6>
                 </div>
                 <meta name="csrf-token" content="{{ csrf_token() }}">
                 @component('components.dataTable',
@@ -320,32 +225,31 @@ use Illuminate\Support\Facades\DB;
                     @slot('data')
                         @foreach ($methods ?? '' as $item)
                             <tr>
-                                <tr>
-                                    <td title="{{ $item->data }}"><small>{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</small></td>
-                                    <td title="{{ $item->conta }}"><small>{{ $item->conta }}</small></td>
-                                    <td title="{{ $item->origin->nome }}"><small>{{ $item->origin->nome }}</small></td>
-                                    <td title="{{ $item->payings_sources->nome }}"><small>{{ $item->payings_sources->nome }}</small></td>
-                                    <td title="{{ $item->payments_methods->nome }}"><small>{{ $item->payments_methods->nome }}</small></td>
-                                    <td title="{{ $item->valor }}"><small>{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</small></td>                
-                                    @switch($item->status)
-                                        @case('Atualização Pendente')
-                                            <td title="{{$item->status}}"><small class="badge bg-warning text-white rounded align-middle">{{$item->status}}</small></td>
-                                            @break
-                                        @case('Aprovação Pendente')
-                                            <td title="{{$item->status}}"><small class="badge bg-dark text-white rounded align-middle">{{$item->status}}</small></td>
-                                            @break
-                                        @case('Pagamento Pendente')
-                                            <td title="{{$item->status}}"><small class="badge bg-success text-white rounded align-middle">{{$item->status}}</small></td>
-                                            @break
-                                        @case('Envio De Documentos Pendente')
-                                            <td title="{{$item->status}}"><small class="badge bg-primary text-white rounded align-middle">{{$item->status}}</small></td>
-                                            @break
-                                        @case('Paga')                              
-                                            <td title="{{$item->status}}"><small class="badge bg-primary text-white">{{$item->status}}</small></td>
-                                            @break
-                                        @default
-        
-                                    @endswitch
+                                <td title="{{ $item->data }}">{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</td>
+                                <td title="{{ $item->conta }}">{{ $item->conta }}</td>
+                                <td title="{{ $item->origin->nome }}">{{ $item->origin->nome }}</td>
+                                <td title="{{ $item->payings_sources->nome }}">{{ $item->payings_sources->nome }}</td>
+                                <td title="{{ $item->payments_methods->nome }}">{{ $item->payments_methods->nome }}</td>
+                                <td title="{{ $item->valor }}">{{ 'R$ '.number_format($item->valor, 2, ',', '.') }}</td>
+                                @switch($item->status)
+                                    @case('Atualização Pendente')
+                                        <td class="bg-warning text-white rounded align-middle">Atualização Pendente</td>
+                                        @break
+                                    @case('Aprovação Pendente')
+                                        <td class="bg-dark text-white rounded align-middle">Aprovação Pendente</td>
+                                        @break
+                                    @case('Pagamento Pendente')
+                                        <td class="bg-success text-white rounded align-middle">Pagamento Pendente</td>
+                                        @break
+                                    @case('Envio De Documentos Pendente')
+                                        <td class="bg-primary text-white rounded align-middle">Envio De Documentos Pendente</td>
+                                        @break
+                                    @case('Paga')
+                                        <td class="bg-primary text-white rounded align-middle">Paga</td>
+                                        @break
+                                    @default
+    
+                                @endswitch
                             </tr>
                         @endforeach
                     @endslot

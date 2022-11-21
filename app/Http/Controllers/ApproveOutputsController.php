@@ -54,7 +54,7 @@ class ApproveOutputsController extends Controller
             $methods = Output::where('paying_sources_id', $request->paying_sources_search)->get();
         }
 
-        return view('approveoutputs', compact([
+        return view('gerenciamento.approveoutputs', compact([
             'methods',
             'payings_sources' ,
             'payments_methods',

@@ -10,7 +10,7 @@ use App\Models\CostCenter;
 class Origin extends Model
 {
     //use HasFactory;
-
+    
     protected $fillable = [
         'nome',
         'tipo',
@@ -27,6 +27,5 @@ class Origin extends Model
 
     public function costCenter() {
         return $this->hasOne(CostCenter::class , 'id', 'costcenter_id');
-    }
-   
+    }   
 }

@@ -36,7 +36,7 @@ class PaymentMethodController extends Controller
        
        
         
-        return view('payment-method', compact([
+        return view('cadastros.payment-method', compact([
             'methods',
             'activities'
         ]));

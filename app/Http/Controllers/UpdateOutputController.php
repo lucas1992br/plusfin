@@ -40,7 +40,7 @@ class UpdateOutputController extends Controller
 
             $methods = Output::where('data', '>=', $data_inicio)->where('data', '<=', $data_fim)->where('status', '=', 'Atualização Pendente')->get();           
         }
-        return view('updateoutput', compact([
+        return view('gerenciamento.updateoutput', compact([
             'methods',
             'activities',
             'origins',

@@ -37,7 +37,7 @@ class CostCenterController extends Controller
             $cost_centers = CostCenter::where('tipo', $request->atividade_search)->get();
         }
 
-        return view('cost-center', compact([
+        return view('cadastros.cost-center', compact([
             'cost_centers',
             'activities'
         ]));

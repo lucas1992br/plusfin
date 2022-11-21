@@ -35,7 +35,7 @@ class PayingSourceController extends Controller
             $methods = PayingSource::where('activity_id', $request->atividade_search)->get();
         }
 
-        return view('paying-source', compact([
+        return view('cadastros.paying-source', compact([
             'methods',
             'activities'
         ]));

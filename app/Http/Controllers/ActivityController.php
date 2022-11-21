@@ -18,7 +18,7 @@ class ActivityController extends Controller
      */
     public function index() {
         $activities = Activity::all();
-        return view('activity', compact('activities'));
+        return view('cadastros.activity', compact('activities'));
     }
 
     /**

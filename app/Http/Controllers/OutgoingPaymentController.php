@@ -56,7 +56,7 @@ class OutgoingPaymentController extends Controller {
             $methods = Output::where('paying_sources_id', $request->paying_sources_search)->get();
         }
 
-        return view('outgoingpayment', compact([
+        return view('gerenciamento.outgoingpayment', compact([
             'methods',
             'activities',
             'origins',

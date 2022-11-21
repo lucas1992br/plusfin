@@ -54,7 +54,7 @@ class UploadDocumentController extends Controller {
         if($request->paying_sources_search){
             $methods = Output::where('paying_sources_id', $request->paying_sources_search)->get();
         }
-        return view('uploaddocument', compact([
+        return view('gerenciamento.uploaddocument', compact([
             'methods',
             'activities',
             'origins',
