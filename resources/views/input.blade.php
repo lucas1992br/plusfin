@@ -47,15 +47,15 @@
             <i class="fa-plus-circle fas mr-2"></i>
             Entrada
         </a>
-        <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
+        <!--<a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
             data-target="#register-bank-item-modal">
             <i class="fa-plus-circle fas mr-2"></i>
             Entrada Banco
-        </a>
+        </a>-->
     </div>
     <div class="card-body">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <h2>Formas de Recebimento</h2>
+        
         <div class="table-responsive">
             
             <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
