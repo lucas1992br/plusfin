@@ -274,21 +274,6 @@
                                 @case('10')
                                 <td>{{ $arrNomePayment[9] }}</td>
                                 @break 
-                                @case('11')
-                                <td>{{ $arrNomePayment[10] }}</td>
-                                @break 
-                                @case('12')
-                                <td>{{ $arrNomePayment[11] }}</td>
-                                @break 
-                                @case('13')
-                                <td>{{ $arrNomePayment[12] }}</td>
-                                @break 
-                                @case('14')
-                                <td>{{ $arrNomePayment[13] }}</td>
-                                @break 
-                                @case('15')
-                                <td>{{ $arrNomePayment[14] }}</td>
-                                @break 
                             
                                 @default
                                     
