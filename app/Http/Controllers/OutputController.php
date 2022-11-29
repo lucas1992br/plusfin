@@ -61,7 +61,7 @@ class OutputController extends Controller
             $methods = Output::where('paying_sources_id', $request->paying_sources_search)->get();
         }
         
- 
+        
         return view('output', compact([
             'methods',
             'activities',

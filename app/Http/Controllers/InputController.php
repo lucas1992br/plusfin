@@ -85,13 +85,15 @@ class InputController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreInputRequest $request)
-    {   
+    {           
         $input = new Input();
         $input->data = $request->data;
         $input->status = 'Entrada Pendente';
         $input->save();
 
-        return Redirect::route('entradas.index');
+        return $input->id;
+
+        //return Redirect::route('entradas.index');
 
         
     }
@@ -129,19 +131,47 @@ class InputController extends Controller
      */
     public function update(UpdateInputRequest $request, $entrada)
     {  
+        $origin_valor = str_replace('.','',$request->origin_valor);
+        $origin_valor = str_replace(',','.',$origin_valor);
+       
+        $payment_valor = str_replace('.','',$request->payment_valor);
+        $payment_valor = str_replace(',','.',$payment_valor);
+
         $input = new InputReceipt();
         $input->input_id = $entrada;
         $input->origin_id = $request->get('origin_id');
-        $input->origin_valor = $request->get('origin_valor');
+        $input->origin_valor = $origin_valor;
         $input->save();
-
+        
         $inputPayment = new InputPayment();
         $inputPayment->input_id = $entrada;
         $inputPayment->payment_methods_id = $request->get('payment_methods_id');
-        $inputPayment->payment_valor = $request->get('payment_valor');
+        $inputPayment->payment_valor = $payment_valor;
         $inputPayment->save();
         
         return Redirect::route('entradas.index');
+        
+    }
+    
+    public function detalhes(UpdateInputRequest $request)
+    {       
+        $origin_valor = str_replace('.','',$request->origin_valor);
+        $origin_valor = str_replace(',','.',$origin_valor);
+       
+        $payment_valor = str_replace('.','',$request->payment_valor);
+        $payment_valor = str_replace(',','.',$payment_valor);
+
+        $input = new InputReceipt();
+        $input->input_id = $request->id;
+        $input->origin_id = $request->get('origin_id');
+        $input->origin_valor = $origin_valor;
+        $input->save();
+
+        $inputPayment = new InputPayment();
+        $inputPayment->input_id = $request->id;
+        $inputPayment->payment_methods_id = $request->get('payment_methods_id');
+        $inputPayment->payment_valor = $payment_valor;
+        $inputPayment->save();
     }
 
     /**

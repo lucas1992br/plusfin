@@ -37,6 +37,14 @@ class HomeController extends Controller
         $payments_methods = PaymentMethod::all('nome', 'id');
         $payings_sources = PayingSource::all('nome', 'id');
         $aporte = Aporte::all();
+        $payments = PaymentMethod::all('nome', 'id');
+
+        $dre_payment = Input::select("input_payment.payment_methods_id",DB::raw('SUM(input_payment.payment_valor) as Total'))
+        ->join('input_payment', 'inputs.id', '=', 'input_payment.input_id')
+        ->groupBy('input_payment.payment_methods_id')           
+        ->get();
+        
+        
         
         return view('home', compact([
             'methods',
@@ -44,7 +52,8 @@ class HomeController extends Controller
             'origins',
             'payings_sources' ,
             'payments_methods',
-            'aporte'
+            'aporte',
+            'dre_payment'
         ]));
     }
 

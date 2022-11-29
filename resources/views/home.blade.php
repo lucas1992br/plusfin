@@ -188,7 +188,12 @@ use Illuminate\Support\Facades\DB;
                                 </tr>
                             </thead>
                             <tbody>                           
-                                                         
+                                @foreach ($dre_payment as $key)
+                                    <tr>
+                                        <td>{{$key->payments_methods->nome}}</td>
+                                        <td>{{$key->Total}}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

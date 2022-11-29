@@ -17,7 +17,7 @@
 
 <!-- Core plugin JavaScript-->
 <script src="js/jquery-easing/jquery.easing.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Custom scripts for all pages-->
 <script src="js/cpr/sb-admin-2.min.js"></script>
 

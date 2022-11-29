@@ -305,103 +305,108 @@ return [
         [
             'text' => 'Portal',
             'url'  => 'dashboard',
-            'icon' => '',
+            'icon' => 'fas fa-home',
         ],
         [
             'text' => 'Entrada',
             'url'  => 'entradas',
-            'icon' => '',
+            'icon' => 'fas fa-piggy-bank',
         ],
         [
             'text' => 'Saida',
             'url'  => 'saidas',
-            'icon' => '',
+            'icon' => 'fas fa-money-bill-wave-alt',
         ],
         [
             'text'    => 'Caixa',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-angle-double-right',
             'submenu' => [
                 [
                     'text' => 'Aporte',
                     'url'  => 'aporte',
-                    'icon' => '#',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Retirada',
                     'url'  => 'retirada',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
             ],
         ],
         [
             'text'    => 'Gerenciamento',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-angle-double-right',
             'submenu' => [
                 [
                     'text' => 'Atualizar Saidas',
                     'url'  => 'atualizar-saidas',
-                    'icon' => '#',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Aprovar Saidas',
                     'url'  => 'aprovar-saidas',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Envio de Documentos',
                     'url'  => 'envio-documentos',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Pagamento Saidas',
                     'url'  => 'pagamento-saidas',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Efetivar entradas',
                     'url'  => 'entradas-documentos',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
             ],
         ],
         [
             'text'    => 'Cadastros',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-angle-double-right',
             'submenu' => [
                 [
                     'text' => 'Atividade',
                     'url'  => 'atividade',
-                    'icon' => '#',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Centro de Custo',
                     'url'  => 'centro-de-custo',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Origem',
                     'url'  => 'origem',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Fonte Pagante',
                     'url'  => 'fonte-pagante',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
                 [
                     'text' => 'Forma de Pagamento',
                     'url'  => 'forma-pagamento',
-                    'icon' => '',
+                    'icon' => 'fas fa-angle-double-up',
                 ],
             ],
         ],
         [
             'text'    => 'Relatorios',
-            'icon'    => 'fas fa-fw fa-share',
+            'icon'    => 'fas fa-receipt',
             'submenu' => [
                 [
                     'text' => 'DRE',
                     'url'  => 'dre',
+                    'icon' => '#',
+                ],
+                [
+                    'text' => 'Media Entrada/Saidas ',
+                    'url'  => 'relatorio-medias_entradas',
                     'icon' => '#',
                 ],
             ],
@@ -445,7 +450,7 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -464,8 +469,18 @@ return [
                 ],
             ],
         ],
+        'Mask' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js',
+                ],
+            ],
+        ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -480,7 +495,7 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -490,12 +505,12 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
             ],
         ],

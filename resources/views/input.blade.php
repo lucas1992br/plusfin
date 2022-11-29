@@ -178,27 +178,68 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-            </div>
-            <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
-                @csrf
+            </div>            
                 <div class="modal-body">
                    
                     <div class="container">
                         <div class="col-sm mb-3">
-                            <label class="form-label">Data:</label>
-                            <input type="date" class="form-control form-control-sm" name="data" row='3' required="true">
+                            <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
+                                @csrf
+                                <label class="form-label">Data:</label>
+                                <input type="date" class="form-control form-control-sm" name="data" id="data" row='3' required="true">
+                                <button class='btn btn-sm mt-2 btn-success d-flex' id='btnCriarEntrada'>Criar Entrada</button>
+                            </form>
                         </div>
+
+
+                    <form method="POST" action="" class="needs-validation" novalidate>
+                        @csrf                        
+                        <div class='d-none' id='entradas-detalhes'>
+                            <div class="form-row col-sm">
+                                <input type="hidden" name='idEntrada' id='idEntrada'>
+                                <div class="col-sm-8">
+                                    <label class="form-label">Origens:</label>
+                                    <select class="form-select-item select form-control form-control-sm" name="origin_id" id="origin_id" searchable="Search here.." required="true">
+                                        <option value="">Selecione uma Origem</option>
+                                        @foreach($origins as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                        @endforeach
+                                    </select>                                      
+                                </div>
+                                <div class="col-sm">  
+                                    <label class="form-label" for="valor">Valor:</label>
+                                    <input type="text" id="valor" name="origin_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                                </div>
+                            </div> 
+                            <div class="form-row col-sm mt-2">
+                                <div class="col-sm-8">
+                                    <label class="form-label">Forma de Recebimento:</label>
+                                    <select class="form-select-item select form-control form-control-sm" name="payment_methods_id"  id="payment_methods_id" searchable="Search here.." required="true">
+                                        <option value="">Selecione um recebimento</option>
+                                        @foreach($payments_methods as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                        @endforeach
+                                    </select>                                      
+                                </div>
+                                <div class="col-sm">  
+                                    <label class="form-label" for="valor">Valor:</label>
+                                    <input type="text" id="valor2" name="payment_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id='btnSalvarDetalhes' type="submit">Salvar</button>
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>                    
+                    </form>
+
+
                     </div>                       
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit">Salvar</button>
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
+                </div>                            
         </div>
     </div>
 </div> 
-
 <!-- Modal Editar -->
 <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
@@ -295,6 +336,76 @@
 <script src="js/jquery/jquery.min.js"></script>
 <script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
 <script src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+
+<script>
+    //Cria uma nova entrada pelo ajax [InputController::store]
+    let btnCriarEntrada = document.querySelector('#btnCriarEntrada');
+    btnCriarEntrada.addEventListener('click',async(e)=>{
+        e.preventDefault();
+        let data = document.querySelector('#data').value;        
+        let reqs = await fetch('/entradas',{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body:JSON.stringify({'data': data})
+        });
+        let ress = await reqs.json();
+        document.querySelector('#idEntrada').value=ress;
+
+        document.querySelector('#entradas-detalhes').classList.remove('d-none');
+    });
+
+
+    //Cria os detalhes da entrada [InputController::detalhes]
+    let btnSalvarDetalhes = document.querySelector('#btnSalvarDetalhes');
+    btnSalvarDetalhes.addEventListener('click',async(e)=>{
+        e.preventDefault();
+        let id = document.querySelector('#idEntrada').value;
+        let origin_id = document.querySelector('#origin_id').value;
+        let origin_valor = document.querySelector('#valor').value;
+        let payment_methods_id = document.querySelector('#payment_methods_id').value;
+        let payment_valor = document.querySelector('#valor2').value;
+               
+        let reqs = await fetch('entrada/detalhes',{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body:JSON.stringify({
+                'id': id,
+                'origin_id':origin_id,
+                'origin_valor':origin_valor,
+                'payment_methods_id':payment_methods_id,
+                'payment_valor':payment_valor
+            })
+            
+        });
+        let ress = await reqs.json();  
+           
+        
+    });
+   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
 <script type="text/javascript">
     $(document).ready(function() {
        $('.valor').mask('#.##0,00', {reverse: true});

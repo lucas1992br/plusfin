@@ -42,31 +42,389 @@
           </div>
           <div class="card-body">
             <meta name="csrf-token" content="{{ csrf_token() }}">
-            @component('components.dataTable',
-                [
-                    'headers' => ['Origen', 'Valor'],
-                ])
-    
-                @slot('data')
-                    @foreach ($input_origins ?? '' as $item)
+                       
+            <table class="table table-striped table-sm">
+                <thead>
                     <tr>
-                        <td title="{{ $item->origin_id }}">{{ $item->origin_id }}</td>
-                        <td title="{{ $item->Total }}">{{ 'R$ '.number_format($item->Total, 2, ',', '.') }}</td>                
+                        <th>..</th>
+                        <th>Janeiro</th>
+                        <th>Fevereiro</th>
+                        <th>Março</th>
+                        <th>Abril</th>
+                        <th>Maio</th>
+                        <th>Junho</th>
+                        <th>Julho</th>
+                        <th>Agosto</th>
+                        <th>Setembro</th>
+                        <th>Outubro</th>
+                        <th>Novembro</th>
+                        <th>Dezembro</th>
                     </tr>
-                    @endforeach 
-                    <tr>
-                        <td><b>Formas de Recebimento</b></td>
-                        <td><b>Valor</b></td>                
+                </thead>
+
+                <tbody>
+                    <tr class="table-info">
+                        <th>Receitas Brutas</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[1], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[2], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[3], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[4], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[5], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[6], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[7], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[8], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[9], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[10], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[11], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[12], 2, ',', '.') }}</th>
                     </tr>
-                    @foreach ($input_payment ?? '' as $item)
-                    <tr>
-                        <td title="{{ $item->payment_methods_id }}">{{ $item->payment_methods_id }}</td>
-                        <td title="{{ $item->Total }}">{{ 'R$ '.number_format($item->Total, 2, ',', '.') }}</td>                
+                    <tr class="table-info">
+                        <th> Origens Total</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[1], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[2], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[3], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[4], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[5], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[6], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[7], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[8], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[9], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[10], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[11], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOrigin[12], 2, ',', '.') }}</th>
                     </tr>
-                    @endforeach                  
-                @endslot
-               
-            @endcomponent
+                    @foreach($arrorigens as $origens) 
+                        @php
+                            $janeiro = 0;
+                            $fevereiro = 0;
+                            $marco = 0;
+                            $abril = 0;
+                            $maio = 0;
+                            $junho = 0;
+                            $julho = 0;
+                            $agosto = 0;
+                            $setembro = 0;
+                            $outubro = 0;
+                            $novembro = 0;
+                            $dezembro = 0;
+                        @endphp    
+                        <tr>
+                            @switch($origens)
+                                
+                                @case('1')
+                                <td>{{ $arrNomeOriogin[0] }}</td>
+                                @break
+
+                                @case('2')
+                                    <td>{{ $arrNomeOriogin[1] }}</td>
+                                @break
+
+                                @case('3')
+                                    <td>{{ $arrNomeOriogin[2] }}</td>
+                                @break
+
+                                @case('4')
+                                    <td>{{ $arrNomeOriogin[3] }}</td>
+                                @break         
+                                
+                                @default
+                                    
+                            @endswitch               
+                            @foreach($input as $inp)
+                                @php
+                                    if($inp->origin_id == $origens && $inp->mes == 1){
+                                        $janeiro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 2){
+                                        $fevereiro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 3){
+                                        $marco = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 4){
+                                        $abril = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 5){
+                                        $maio = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 6){
+                                        $junho = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 7){
+                                        $julho = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 8){
+                                        $agosto = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 9){
+                                        $setembro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 10){
+                                        $outubro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 11){
+                                        $novembro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $origens && $inp->mes == 12){
+                                        $dezembro = $inp->Total;
+                                    }
+                                @endphp
+                            @endforeach
+                            <td>{{ 'R$ '.number_format($janeiro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($fevereiro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($marco, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($abril, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($maio, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($junho, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($julho, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($agosto, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($setembro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($outubro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($novembro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($dezembro, 2, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
+                    <tr class="table-info">
+                        <th>Formas Recebimento Total</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[1], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[2], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[3], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[4], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[5], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[6], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[7], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[8], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[9], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[10], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[11], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumPayment[12], 2, ',', '.') }}</th>
+                    </tr>
+                    @foreach($arrpayment as $payment) 
+                        @php
+                            $janeiro = 0;
+                            $fevereiro = 0;
+                            $marco = 0;
+                            $abril = 0;
+                            $maio = 0;
+                            $junho = 0;
+                            $julho = 0;
+                            $agosto = 0;
+                            $setembro = 0;
+                            $outubro = 0;
+                            $novembro = 0;
+                            $dezembro = 0;
+                        @endphp    
+                        <tr>
+                            @switch($payment)
+                                
+                                @case('1')
+                                    <td>{{ $arrNomePayment[0] }}</td>
+                                @break
+                                @case('2')
+                                    <td>{{ $arrNomePayment[1] }}</td>
+                                @break
+                                @case('3')
+                                    <td>{{ $arrNomePayment[2] }}</td>
+                                @break
+                                @case('4')
+                                    <td>{{ $arrNomePayment[3] }}</td>
+                                @break 
+                                @case('5')
+                                    <td>{{ $arrNomePayment[4] }}</td>
+                                @break 
+                                @case('6')
+                                    <td>{{ $arrNomePayment[5] }}</td>
+                                @break                               
+                            
+                                @default
+                                    
+                            @endswitch               
+                            @foreach($dre_payment as $inp)
+                                @php
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 1){
+                                        $janeiro = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 2){
+                                        $fevereiro = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 3){
+                                        $marco = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 4){
+                                        $abril = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 5){
+                                        $maio = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 6){
+                                        $junho = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 7){
+                                        $julho = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 8){
+                                        $agosto = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 9){
+                                        $setembro = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 10){
+                                        $outubro = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 11){
+                                        $novembro = $inp->Total;
+                                    }
+                                    if($inp->payment_methods_id == $payment && $inp->mes == 12){
+                                        $dezembro = $inp->Total;
+                                    }
+                                @endphp
+                            @endforeach
+                            <td>{{ 'R$ '.number_format($janeiro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($fevereiro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($marco, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($abril, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($maio, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($junho, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($julho, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($agosto, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($setembro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($outubro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($novembro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($dezembro, 2, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
+                    <tr class="table-info">
+                        <th>Custos Total</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[1], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[2], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[3], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[4], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[5], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[6], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[7], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[8], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[9], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[10], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[11], 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format($sumOutput[12], 2, ',', '.') }}</th>
+                    </tr>
+                    @foreach($arroutput as $output) 
+                        @php
+                            $janeiro = 0;
+                            $fevereiro = 0;
+                            $marco = 0;
+                            $abril = 0;
+                            $maio = 0;
+                            $junho = 0;
+                            $julho = 0;
+                            $agosto = 0;
+                            $setembro = 0;
+                            $outubro = 0;
+                            $novembro = 0;
+                            $dezembro = 0;
+                        @endphp    
+                        <tr>
+                            @switch($output)
+                                
+                                @case('1')
+                                    <td>{{ $arrNomeOriogin[0] }}</td>
+                                @break
+                                @case('2')
+                                    <td>{{ $arrNomeOriogin[1] }}</td>
+                                @break
+                                @case('3')
+                                    <td>{{ $arrNomeOriogin[2] }}</td>
+                                @break
+                                @case('4')
+                                    <td>{{ $arrNomeOriogin[3] }}</td>
+                                @break 
+                                @case('5')
+                                    <td>{{ $arrNomeOriogin[4] }}</td>
+                                @break 
+                                @case('6')
+                                    <td>{{ $arrNomeOriogin[5] }}</td>
+                                @break                               
+                            
+                                @default
+                                    
+                            @endswitch               
+                            @foreach($outputs as $inp)                         
+                                @php
+                                    if($inp->origin_id == $output && $inp->mes == 1){
+                                        $janeiro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 2){
+                                        $fevereiro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 3){
+                                        $marco = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 4){
+                                        $abril = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 5){
+                                        $maio = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 6){
+                                        $junho = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 7){
+                                        $julho = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 8){
+                                        $agosto = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 9){
+                                        $setembro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 10){
+                                        $outubro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 11){
+                                        $novembro = $inp->Total;
+                                    }
+                                    if($inp->origin_id == $output && $inp->mes == 12){
+                                        $dezembro = $inp->Total;
+                                    }
+                                @endphp
+                            @endforeach
+                            <td>{{ 'R$ '.number_format($janeiro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($fevereiro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($marco, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($abril, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($maio, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($junho, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($julho, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($agosto, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($setembro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($outubro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($novembro, 2, ',', '.') }}</td>
+                            <td>{{ 'R$ '.number_format($dezembro, 2, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
+                    <tr class="table-success">
+                        <th>LL</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[1] - $sumOutput[1]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[2] - $sumOutput[2]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[3] - $sumOutput[3]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[4] - $sumOutput[4]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[5] - $sumOutput[5]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[6] - $sumOutput[6]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[7] - $sumOutput[7]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[8] - $sumOutput[8]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[9] - $sumOutput[9]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[10] - $sumOutput[10]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[11] - $sumOutput[11]), 2, ',', '.') }}</th>
+                        <th>{{ 'R$ '.number_format(($sumOrigin[12] - $sumOutput[12]), 2, ',', '.') }}</th>
+                    </tr>
+                    
+                </tbody>
+            
+            </table>
+
+
+
+
             
             
         </div>

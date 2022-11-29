@@ -1,26 +1,27 @@
 <?php
 
+use App\Http\Controllers\DRE;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CustomerSupplierController;
-use App\Http\Controllers\CostCenterController;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\PaymentMethodController;
-use App\Http\Controllers\PayingSourceController;
+use App\Http\Controllers\GoalController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InputController;
+use App\Http\Controllers\AporteController;
 use App\Http\Controllers\OriginController;
 use App\Http\Controllers\OutputController;
-use App\Http\Controllers\ApproveOutputsController;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\RetiradaController;
+use App\Http\Controllers\CostCenterController;
+use App\Http\Controllers\PayingSourceController;
+use App\Http\Controllers\ReportAporteController;
 use App\Http\Controllers\UpdateOutputController;
+use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\ApproveOutputsController;
 use App\Http\Controllers\UploadDocumentController;
 use App\Http\Controllers\OutgoingPaymentController;
-use App\Http\Controllers\InputController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UploadDocumentInputController;
-use App\Http\Controllers\AporteController;
-use App\Http\Controllers\RetiradaController;
-use App\Http\Controllers\GoalController;
-use App\Http\Controllers\ReportAporteController;
-use App\Http\Controllers\DRE;
+use App\Http\Controllers\CustomerSupplierController;
 use App\Http\Controllers\ReportAccountingController;
+use App\Http\Controllers\AverageInputOutputController;
+use App\Http\Controllers\UploadDocumentInputController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('pagamento-saidas', OutgoingPaymentController::class);
 
     Route::resource('entradas', InputController::class);
+    Route::post('entrada/detalhes', [InputController::class,'detalhes']);
 
     Route::resource('entradas-documentos', UploadDocumentInputController::class);
 
@@ -93,6 +95,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('dre', DRE::class);
 
     Route::resource('planilha-contabilidade', ReportAccountingController::class);
+
+    Route::resource('relatorio-medias_entradas', AverageInputOutputController::class);
 
 
 

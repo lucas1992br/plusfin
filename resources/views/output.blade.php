@@ -199,7 +199,7 @@
                                      <label class="form-label">Fonte Pagante</label>
                                      <select class="form-select-item select form-control form-control-sm" id="edit-paying_sources_id" name="paying_sources_id" searchable="Search here.." required="true">
                                         <option value="">Selecione uma Fonte Pagante</option>
-                                        @foreach($payings_sources as $item)
+                                        @foreach($payings_sourcecad as $item)
                                             <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                         @endforeach
                                     </select>
@@ -294,7 +294,7 @@
     </div>
   </div>
 
-  
+ 
 @stop
 
 @section('css')
@@ -421,7 +421,7 @@
             document.getElementById('f-pagamento').style.display = 'block';
         }
         };
-        </script>
+</script>
 
 @stop
 
