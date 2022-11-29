@@ -125,6 +125,33 @@
 
                                 @case('4')
                                     <td>{{ $arrNomeOriogin[3] }}</td>
+                                @break
+                                @case('5')
+                                <td>{{ $arrNomeOriogin[4] }}</td>
+                                @break  
+                                @case('6')
+                                <td>{{ $arrNomeOriogin[5] }}</td>
+                                @break 
+                                @case('7')
+                                <td>{{ $arrNomeOriogin[6] }}</td>
+                                @break 
+                                @case('8')
+                                <td>{{ $arrNomeOriogin[7] }}</td>
+                                @break 
+                                @case('9')
+                                <td>{{ $arrNomeOriogin[8] }}</td>
+                                @break 
+                                @case('10')
+                                <td>{{ $arrNomeOriogin[9] }}</td>
+                                @break 
+                                @case('11')
+                                <td>{{ $arrNomeOriogin[10] }}</td>
+                                @break 
+                                @case('12')
+                                <td>{{ $arrNomeOriogin[11] }}</td>
+                                @break 
+                                @case('13')
+                                <td>{{ $arrNomeOriogin[12] }}</td>
                                 @break         
                                 
                                 @default
@@ -234,7 +261,19 @@
                                 @break 
                                 @case('6')
                                     <td>{{ $arrNomePayment[5] }}</td>
-                                @break                               
+                                @break  
+                                @case('7')
+                                <td>{{ $arrNomePayment[6] }}</td>
+                                @break
+                                @case('8')
+                                <td>{{ $arrNomePayment[7] }}</td>
+                                @break 
+                                @case('9')
+                                <td>{{ $arrNomePayment[8] }}</td>
+                                @break 
+                                @case('10')
+                                <td>{{ $arrNomePayment[9] }}</td>
+                                @break 
                             
                                 @default
                                     
