@@ -36,6 +36,7 @@ class OutputController extends Controller
         $payings_sources = PayingSource::all('nome', 'id');
         $payments_methodcad = PaymentMethod::where('tipo','Saida')->where('status','Ativo')->get();
         $payings_sourcecad = PayingSource::where('tipo','Saida')->where('status','Ativo')->get();
+        $originscad = Origin::where('tipo','Saida')->where('status','Ativo')->get();
         $total = Output::where('valor', '>', 0)->get()->sum->valor;
 
         if($request->status){
@@ -70,7 +71,8 @@ class OutputController extends Controller
             'payments_methods',
             'payments_methodcad',
             'payings_sourcecad',
-            'total'
+            'total',
+            'originscad'
         ]));
         
     }

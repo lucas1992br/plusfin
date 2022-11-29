@@ -131,7 +131,7 @@
                                      <label class="form-label">Origem</label>
                                      <select class="form-select-item select form-control form-control-sm" name="origin_id" searchable="Search here.." required="true">
                                         <option value="">Selecione uma Origem</option>
-                                        @foreach($origins as $item)
+                                        @foreach($originscad as $item)
                                             <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                         @endforeach
                                     </select>
