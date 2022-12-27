@@ -8,6 +8,25 @@
 @stop
 
 @section('content')
+<style>
+    .btn-label {
+        position: relative;
+        left: -12px;
+        display: inline-block;
+        padding: 6px 12px;
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 3px 0 0 3px;
+    }
+
+    .btn-labeled {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .btn {
+        margin-bottom: 10px;
+    }
+</style>
 
 <p>
     <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#filtro" role="button" aria-expanded="false" aria-controls="filtro">
@@ -28,7 +47,7 @@
                         <div class="col">
                             <label>Data Final</label>
                             <input type="date" name="data_final_search" class="form-control-sm form-control">
-                        </div>                          
+                        </div>
                         <div class="col">
                             <label>..</label></br>
                             <button type="submit" class="btn btn-secondary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>Pesquisar</button>
@@ -42,7 +61,8 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-end">
-        <a class="btn-success p-2 rounded text-decoration-none small mr-4" href="javascript:void(0)" data-toggle="modal"
+        <a class="btn-success p-2 rounded text-decoration-none small mr-4" id="newInput" href="javascript:void(0)"
+           data-toggle="modal"
             data-target="#register-new-item-modal">
             <i class="fa-plus-circle fas mr-2"></i>
             Entrada
@@ -55,11 +75,11 @@
     </div>
     <div class="card-body">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
+
         <div class="table-responsive">
-            
+
             <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
-                
+
                 <thead>
                     <tr class="small">
                         <th>Entradas</th>
@@ -76,21 +96,21 @@
                                   <td class="small">
                                     <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
                                     <b>{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</b>
-                                    Valor total da entrada 
-                                    @php                                                                     
+                                    Valor total da entrada
+                                    @php
                                     $origem = 0;
-                                    foreach ($item->receipts as $key) {                                    
-                                        $origem += $key->origin_valor;                                                                         
+                                    foreach ($item->receipts as $key) {
+                                        $origem += $key->origin_valor;
                                     }
                                     $recebimento = 0;
-                                    foreach ($item->payments as $key) {                                    
-                                        $recebimento += $key->payment_valor;                                                                         
+                                    foreach ($item->payments as $key) {
+                                        $recebimento += $key->payment_valor;
                                     }
                                     $total = $origem + $recebimento;
                                     @endphp
                                     - <b>{{ 'R$ '.number_format($total, 2, ',', '.') }}</b>
                                   </td>
-                                  
+
                                 </tr>
                                 <tr class="expandable-body d-none">
                                   <td>
@@ -99,44 +119,44 @@
                                         <thead>
                                             <tr class="small">
                                                 <th>Origem</th>
-                                                @php                                                                     
+                                                @php
                                                 $base = 0;
-                                                foreach ($item->receipts as $key) {                                    
-                                                    $base += $key->origin_valor;                                                                         
+                                                foreach ($item->receipts as $key) {
+                                                    $base += $key->origin_valor;
                                                 }
                                                 @endphp
-                                                
+
                                                 <th>Valor R$ <b>{{ 'R$ '.number_format($base, 2, ',', '.') }}</b></th>
                                             </tr>
                                         </thead>
-                                        <tbody>       
+                                        <tbody>
                                             @foreach ($item->receipts as $key)
                                             <tr class="small">
-                                                <td>{{ $key->origin->nome }}</td>                                            
-                                                <td> {{ 'R$ '.number_format($key->origin_valor, 2, ',', '.') }}</td>  
+                                                <td>{{ $key->origin->nome }}</td>
+                                                <td> {{ 'R$ '.number_format($key->origin_valor, 2, ',', '.') }}</td>
                                             </tr>
-                                            @endforeach                        
+                                            @endforeach
                                         </tbody>
                                         <thead>
                                             <tr class="small">
                                                 <th>Forma de Recebimento</th>
-                                                @php                                                                     
+                                                @php
                                                 $base = 0;
-                                                foreach ($item->payments as $key) {                                    
-                                                    $base += $key->payment_valor;                                                                         
+                                                foreach ($item->payments as $key) {
+                                                    $base += $key->payment_valor;
                                                 }
                                                 @endphp
-                                                
+
                                                 <th>Valor R$ <b>{{ 'R$ '.number_format($base, 2, ',', '.') }}</b></th>
                                             </tr>
                                         </thead>
-                                        <tbody>                                      
+                                        <tbody>
                                             @foreach ($item->payments as $key)
                                             <tr class="small">
-                                                <td>{{ $key->payments_methods->nome }}</td>                                            
-                                                <td> {{ 'R$ '.number_format($key->payment_valor, 2, ',', '.') }}</td>  
+                                                <td>{{ $key->payments_methods->nome }}</td>
+                                                <td> {{ 'R$ '.number_format($key->payment_valor, 2, ',', '.') }}</td>
                                             </tr>
-                                            @endforeach                                       
+                                            @endforeach
                                         </tbody>
                                       </table>
                                     </div>
@@ -146,14 +166,14 @@
                             </table>
                           </div>
                         </td>
-                      </tr>                
-                        <tr class="small">                                  
+                      </tr>
+                        <tr class="small">
                             <td>
                                 <!--<a role="button" title="Deletar" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
                                     <i class="fa fa-trash _i text-danger"></i>
-                                </a>-->                             
+                                </a>-->
                                 <a role="button" title="Editar" class="edit-row-js ml-2" data-route="{{route('entradas.show', $item->id)}}">
-                                    <i class="fas fa-plus"> Adicionar entradas</i> 
+                                    <i class="fas fa-plus"> Adicionar entradas</i>
                                 </a>
                                 @if (count($item->files) > 0)
                                 <a role="button" title="Arquivos" class="view-row-js ml-2" data-files="{{$item->files}}">
@@ -162,7 +182,7 @@
                                 @endif
                             </td>
                         </tr>
-                        
+
                     @endforeach
                 </tbody>
             </table>
@@ -178,68 +198,78 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-            </div>            
+            </div>
                 <div class="modal-body">
-                   
+
                     <div class="container">
+                    <form method="POST" action="" id="testForm" class="needs-validation" novalidate>
+                        @csrf
                         <div class="col-sm mb-3">
-                            <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>
-                                @csrf
+                            {{--                            <form method="POST" action="{{ route('entradas.store') }}" class="needs-validation" novalidate>--}}
+{{--                            <form>--}}
+{{--                                @csrf--}}
                                 <label class="form-label">Data:</label>
                                 <input type="date" class="form-control form-control-sm" name="data" id="data" row='3' required="true">
-                                <button class='btn btn-sm mt-2 btn-success d-flex' id='btnCriarEntrada'>Criar Entrada</button>
-                            </form>
+                                {{--                                <button class='btn btn-sm mt-2 btn-success d-flex' id='btnCriarEntrada'>Criar Entrada</button>--}}
+{{--                            </form>--}}
                         </div>
-
-
-                    <form method="POST" action="" class="needs-validation" novalidate>
-                        @csrf                        
-                        <div class='d-none' id='entradas-detalhes'>
+                        <hr>
+                        <div class='mt-6' id='entradas-detalhes'>
                             <div class="form-row col-sm">
                                 <input type="hidden" name='idEntrada' id='idEntrada'>
                                 <div class="col-sm-8">
                                     <label class="form-label">Origens:</label>
-                                    <select class="form-select-item select form-control form-control-sm" name="origin_id" id="origin_id" searchable="Search here.." required="true">
+                                    <select class="form-select-item select form-control form-control-sm"
+                                            name="origins[0]" id="origin_id" searchable="Search here.." required="true">
                                         <option value="">Selecione uma Origem</option>
                                         @foreach($origins as $item)
                                             <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                         @endforeach
-                                    </select>                                      
+                                    </select>
                                 </div>
-                                <div class="col-sm">  
+                                <div class="col-sm">
                                     <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="origin_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                                    <input type="text" id="valor" name="origin_valor[0]" class="valor form-control-sm
+                                    form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
-                            </div> 
+                            </div>
                             <div class="form-row col-sm mt-2">
                                 <div class="col-sm-8">
                                     <label class="form-label">Forma de Recebimento:</label>
-                                    <select class="form-select-item select form-control form-control-sm" name="payment_methods_id"  id="payment_methods_id" searchable="Search here.." required="true">
+                                    <select class="form-select-item select form-control form-control-sm"
+                                            name="payment_methods[0]"  id="payment_methods_id" searchable="Search here
+                                            .." required="true">
                                         <option value="">Selecione um recebimento</option>
                                         @foreach($payments_methods as $item)
                                             <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                         @endforeach
-                                    </select>                                      
+                                    </select>
                                 </div>
-                                <div class="col-sm">  
+                                <div class="col-sm">
                                     <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor2" name="payment_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                                    <input type="text" id="valor2" name="payment_valor[0]" class="valor form-control-sm
+                                     form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
                             </div>
+                        </div>
+                        <div class='' id='entradas-detalhes-add'>
+                        </div>
 
-                            <div class="modal-footer">
-                                <button class="btn btn-primary" id='btnSalvarDetalhes' type="submit">Salvar</button>
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            </div>
-                        </div>                    
+                        <div class="modal-footer">
+                            <button type="button" id="addNewLines" class="btn btn-labeled btn-success">
+                                    <span class="btn-label"><i class="fa fa-plus">
+                                        </i></span>Origem/Recebimento</button>
+                            <button class="btn btn-primary" id='btnSalvarDetalhes' type="submit">Salvar</button>
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        </div>
                     </form>
 
 
-                    </div>                       
-                </div>                            
+                    </div>
+                </div>
         </div>
     </div>
-</div> 
+</div>
 <!-- Modal Editar -->
 <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
@@ -250,7 +280,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form id="edit-form" class="needs-validation" method="POST" novalidate>                
+            <form id="edit-form" class="needs-validation" method="POST" novalidate>
                 <div class="modal-body">
                     @method('PUT')
                     @csrf
@@ -262,7 +292,7 @@
                             <div class="col-sm-7">
                                 <input type="date" name="data" class="form-control form-control-sm" id='edit_data'>
                             </div>
-                        </div>   
+                        </div>
                         <div class="form-row col-sm">
                             <div class="col-sm-8">
                                 <label class="form-label">Origens:</label>
@@ -271,13 +301,13 @@
                                     @foreach($origins as $item)
                                         <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                     @endforeach
-                                </select>                                      
+                                </select>
                             </div>
-                            <div class="col-sm">  
+                            <div class="col-sm">
                                 <label class="form-label" for="valor">Valor:</label>
                                 <input type="text" id="valor" name="origin_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                             </div>
-                        </div> 
+                        </div>
                         <div class="form-row col-sm mt-2">
                             <div class="col-sm-8">
                                 <label class="form-label">Forma de Recebimento:</label>
@@ -286,15 +316,15 @@
                                     @foreach($payments_methods as $item)
                                         <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                     @endforeach
-                                </select>                                      
+                                </select>
                             </div>
-                            <div class="col-sm">  
+                            <div class="col-sm">
                                 <label class="form-label" for="valor">Valor:</label>
                                 <input type="text" id="valor" name="payment_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                             </div>
                         </div>
-                    </div>                                                                         
-                    
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="submit">Salvar</button>
@@ -304,7 +334,7 @@
         </div>
     </div>
 </div>
- 
+
 <!-- Modal Visualização de arquivos -->
 <div class="modal fade" id="view-files-modal" aria-labelledby="view-modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -343,68 +373,126 @@
 
 
 <script>
-    //Cria uma nova entrada pelo ajax [InputController::store]
-    let btnCriarEntrada = document.querySelector('#btnCriarEntrada');
-    btnCriarEntrada.addEventListener('click',async(e)=>{
-        e.preventDefault();
-        let data = document.querySelector('#data').value;        
-        let reqs = await fetch('/entradas',{
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body:JSON.stringify({'data': data})
-        });
-        let ress = await reqs.json();
-        document.querySelector('#idEntrada').value=ress;
 
-        document.querySelector('#entradas-detalhes').classList.remove('d-none');
-    });
-
+    let contadorOrigens=0;
+    function SomatoriaOrigens(){
+        console.log('somarOrigens');
+    }
 
     //Cria os detalhes da entrada [InputController::detalhes]
     let btnSalvarDetalhes = document.querySelector('#btnSalvarDetalhes');
     btnSalvarDetalhes.addEventListener('click',async(e)=>{
         e.preventDefault();
-        let id = document.querySelector('#idEntrada').value;
-        let origin_id = document.querySelector('#origin_id').value;
-        let origin_valor = document.querySelector('#valor').value;
-        let payment_methods_id = document.querySelector('#payment_methods_id').value;
-        let payment_valor = document.querySelector('#valor2').value;
-               
-        let reqs = await fetch('entrada/detalhes',{
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body:JSON.stringify({
-                'id': id,
-                'origin_id':origin_id,
-                'origin_valor':origin_valor,
-                'payment_methods_id':payment_methods_id,
-                'payment_valor':payment_valor
-            })
-            
+
+        $('input').each(function() {
+            if(!$(this).val()){
+                alert('Some fields are empty');
+                return false;
+            }
         });
-        let ress = await reqs.json();  
-           
-        
+
+        $.ajax({
+            type: "POST",
+            url: "entrada/detalhes",
+            data:  $("#testForm").serialize(),
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+            console.log(data);
+        }).fail(function (data) {
+            Swal.fire(
+                'Houve um erro para dar entrada.',
+                'Entre em contato com nosso suporte.',
+                'error'
+            )
+        });
+
     });
-   
+
+    $("#newInput").click(function (){
+
+        console.log('clicou no nova entrada');
+        $("#entradas-detalhes-add").empty();
+        contadorOrigens=0;
+    });
+
+
+    $("#addNewLines").click(function (){
+        contadorOrigens++
+        var html=gerarHtmlOrigemFormaPagamento(contadorOrigens);
+        $("#entradas-detalhes-add").append(html);
+        $('.valor').mask('#.##0,00', {reverse: true});
+
+    });
+
+
+
+    function gerarHtmlOrigemFormaPagamento(contadorOrigens){
+
+        var arrayFormasPagamento=$.parseJSON(sessionStorage.paymentsMethodsData);
+        var arrayOrigins=$.parseJSON(sessionStorage.originsData);
+
+        arrayFormasPagamento=$.parseJSON(arrayFormasPagamento);
+        arrayOrigins=$.parseJSON(arrayOrigins);
+
+        var htmlFormasPagamento='';
+        var htmlOrigins='';
+        arrayFormasPagamento.forEach(function(item) {
+            htmlFormasPagamento+='<option value="'+item.id+'">'+item.nome+'</option>';
+        });
+
+        arrayOrigins.forEach(function(item) {
+            htmlOrigins+='<option value="'+item.id+'">'+item.nome+'</option>';
+        });
+
+        var origem='<hr><div class="form-row col-sm">' +
+            '<div class="col-sm-8">' +
+            '<label class="form-label">Origens:</label>'+
+            '<select class="form-select-item select form-control form-control-sm" name="origins['+contadorOrigens+']" ' +
+            'id="origin_id" searchable="Search here.." required="true">'+
+            ' <option value="">Selecione uma Origem</option>'+
+                htmlOrigins+
+            ' </select>'+
+            '</div>'+
+            '<div class="col-sm">'+
+            '<label class="form-label" for="valor">Valor:</label>'+
+            '<input type="text" id="valor" name="origin_valor['+contadorOrigens+']" class="valor form-control-sm form-control o1" ' +
+            'style="display:inline-block" onkeyup="SomatoriaOrigens()">'+
+            '</div>'+
+            '</div>';
+
+        var forma_pagamento='<div class="form-row col-sm mt-2">'+
+                            '<div class="col-sm-8">'+
+                            '<label class="form-label">Forma de Recebimento:</label>'+
+                            '<select class="form-select-item select form-control form-control-sm" ' +
+            'name="payment_methods['+contadorOrigens+']"  id="payment_methods_id" searchable="Search here.." required="true">'+
+                            '<option value="">Selecione um recebimento</option>'+
+                             htmlFormasPagamento+
+                            '</select>'+
+                            '</div>'+
+                            '<div class="col-sm">'+
+                            '<label class="form-label" for="valor">Valor:</label>'+
+                            ' <input type="text" id="valor2" name="payment_valor['+contadorOrigens+']" class="valor form-control-sm ' +
+            'form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">'+
+                            '</div>'+
+                            '</div>';
+
+        var delButton='<div class="form-row col-sm mt-2">'+
+            '<div class="col-sm">'+
+            '<a class="btn btn-danger" onclick="removerOrigemEPagamento('+contadorOrigens+')"> Remover </a>'+
+            '</div>'+
+            '</div>';
+
+        return '<div id="entradas-detalhes-add-child-'+contadorOrigens+'">'+origem+forma_pagamento+delButton+'</div>';
+    }
+
+
+
+        function removerOrigemEPagamento(contadorOrigemPagamento){
+            $("#entradas-detalhes-add-child-"+contadorOrigemPagamento).remove();
+        }
+
 </script>
-
-
-
-
-
-
-
-
-
-
-
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -463,8 +551,8 @@
                 },
                 url: $(this).data('route'),
                 success: (response, textStatus, xhr) => {
-                    editItemId = response.id;                  
-                    $('#edit_data').val(response.data);               
+                    editItemId = response.id;
+                    $('#edit_data').val(response.data);
                     $('#edit-form').attr('action', `entradas/${editItemId}`);
                     $('#edit-item-modal').modal('show');
                 },
@@ -492,9 +580,17 @@
             $('#view-files-modal').modal('show');
         });
 
-       
+
+        $.get( "all-payment-methods", function( data ) {
+            sessionStorage.setItem("paymentsMethodsData",JSON.stringify(data));
+        });
+
+        $.get( "all-origins/Entrada", function( data ) {
+            sessionStorage.setItem("originsData",JSON.stringify(data));
+        });
+
     });
-   
+
 </script>
 @stop
 

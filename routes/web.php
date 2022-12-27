@@ -65,9 +65,13 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('forma-pagamento', PaymentMethodController::class);
 
+    Route::get('all-payment-methods', [PaymentMethodController::class,'getAllPaymentMethods'])->name('buscar-metodos-pagamento');
+
     Route::resource('fonte-pagante', PayingSourceController::class);
 
     Route::resource('origem', OriginController::class);
+
+    Route::get('all-origins/{id}', [OriginController::class,'getAllOriginByType']);
 
     Route::resource('saidas', OutputController::class);
 
@@ -100,7 +104,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-   
+
 });
 
 Auth::routes();

@@ -18,6 +18,44 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    btnCriarEntrada
+
+    <div class='' id='entradas-detalhes'>
+        <div class="form-row col-sm">
+            <input type="hidden" name='idEntrada' id='idEntrada'>
+            <div class="col-sm-8">
+                <label class="form-label">Origens:</label>
+                <select class="form-select-item select form-control form-control-sm" name="origin_id" id="origin_id" searchable="Search here.." required="true">
+                    <option value="">Selecione uma Origem</option>
+                    @foreach($origins as $item)
+                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-sm">
+                <label class="form-label" for="valor">Valor:</label>
+                <input type="text" id="valor" name="origin_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+            </div>
+        </div>
+        <div class="form-row col-sm mt-2">
+            <div class="col-sm-8">
+                <label class="form-label">Forma de Recebimento:</label>
+                <select class="form-select-item select form-control form-control-sm" name="payment_methods_id"  id="payment_methods_id" searchable="Search here.." required="true">
+                    <option value="">Selecione um recebimento</option>
+                    @foreach($payments_methods as $item)
+                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-sm">
+                <label class="form-label" for="valor">Valor:</label>
+                <input type="text" id="valor2" name="payment_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+            </div>
+        </div>
+    </div>
+
+
 </head>
 <body>
     <div id="app">
