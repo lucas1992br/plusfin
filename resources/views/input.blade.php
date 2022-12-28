@@ -219,7 +219,7 @@
                                 <input type="hidden" name='idEntrada' id='idEntrada'>
                                 <div class="col-sm-8">
                                     <label class="form-label">Origens:</label>
-                                    <select class="form-select-item select form-control form-control-sm"
+                                    <select class="select-origin form-select-item select form-control form-control-sm"
                                             name="origins[0]" id="origin_id" searchable="Search here.." required="true">
                                         <option value="">Selecione uma Origem</option>
                                         @foreach($origins as $item)
@@ -229,14 +229,16 @@
                                 </div>
                                 <div class="col-sm">
                                     <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor" name="origin_valor[0]" class="valor form-control-sm
+                                    <input type="text" id="valor_origin" name="origin_valor[0]" class="valor valor_origin
+                                    form-control-sm
                                     form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
                             </div>
                             <div class="form-row col-sm mt-2">
                                 <div class="col-sm-8">
                                     <label class="form-label">Forma de Recebimento:</label>
-                                    <select class="form-select-item select form-control form-control-sm"
+                                    <select class="select-pagamento form-select-item select form-control
+                                    form-control-sm"
                                             name="payment_methods[0]"  id="payment_methods_id" searchable="Search here
                                             .." required="true">
                                         <option value="">Selecione um recebimento</option>
@@ -247,7 +249,9 @@
                                 </div>
                                 <div class="col-sm">
                                     <label class="form-label" for="valor">Valor:</label>
-                                    <input type="text" id="valor2" name="payment_valor[0]" class="valor form-control-sm
+                                    <input type="text" id="valor_pagamento" name="payment_valor[0]" class="valor
+                                    valor_pagamento
+                                    form-control-sm
                                      form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                                 </div>
                             </div>
@@ -305,7 +309,8 @@
                             </div>
                             <div class="col-sm">
                                 <label class="form-label" for="valor">Valor:</label>
-                                <input type="text" id="valor" name="origin_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                                <input type="text" id="valor_origin_update" name="origin_valor" class="valor
+                                form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
                             </div>
                         </div>
                         <div class="form-row col-sm mt-2">
@@ -381,32 +386,152 @@
 
     //Cria os detalhes da entrada [InputController::detalhes]
     let btnSalvarDetalhes = document.querySelector('#btnSalvarDetalhes');
+
+
     btnSalvarDetalhes.addEventListener('click',async(e)=>{
         e.preventDefault();
 
-        $('input').each(function() {
-            if(!$(this).val()){
-                alert('Some fields are empty');
-                return false;
+        var flagValidate=true;
+        var flagValidateValue=true;
+        var contadorOriginValue=0;
+        var contadorPagamentoValue=0;
+        var value=0;
+
+
+        $('.valor_origin').each(function (){
+            if($(this).val()!=''){
+                value=$(this).val().replace(',', '');
+                value=value.replace('.', '');
+                contadorOriginValue+=parseInt(value);
+            }
+
+        });
+
+        $('.valor_pagamento').each(function (){
+            if($(this).val()!=''){
+                value=$(this).val().replace(',', '');
+                value=value.replace('.', '');
+                contadorPagamentoValue+=parseInt(value);
             }
         });
 
-        $.ajax({
-            type: "POST",
-            url: "entrada/detalhes",
-            data:  $("#testForm").serialize(),
-            dataType: "json",
-            encode: true,
-        }).done(function (data) {
-            console.log(data);
-        }).fail(function (data) {
-            Swal.fire(
-                'Houve um erro para dar entrada.',
-                'Entre em contato com nosso suporte.',
-                'error'
-            )
+        $('.valor_origin').each(function() {
+
+            console.log($(this).val());
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
         });
 
+
+        $('#data').each(function() {
+
+            console.log($(this).val());
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+        $('.valor_pagamento').each(function() {
+
+            console.log($(this).val());
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+        $('.select-pagamento').each(function() {
+            console.log($(this).val());
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+        $('.select-origin').each(function() {
+            console.log($(this).val());
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+
+        if(contadorPagamentoValue!=contadorOriginValue){
+            console.log('diferente');
+            console.log('ContadorOrigin'+contadorOriginValue);
+            console.log('ContadorPagamento'+contadorPagamentoValue);
+            flagValidateValue=false;
+        }else{
+            console.log('N diferente');
+        }
+
+        if(flagValidateValue==false){
+
+            Swal.fire(
+                'Houve um erro para dar entrada.',
+                'A soma de valores Origem/Pagamento devem ser iguais.',
+                'warning'
+            )
+            return;
+        }
+
+        if(flagValidate==true){
+            $.ajax({
+                type: "POST",
+                url: "entrada/detalhes",
+                data:  $("#testForm").serialize(),
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                Swal.fire(
+                    'Sucesso!',
+                    data.msg,
+                    'success'
+                ).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if(result.isConfirmed){
+                        location.reload();
+                    }else if(result.isDismissed){
+                        location.reload();
+                    }
+                })
+            }).fail(function (data) {
+                Swal.fire(
+                    'Houve um erro para dar entrada.',
+                    'Entre em contato com nosso suporte.',
+                    'error'
+                )
+            });
+        }else{
+            Swal.fire(
+                'Preencha todos os campos para prosseguir.',
+                '',
+                'warning'
+            )
+        }
+
+    });
+
+    $('select').change(function (){
+        $(this).css("borderColor","");
+    });
+
+    $('input').change(function (){
+        $(this).css("borderColor","");
     });
 
     $("#newInput").click(function (){
@@ -422,6 +547,13 @@
         var html=gerarHtmlOrigemFormaPagamento(contadorOrigens);
         $("#entradas-detalhes-add").append(html);
         $('.valor').mask('#.##0,00', {reverse: true});
+        $('select').change(function (){
+            $(this).css("borderColor","");
+        });
+
+        $('input').change(function (){
+            $(this).css("borderColor","");
+        });
 
     });
 
@@ -448,7 +580,8 @@
         var origem='<hr><div class="form-row col-sm">' +
             '<div class="col-sm-8">' +
             '<label class="form-label">Origens:</label>'+
-            '<select class="form-select-item select form-control form-control-sm" name="origins['+contadorOrigens+']" ' +
+            '<select class="select-origin form-select-item select form-control form-control-sm" ' +
+            'name="origins['+contadorOrigens+']" ' +
             'id="origin_id" searchable="Search here.." required="true">'+
             ' <option value="">Selecione uma Origem</option>'+
                 htmlOrigins+
@@ -456,7 +589,8 @@
             '</div>'+
             '<div class="col-sm">'+
             '<label class="form-label" for="valor">Valor:</label>'+
-            '<input type="text" id="valor" name="origin_valor['+contadorOrigens+']" class="valor form-control-sm form-control o1" ' +
+            '<input type="text" id="valor_origin" name="origin_valor['+contadorOrigens+']" class="valor valor_origin ' +
+            'form-control-sm form-control o1" ' +
             'style="display:inline-block" onkeyup="SomatoriaOrigens()">'+
             '</div>'+
             '</div>';
@@ -464,7 +598,7 @@
         var forma_pagamento='<div class="form-row col-sm mt-2">'+
                             '<div class="col-sm-8">'+
                             '<label class="form-label">Forma de Recebimento:</label>'+
-                            '<select class="form-select-item select form-control form-control-sm" ' +
+                            '<select class="select-pagamento form-select-item select form-control form-control-sm" ' +
             'name="payment_methods['+contadorOrigens+']"  id="payment_methods_id" searchable="Search here.." required="true">'+
                             '<option value="">Selecione um recebimento</option>'+
                              htmlFormasPagamento+
@@ -472,7 +606,8 @@
                             '</div>'+
                             '<div class="col-sm">'+
                             '<label class="form-label" for="valor">Valor:</label>'+
-                            ' <input type="text" id="valor2" name="payment_valor['+contadorOrigens+']" class="valor form-control-sm ' +
+                            ' <input type="text" id="valor_pagamento" name="payment_valor['+contadorOrigens+']" ' +
+            'class="valor valor_pagamento form-control-sm ' +
             'form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">'+
                             '</div>'+
                             '</div>';

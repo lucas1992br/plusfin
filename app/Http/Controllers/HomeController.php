@@ -31,7 +31,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $methods = Output::all();             
+        $methods = Output::all();
         $activities = Activity::all('nome', 'id');
         $origins = Origin::all('nome', 'id');
         $payments_methods = PaymentMethod::all('nome', 'id');
@@ -39,13 +39,39 @@ class HomeController extends Controller
         $aporte = Aporte::all();
         $payments = PaymentMethod::all('nome', 'id');
 
-        $dre_payment = Input::select("input_payment.payment_methods_id",DB::raw('SUM(input_payment.payment_valor) as Total'))
-        ->join('input_payment', 'inputs.id', '=', 'input_payment.input_id')
-        ->groupBy('input_payment.payment_methods_id')           
-        ->get();
-        
-        
-        
+        $inputPayment=DB::select("SELECT pm.nome as nomePagamento,ip.payment_methods_id,sum(ip.payment_valor) as total
+                                        FROM plusfin_db.input_payment ip
+                                            join payment_methods pm on pm.id=ip.payment_methods_id
+                                                group by ip.payment_methods_id
+                            ");
+
+        $outputPayment=DB::select("SELECT pm.nome,sum(valor) as total FROM plusfin_db.outputs o join payment_methods pm on pm.id=o.payment_methods_id;");
+
+        $arrayDRE= null;
+
+        foreach ($outputPayment as $output){
+            $arrayOutput[$output->nome]=null;
+            $arrayOutput[$output->nome]['outputValue']=0;
+            $arrayOutput[$output->nome]['paymentName']=$output->nome;
+        }
+
+        foreach ($inputPayment as $input){
+            $arrayDRE[$input->nomePagamento]=null;
+            $arrayDRE[$input->nomePagamento]['inputValue']=0;
+        }
+
+
+        foreach ($outputPayment as $output){
+            $arrayOutput[$output->nome]['outputValue']=$output->total;
+        }
+
+        foreach ($inputPayment as $input){
+            $arrayDRE[$input->nomePagamento]['inputValue']+=$input->total;
+            $arrayDRE[$input->nomePagamento]['paymentName']=$input->nomePagamento;
+
+        }
+
+
         return view('home', compact([
             'methods',
             'activities',
@@ -53,7 +79,8 @@ class HomeController extends Controller
             'payings_sources' ,
             'payments_methods',
             'aporte',
-            'dre_payment'
+            'arrayDRE',
+            'arrayOutput'
         ]));
     }
 

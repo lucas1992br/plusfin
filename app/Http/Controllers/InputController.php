@@ -192,7 +192,10 @@ class InputController extends Controller
             }
 
             DB::commit();
-
+            return response()->json([
+                'success' => 'true',
+                'msg'  => 'Entrada efetuada com sucesso',
+            ], 200);
         }catch (Exception $e){
             DB::rollBack();
             return response()->json([
