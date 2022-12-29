@@ -76,12 +76,30 @@
     <div class="card-body">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <div class="table-responsive">
 
+        <div class="table-responsive-lg">
+            <table class="table">
+                <thead>
+                <tr>
+                   <div class="col-2">DATA</div>
+                </tr>
+
+                    <tr>
+                        <th>Data</th>
+                        <th>Formas de Recebimento</th>
+                        <th>Valor Total Entradas</th>
+                        <th>Retirada</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+
+        <div class="table-responsive">
             <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
 
                 <thead>
-                    <tr class="small">
+                    <tr class="">
                         <th>Entradas</th>
                     </tr>
                 </thead>
@@ -92,7 +110,7 @@
                           <div class="p-0">
                             <table class="table table-hover">
                               <tbody>
-                                <tr data-widget="expandable-table" aria-expanded="false">
+                                <tr data-widget="expandable-table" aria-expanded="true">
                                   <td class="small">
                                     <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
                                     <b>{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</b>
@@ -112,30 +130,30 @@
                                   </td>
 
                                 </tr>
-                                <tr class="expandable-body d-none">
+                                <tr class="expandable-body">
                                   <td>
                                     <div class="p-0" style="display: none;">
                                       <table class="table table-hover">
                                         <thead>
                                             <tr class="small">
-                                                <th>Origem</th>
-                                                @php
-                                                $base = 0;
-                                                foreach ($item->receipts as $key) {
-                                                    $base += $key->origin_valor;
-                                                }
-                                                @endphp
-
-                                                <th>Valor R$ <b>{{ 'R$ '.number_format($base, 2, ',', '.') }}</b></th>
+                                                <th style="text-align: center">Origem</th>
+                                                <th style="text-align: center">Forma de Recebimento</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($item->receipts as $key)
                                             <tr class="small">
+                                            @foreach ($item->receipts as $key)
+
                                                 <td>{{ $key->origin->nome }}</td>
-                                                <td> {{ 'R$ '.number_format($key->origin_valor, 2, ',', '.') }}</td>
-                                            </tr>
                                             @endforeach
+                                            </tr>
+                                            <tr>
+                                                @foreach ($item->receipts as $key)
+
+                                                    <td> {{ 'R$ '.number_format($key->origin_valor, 2, ',', '.') }}</td>
+                                                @endforeach
+
+                                            </tr>
                                         </tbody>
                                         <thead>
                                             <tr class="small">
@@ -172,9 +190,9 @@
                                 <!--<a role="button" title="Deletar" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
                                     <i class="fa fa-trash _i text-danger"></i>
                                 </a>-->
-                                <a role="button" title="Editar" class="edit-row-js ml-2" data-route="{{route('entradas.show', $item->id)}}">
-                                    <i class="fas fa-plus"> Adicionar entradas</i>
-                                </a>
+{{--                                <a role="button" title="Editar" class="edit-row-js ml-2" data-route="{{route('entradas.show', $item->id)}}">--}}
+{{--                                    <i class="fas fa-plus"> Adicionar entradas</i>--}}
+{{--                                </a>--}}
                                 @if (count($item->files) > 0)
                                 <a role="button" title="Arquivos" class="view-row-js ml-2" data-files="{{$item->files}}">
                                     <i class="fa fa-eye _i text-navy"></i>
@@ -187,6 +205,7 @@
                 </tbody>
             </table>
         </div>
+
     </div>
 </div>
 
