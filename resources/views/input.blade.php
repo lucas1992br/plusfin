@@ -73,134 +73,55 @@
             Entrada Banco
         </a>-->
     </div>
-    <div class="card-body">
+    <div class="card-body" >
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
-        <div class="table-responsive-lg">
-            <table class="table">
-                <thead>
-                <tr>
-                   <div class="col-2">DATA</div>
-                </tr>
-
-                    <tr>
-                        <th>Data</th>
-                        <th>Formas de Recebimento</th>
-                        <th>Valor Total Entradas</th>
-                        <th>Retirada</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-
-
         <div class="table-responsive">
-            <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
+            <table id="table" class="table table-sm table-striped table-bordered" width="100%" cellspacing="0">
 
                 <thead>
                     <tr class="">
-                        <th>Entradas</th>
+                        Entradas
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($methods ?? '' as $item)
-                    <tr class="expandable-body">
-                        <td>
-                          <div class="p-0">
-                            <table class="table table-hover">
-                              <tbody>
-                                <tr data-widget="expandable-table" aria-expanded="true">
-                                  <td class="small">
-                                    <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
-                                    <b>{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y')}}</b>
-                                    Valor total da entrada
-                                    @php
-                                    $origem = 0;
-                                    foreach ($item->receipts as $key) {
-                                        $origem += $key->origin_valor;
-                                    }
-                                    $recebimento = 0;
-                                    foreach ($item->payments as $key) {
-                                        $recebimento += $key->payment_valor;
-                                    }
-                                    $total = $origem + $recebimento;
-                                    @endphp
-                                    - <b>{{ 'R$ '.number_format($total, 2, ',', '.') }}</b>
-                                  </td>
+                <tr style="text-align: center">
+                    <th rowspan="">Data Entrada</th>
+                    <th colspan="{{count($origins)}}">Origens</th>
+                    <th colspan="{{count($payments_methods)+1}}">Forma de Pagamentos</th>
+                    <th colspan="2">Ações</th>
+                </tr>
 
-                                </tr>
-                                <tr class="expandable-body">
-                                  <td>
-                                    <div class="p-0" style="display: none;">
-                                      <table class="table table-hover">
-                                        <thead>
-                                            <tr class="small">
-                                                <th style="text-align: center">Origem</th>
-                                                <th style="text-align: center">Forma de Recebimento</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="small">
-                                            @foreach ($item->receipts as $key)
+                @foreach($methods as $input)
 
-                                                <td>{{ $key->origin->nome }}</td>
-                                            @endforeach
-                                            </tr>
-                                            <tr>
-                                                @foreach ($item->receipts as $key)
+                <tr style="text-align: center">
+                    <th rowspan="2">02/01/2023</th>
+                    @foreach($origins as $origem)
+                        <th>{{$origem->nome}}</th>
+                    @endforeach
+                    @foreach($payments_methods as $pagamentos)
+                        <th>{{$pagamentos->nome}}</th>
+                    @endforeach
+                    <th>Total</th>
+                    <td rowspan="2"><i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg></i></td>
+                    <td rowspan="2"><i ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg></i></td>
+                </tr>
 
-                                                    <td> {{ 'R$ '.number_format($key->origin_valor, 2, ',', '.') }}</td>
-                                                @endforeach
+                <tr style="text-align: center">
+                    @foreach($origins as $origem)
+                        <td>{{$input->originById($origem->id)}}</td>
 
-                                            </tr>
-                                        </tbody>
-                                        <thead>
-                                            <tr class="small">
-                                                <th>Forma de Recebimento</th>
-                                                @php
-                                                $base = 0;
-                                                foreach ($item->payments as $key) {
-                                                    $base += $key->payment_valor;
-                                                }
-                                                @endphp
-
-                                                <th>Valor R$ <b>{{ 'R$ '.number_format($base, 2, ',', '.') }}</b></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($item->payments as $key)
-                                            <tr class="small">
-                                                <td>{{ $key->payments_methods->nome }}</td>
-                                                <td> {{ 'R$ '.number_format($key->payment_valor, 2, ',', '.') }}</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </td>
-                      </tr>
-                        <tr class="small">
-                            <td>
-                                <!--<a role="button" title="Deletar" class="delete-row-js" data-route="{{route('entradas.destroy',$item->id)}}">
-                                    <i class="fa fa-trash _i text-danger"></i>
-                                </a>-->
-{{--                                <a role="button" title="Editar" class="edit-row-js ml-2" data-route="{{route('entradas.show', $item->id)}}">--}}
-{{--                                    <i class="fas fa-plus"> Adicionar entradas</i>--}}
-{{--                                </a>--}}
-                                @if (count($item->files) > 0)
-                                <a role="button" title="Arquivos" class="view-row-js ml-2" data-files="{{$item->files}}">
-                                    <i class="fa fa-eye _i text-navy"></i>
-                                </a>
-                                @endif
-                            </td>
-                        </tr>
-
+                    @endforeach
+                    @foreach($payments_methods as $pagamentos)
+                        <td>{{$input->paymentsById($pagamentos->id)}}</td>
+                    @endforeach
+                        <td>{{$input->totalValue()}}</td>
+                </tr>
                     @endforeach
                 </tbody>
             </table>

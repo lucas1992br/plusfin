@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Exception;
 use App\Models\Input;
 use App\Models\Origin;
@@ -31,9 +32,14 @@ class InputController extends Controller
      */
     public function index(Request $request)
     {
-        $methods = Input::all();
+
+        $endDateMonth=Carbon::now()->endOfMonth()->toDateString();
+        $firstDateMonth=Carbon::now()->startOfMonth()->toDateString();
+
+        $methods = Input::where('data','>=',$firstDateMonth)->where('data','<',$endDateMonth)->get();
+
         $origins = Origin::where('status','Ativo')->where('tipo','Entrada')->get();
-        $payments_methods = PaymentMethod::where('status','Ativo')->where('tipo','Entrada')->get();
+        $payments_methods = PaymentMethod::where('status','Ativo')->where('tipo','Entrada')->orderBy('id', 'DESC')->get();
         $payings_sources = PayingSource::all('nome', 'id');
 
         if($request->data_inicial_search && $request->data_final_search){
