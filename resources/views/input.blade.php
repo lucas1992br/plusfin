@@ -92,6 +92,13 @@
                     <th colspan="2">Ações</th>
                 </tr>
 
+                <?php
+                $arrayOrigem =array();
+                $totalValue=0;
+                $arrayPagamentos =array();
+                ?>
+
+
                 @foreach($methods as $input)
 
                 <tr style="text-align: center">
@@ -103,26 +110,56 @@
                         <th>{{$pagamentos->nome}}</th>
                     @endforeach
                     <th>Total</th>
-                    <td rowspan="2"><i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <td rowspan="2"><i onclick="editInput({{$input->id}})"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16"
+                                                               height="16"
+                                             fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                             </svg></i></td>
-                    <td rowspan="2"><i ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <td rowspan="2"><i onclick="deleteInput({{$input->id}})"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="16"
+                                              fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                 <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                             </svg></i></td>
                 </tr>
 
                 <tr style="text-align: center">
-                    @foreach($origins as $origem)
-                        <td>{{$input->originById($origem->id)}}</td>
+                    @foreach($origins as $index => $origem)
+                        <?php
+                            if(!isset($arrayOrigem[$index])){
+                                $arrayOrigem[$index]=0;
+                            }
+                            $valorOrigem=$input->originById($origem->id);
+                            $arrayOrigem[$index]+=$valorOrigem;
+                        ?>
+                        <td>R$ {{number_format($valorOrigem,2)}}</td>
 
                     @endforeach
-                    @foreach($payments_methods as $pagamentos)
-                        <td>{{$input->paymentsById($pagamentos->id)}}</td>
+                    @foreach($payments_methods as $index => $pagamentos)
+                                <?php
+                                if(!isset($arrayPagamentos[$index])){
+                                    $arrayPagamentos[$index]=0;
+                                }
+                                $valorPagamentos=$input->paymentsById($pagamentos->id);
+                                $arrayPagamentos[$index]+=$valorPagamentos;
+                                ?>
+                        <td>R$ {{number_format($valorPagamentos,2)}}</td>
                     @endforeach
-                        <td>{{$input->totalValue()}}</td>
+                        <td>R$ {{number_format($input->totalValue(),2)}}</td>
                 </tr>
                     @endforeach
+
+                <tr style="text-align: center">
+                    <th>Total</th>
+                    @foreach($arrayOrigem as $index => $origemValue)
+                        <td>R$ {{number_format($origemValue,2)}}</td>
+                    @endforeach
+                    @foreach($arrayPagamentos as $index => $pagamentosValue)
+                        <td>R$ {{number_format($pagamentosValue,2)}}</td>
+                    @endforeach
+                    <td>R$ {{number_format($input->totalValue(),2)}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -198,13 +235,24 @@
                         </div>
                         <div class='' id='entradas-detalhes-add'>
                         </div>
-
                         <div class="modal-footer">
+                            <div class="col-sm-12 alert alert-danger" id="empty-inputs" style="display: none"
+                                 role="alert">Preencha todos os campos para prosseguir.<button id="close-alert-inputs"
+                               type="button" class="close" aria-label="Close">                      <span aria-hidden="true">&times;</span>
+                                </button></div>
+
+                            <div class="col-sm-12 alert alert-danger" id="differ-values" style="display: none"
+                                 role="alert">Os valores estão diferentes. <button id="close-alert-value" type="button"
+                                                                                   class="close"
+                                                                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button></div>
                             <button type="button" id="addNewLines" class="btn btn-labeled btn-success">
                                     <span class="btn-label"><i class="fa fa-plus">
                                         </i></span>Origem/Recebimento</button>
                             <button class="btn btn-primary" id='btnSalvarDetalhes' type="submit">Salvar</button>
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+
                         </div>
                     </form>
 
@@ -219,16 +267,15 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="register-modal">Adicionar Entradas</h5>
+                <h5 class="modal-title" id="register-modal">Editar Entrada</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <form id="edit-form" class="needs-validation" method="POST" novalidate>
                 <div class="modal-body">
-                    @method('PUT')
                     @csrf
-                    <div class="container">
+                    <div class="edit-container-inputs">
                         <div class="row">
                             <div class="col-sm-5">
                                 <label>Data</label>
@@ -419,50 +466,49 @@
             console.log('N diferente');
         }
 
-        if(flagValidateValue==false){
+        if(flagValidate==true){
+            $("#empty-inputs").hide();
+            if(flagValidateValue==false){
 
-            Swal.fire(
-                'Houve um erro para dar entrada.',
-                'A soma de valores Origem/Pagamento devem ser iguais.',
-                'warning'
-            )
+                $("#differ-values").show();
+                return;
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "entrada/detalhes",
+                    data:  $("#testForm").serialize(),
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    Swal.fire(
+                        'Sucesso!',
+                        data.msg,
+                        'success'
+                    ).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if(result.isConfirmed){
+                            location.reload();
+                        }else if(result.isDismissed){
+                            location.reload();
+                        }
+                    })
+                }).fail(function (data) {
+                    Swal.fire(
+                        'Houve um erro para dar entrada.',
+                        'Entre em contato com nosso suporte.',
+                        'error'
+                    )
+                });
+            }
+
+        }else{
+            $("#empty-inputs").show();
             return;
         }
 
-        if(flagValidate==true){
-            $.ajax({
-                type: "POST",
-                url: "entrada/detalhes",
-                data:  $("#testForm").serialize(),
-                dataType: "json",
-                encode: true,
-            }).done(function (data) {
-                Swal.fire(
-                    'Sucesso!',
-                    data.msg,
-                    'success'
-                ).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if(result.isConfirmed){
-                        location.reload();
-                    }else if(result.isDismissed){
-                        location.reload();
-                    }
-                })
-            }).fail(function (data) {
-                Swal.fire(
-                    'Houve um erro para dar entrada.',
-                    'Entre em contato com nosso suporte.',
-                    'error'
-                )
-            });
-        }else{
-            Swal.fire(
-                'Preencha todos os campos para prosseguir.',
-                '',
-                'warning'
-            )
-        }
+
+
+
 
     });
 
@@ -666,6 +712,77 @@
 
     });
 
+    $("#close-alert-value").click(function (){
+        $("#differ-values").hide();
+    })
+
+    $("#close-alert-inputs").click(function (){
+        $("#empty-inputs").hide();
+    })
+
+    function editInput(inputId){
+
+
+        $.ajax({
+            type: "GET",
+            url: "entrada/info",
+            data :{
+                'inputId':inputId
+            },
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+
+            console.log(data);
+            return;
+
+            Swal.fire(
+                'Sucesso!',
+                data.msg,
+                'success'
+            ).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if(result.isConfirmed){
+                    location.reload();
+                }else if(result.isDismissed){
+                    location.reload();
+                }
+            })
+        }).fail(function (data) {
+            Swal.fire(
+                'Houve um erro para dar entrada.',
+                'Entre em contato com nosso suporte.',
+                'error'
+            )
+        });
+
+        $(".edit-container-inputs").append();
+
+
+        $("#edit-item-modal").modal({
+            show: true
+        });
+    }
+
+    function deleteInput(inputId){
+        $.ajax({
+            type: "DELETE",
+            url: "entrada/delete/"+inputId,
+            data :{
+                '_token': '{{ csrf_token() }}',
+            },
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+            location.reload();
+        }).fail(function (data) {
+            Swal.fire(
+                'Houve um erro para dar entrada.',
+                'Entre em contato com nosso suporte.',
+                'error'
+            )
+        });
+    }
 </script>
 @stop
 

@@ -212,6 +212,60 @@ class InputController extends Controller
 
     }
 
+    public function information(Request $request)
+    {
+
+        dd($request->inputId);
+
+        $cont=count($request->origins);
+
+        $data=$request->all();
+
+        DB::beginTransaction();
+
+        try{
+
+            $input = new Input();
+            $input->data = $data['data'];
+            $input->status = 'Entrada Pendente';
+            $input->save();
+
+            for ($i=0;$i<$cont;$i++){
+
+                $origin_valor = str_replace('.','',$data['origin_valor'][$i]);
+                $origin_valor = str_replace(',','.',$origin_valor);
+
+                $payment_valor = str_replace('.','',$data['payment_valor'][$i]);
+                $payment_valor = str_replace(',','.',$payment_valor);
+
+                $inputReceipt = new InputReceipt();
+                $inputReceipt->input_id = $input->id;
+                $inputReceipt->origin_id = $data['origins'][$i];
+                $inputReceipt->origin_valor = $origin_valor;
+                $inputReceipt->save();
+
+                $inputPayment = new InputPayment();
+                $inputPayment->input_id = $input->id;
+                $inputPayment->payment_methods_id = $data['payment_methods'][$i];
+                $inputPayment->payment_valor = $payment_valor;
+                $inputPayment->save();
+            }
+
+            DB::commit();
+            return response()->json([
+                'success' => 'true',
+                'msg'  => 'Entrada efetuada com sucesso',
+            ], 200);
+        }catch (Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => 'false',
+                'errors'  => $e->getMessage(),
+            ], 400);
+        }
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -220,11 +274,24 @@ class InputController extends Controller
      */
     public function destroy($id)
     {
-        $item = Input::find($id);
-        $item->InputReceipt()->detach();
-        $item->InputPayment()->detach();
+        DB::beginTransaction();
+        try{
+            $item = Input::find($id);
+            $item->receipts()->delete();
+            $item->payments()->delete();
+            $item->delete();
+            DB::commit();
+            return response()->json([
+                'success' => 'true',
+                'msg'  =>'Deletado com sucesso.',
+            ], 200);
+        }catch (Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'success' => 'false',
+                'errors'  => $e->getMessage(),
+            ], 400);
+        }
 
-        return response('Deletado com sucesso.', 200);
-        return Redirect::route('entradas.index');
     }
 }
