@@ -85,7 +85,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <tr style="text-align: center">
+                <tr style="text-align: center;background-color: #98C4CF">
                     <th rowspan="">Data Entrada</th>
                     <th colspan="{{count($origins)}}">Origens</th>
                     <th colspan="{{count($payments_methods)+1}}">Forma de Pagamentos</th>
@@ -96,12 +96,13 @@
                 $arrayOrigem =array();
                 $totalValue=0;
                 $arrayPagamentos =array();
+                $totalAll=0;
                 ?>
 
 
                 @foreach($methods as $input)
 
-                <tr style="text-align: center">
+                <tr style="text-align: center;background-color: #98C4CF">
                     <th rowspan="2">02/01/2023</th>
                     @foreach($origins as $origem)
                         <th>{{$origem->nome}}</th>
@@ -148,17 +149,20 @@
                     @endforeach
                         <td>R$ {{number_format($input->totalValue(),2)}}</td>
                 </tr>
+                    <?php
+                      $totalAll+=number_format($input->totalValue(),2);
+                    ?>
                     @endforeach
 
-                <tr style="text-align: center">
+                <tr style="text-align: center;background-color: #98C4CF">
                     <th>Total</th>
                     @foreach($arrayOrigem as $index => $origemValue)
-                        <td>R$ {{number_format($origemValue,2)}}</td>
+                        <th>R$ {{number_format($origemValue,2)}}</th>
                     @endforeach
                     @foreach($arrayPagamentos as $index => $pagamentosValue)
-                        <td>R$ {{number_format($pagamentosValue,2)}}</td>
+                        <th>R$ {{number_format($pagamentosValue,2)}}</th>
                     @endforeach
-                    <td>R$ {{number_format($input->totalValue(),2)}}</td>
+                    <th>R$ {{number_format($totalAll,2)}}</th>
                 </tr>
                 </tbody>
             </table>
@@ -237,14 +241,22 @@
                         </div>
                         <div class="modal-footer">
                             <div class="col-sm-12 alert alert-danger" id="empty-inputs" style="display: none"
-                                 role="alert">Preencha todos os campos para prosseguir.<button id="close-alert-inputs"
+                                 role="alert"><svg style="padding-right: 5px" xmlns="http://www.w3.org/2000/svg"
+                                                   width="16"
+                                                   height="16"
+                                                   fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
+                                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                </svg>Preencha todos os campos para prosseguir.<button
+                                        id="close-alert-inputs"
                                type="button" class="close" aria-label="Close">                      <span aria-hidden="true">&times;</span>
                                 </button></div>
 
                             <div class="col-sm-12 alert alert-danger" id="differ-values" style="display: none"
-                                 role="alert">Os valores estão diferentes. <button id="close-alert-value" type="button"
-                                                                                   class="close"
-                                                                                    aria-label="Close">
+                                 role="alert"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
+                                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                </svg> Existem valores diferentes. (Origem e Pagamento) <button id="close-alert-value"
+                                                                                     type="button"
+                                                                           class="close" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button></div>
                             <button type="button" id="addNewLines" class="btn btn-labeled btn-success">
