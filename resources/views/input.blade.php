@@ -133,6 +133,7 @@
                             }
                             $valorOrigem=$input->originById($origem->id);
                             $arrayOrigem[$index]+=$valorOrigem;
+
                         ?>
                         <td>R$ {{number_format($valorOrigem,2)}}</td>
 

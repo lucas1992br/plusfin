@@ -39,10 +39,10 @@ class HomeController extends Controller
         $aporte = Aporte::all();
         $payments = PaymentMethod::all('nome', 'id');
 
-        $inputPayment=DB::select("SELECT pm.nome as nomePagamento,ip.payment_methods_id,sum(ip.payment_valor) as total
-                                        FROM plusfin_db.input_payment ip
-                                            join payment_methods pm on pm.id=ip.payment_methods_id
-                                                group by ip.payment_methods_id
+        $inputPayment=DB::select("SELECT pm.nome as nomePagamento,ir.payment_method_id,sum(ir.origin_valor) as total
+                                        FROM plusfin_db.input_receipt ir
+                                            join payment_methods pm on pm.id=ir.payment_method_id
+                                                group by ir.payment_method_id
                             ");
 
         $outputPayment=DB::select("SELECT pm.nome,sum(valor) as total FROM plusfin_db.outputs o join payment_methods pm on pm.id=o.payment_methods_id;");

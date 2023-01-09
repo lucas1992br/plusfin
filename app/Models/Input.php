@@ -44,12 +44,15 @@ class Input extends Model
     }
 
     public function originById($idOrigin) {
-
-        $outputPayment=DB::select("SELECT origin_valor as valor FROM plusfin_db.input_receipt where input_id="
+        $valor=0;
+        $originsValue=DB::select("SELECT origin_valor as valor FROM plusfin_db.input_receipt where input_id="
             .$this->id." and origin_id=".$idOrigin);
 
-        if(isset($outputPayment[0])){
-            return $outputPayment[0]->valor;
+        if(isset($originsValue)){
+            foreach ($originsValue as $originValue){
+                $valor+=$originValue->valor;
+            }
+            return $valor;
         }else{
             return 0;
         }
