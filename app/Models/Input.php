@@ -57,12 +57,15 @@ class Input extends Model
     }
 
     public function paymentsById($idPayment) {
+        $valor=0;
+        $outputPayments=DB::select("SELECT origin_valor as valor FROM plusfin_db.input_receipt where input_id="
+            .$this->id." and payment_method_id=".$idPayment);
 
-        $outputPayment=DB::select("SELECT payment_valor as valor FROM plusfin_db.input_payment where input_id="
-            .$this->id." and payment_methods_id=".$idPayment);
-
-        if(isset($outputPayment[0])){
-            return $outputPayment[0]->valor;
+        if(isset($outputPayments)){
+            foreach ($outputPayments as $outputPayment){
+                $valor+=$outputPayment->valor;
+            }
+            return $valor;
         }else{
             return 0;
         }

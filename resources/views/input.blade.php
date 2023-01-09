@@ -103,7 +103,7 @@
                 @foreach($methods as $input)
 
                 <tr style="text-align: center;background-color: #98C4CF">
-                    <th rowspan="2">02/01/2023</th>
+                    <th rowspan="2">{{date_format(new DateTime($input->data),'d/m/Y')}}</th>
                     @foreach($origins as $origem)
                         <th>{{$origem->nome}}</th>
                     @endforeach
@@ -212,7 +212,7 @@
                                     <label class="form-label" for="valor">Valor:</label>
                                     <input type="text" id="valor_origin" name="origin_valor[0]" class="valor valor_origin
                                     form-control-sm
-                                    form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                                    form-control o1" style="display:inline-block" onblur="SomatoriaOrigens()">
                                 </div>
                             </div>
                             <div class="form-row col-sm mt-2">
@@ -233,13 +233,19 @@
                                     <input type="text" id="valor_pagamento" name="payment_valor[0]" class="valor
                                     valor_pagamento
                                     form-control-sm
-                                     form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
+                                     form-control o1" style="display:inline-block" onblur="SomatoriaOrigens()">
                                 </div>
                             </div>
                         </div>
                         <div class='' id='entradas-detalhes-add'>
                         </div>
                         <div class="modal-footer">
+                            <div class="col-sm-12" style="display: block"
+                                 role="alert"><label>Total Origens: </label><span id="total-value-origin-add">
+                                </span></div>
+                            <div class="col-sm-12" style="display: block"
+                                 role="alert"><label>Total Recebimentos: </label><span id="total-value-payment-add">
+                                </span></div>
                             <div class="col-sm-12 alert alert-danger" id="empty-inputs" style="display: none"
                                  role="alert"><svg style="padding-right: 5px" xmlns="http://www.w3.org/2000/svg"
                                                    width="16"
@@ -248,7 +254,8 @@
                                     <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                 </svg>Preencha todos os campos para prosseguir.<button
                                         id="close-alert-inputs"
-                               type="button" class="close" aria-label="Close">                      <span aria-hidden="true">&times;</span>
+                               type="button" class="close close-alert-inputs" aria-label="Close">                      <span
+                                        aria-hidden="true">&times;</span>
                                 </button></div>
 
                             <div class="col-sm-12 alert alert-danger" id="differ-values" style="display: none"
@@ -256,7 +263,7 @@
                                     <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                 </svg> Existem valores diferentes. (Origem e Pagamento) <button id="close-alert-value"
                                                                                      type="button"
-                                                                           class="close" aria-label="Close">
+                                                                           class="close close-alert-inputs" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button></div>
                             <button type="button" id="addNewLines" class="btn btn-labeled btn-success">
@@ -287,51 +294,47 @@
             <form id="edit-form" class="needs-validation" method="POST" novalidate>
                 <div class="modal-body">
                     @csrf
-                    <div class="edit-container-inputs">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <label>Data</label>
-                            </div>
-                            <div class="col-sm-7">
-                                <input type="date" name="data" class="form-control form-control-sm" id='edit_data'>
-                            </div>
-                        </div>
-                        <div class="form-row col-sm">
-                            <div class="col-sm-8">
-                                <label class="form-label">Origens:</label>
-                                <select class="form-select-item select form-control form-control-sm" name="origin_id" searchable="Search here.." required="true">
-                                    <option value="">Selecione uma Origem</option>
-                                    @foreach($origins as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-sm">
-                                <label class="form-label" for="valor">Valor:</label>
-                                <input type="text" id="valor_origin_update" name="origin_valor" class="valor
-                                form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                            </div>
-                        </div>
-                        <div class="form-row col-sm mt-2">
-                            <div class="col-sm-8">
-                                <label class="form-label">Forma de Recebimento:</label>
-                                <select class="form-select-item select form-control form-control-sm" name="payment_methods_id" searchable="Search here.." required="true">
-                                    <option value="">Selecione um recebimento</option>
-                                    @foreach($payments_methods as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-sm">
-                                <label class="form-label" for="valor">Valor:</label>
-                                <input type="text" id="valor" name="payment_valor" class="valor form-control-sm form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">
-                            </div>
-                        </div>
+                    <div class="edit-container-inputs-data">
+                        <input type="date" class="form-control form-control-sm" name="data-update" id="data-update" row='3'
+                               required="true">
+                        <input type="number"  name="contadorOrigins" id="contadorUpdate" hidden>
+                        <input type="text"  name="id_input_update" id="id_input_update" hidden>
                     </div>
-
+                    <div class="edit-container-inputs">
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit">Salvar</button>
+                    <div class="col-sm-12" style="display: block"
+                         role="alert"><label>Total Origens: </label><span id="total-value-origin-update">
+                                </span></div>
+                    <div class="col-sm-12" style="display: block"
+                         role="alert"><label>Total Recebimentos: </label><span id="total-value-payment-update">
+                                </span></div>
+                    <div class="col-sm-12 alert alert-danger" id="empty-inputs-update" style="display: none"
+                         role="alert"><svg style="padding-right: 5px" xmlns="http://www.w3.org/2000/svg"
+                                           width="16"
+                                           height="16"
+                                           fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg>Preencha todos os campos para prosseguir.<button
+                            id="close-alert-inputs"
+                            type="button" class="close close-alert-inputs" aria-label="Close">                      <span
+                                aria-hidden="true">&times;</span>
+                        </button></div>
+
+                    <div class="col-sm-12 alert alert-danger" id="differ-values-update" style="display: none"
+                         role="alert"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg> Existem valores diferentes. (Origem e Pagamento) <button id="close-alert-value"
+                                                                                        type="button"
+                                                                                        class="close close-alert-value"
+                                                                                        aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button></div>
+                    <button type="button" id="addNewLinesUpdate" class="btn btn-labeled btn-success">
+                                    <span class="btn-label"><i class="fa fa-plus">
+                                        </i></span>Origem/Recebimento</button>
+                    <button class="btn btn-primary" id="btnUpdate" type="submit">Salvar</button>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -380,7 +383,82 @@
 
     let contadorOrigens=0;
     function SomatoriaOrigens(){
-        console.log('somarOrigens');
+        var contadorOriginValue=0;
+        var contadorPaymentValue=0;
+        $('.valor_origin').each(function (){
+            var value=0;
+            if($(this).val()!=''){
+                if(Number.isInteger(+$(this).val())){
+                    contadorOriginValue=contadorOriginValue+(+$(this).val()*100)
+                }else{
+                    value=$(this).val().replace(',', '');
+                    value=value.replace('.', '');
+                    contadorOriginValue=contadorOriginValue+parseInt(value);
+                }
+            }
+        });
+
+        $('.valor_pagamento').each(function (){
+            var value=0;
+                if($(this).val()!=''){
+                    if(Number.isInteger(+$(this).val())){
+                        console.log('é inteiro');
+                        contadorPaymentValue=contadorPaymentValue+($(this).val()*100)
+                    }else{
+                        value=$(this).val().replace(',', '');
+                        value=value.replace('.', '');
+                        contadorPaymentValue=contadorPaymentValue+parseInt(value);
+                    }
+            }
+        });
+
+
+        console.log((contadorOriginValue/100));
+        console.log((contadorPaymentValue/100));
+        $("#total-value-origin-add").html(' R$ '+(contadorOriginValue/100).toFixed(2));
+        // $("#total-value-origin-add").mask('R$ 000.000.000.000.000,00', {reverse: true});
+        $("#total-value-payment-add").html(' R$ '+(contadorPaymentValue/100).toFixed(2));
+        // $("#total-value-payment-add").mask('R$ 000.000.000.000.000,00', {reverse: true});
+    }
+
+    function SomatoriaOrigensUpdate(){
+
+        var contadorOriginValue=0;
+        var contadorPaymentValue=0;
+        $('.valor_origin_update').each(function (){
+            var value=0;
+            if($(this).val()!=''){
+                if(Number.isInteger(+$(this).val())){
+                    contadorOriginValue=contadorOriginValue+(+$(this).val()*100)
+                }else{
+                    value=$(this).val().replace(',', '');
+                    value=value.replace('.', '');
+                    contadorOriginValue=contadorOriginValue+parseInt(value);
+                }
+            }
+        });
+
+        $('.valor_pagamento_update').each(function (){
+            var value=0;
+            if($(this).val()!=''){
+                if(Number.isInteger(+$(this).val())){
+                    console.log('é inteiro');
+                    contadorPaymentValue=contadorPaymentValue+($(this).val()*100)
+                }else{
+                    value=$(this).val().replace(',', '');
+                    value=value.replace('.', '');
+                    contadorPaymentValue=contadorPaymentValue+parseInt(value);
+                }
+            }
+        });
+
+
+        console.log((contadorOriginValue/100));
+        console.log((contadorPaymentValue/100));
+        $("#total-value-origin-update").html(' R$ '+(contadorOriginValue/100).toFixed(2));
+        // $("#total-value-origin-add").mask('R$ 000.000.000.000.000,00', {reverse: true});
+        $("#total-value-payment-update").html(' R$ '+(contadorPaymentValue/100).toFixed(2));
+        // $("#total-value-payment-add").mask('R$ 000.000.000.000.000,00', {reverse: true});
     }
 
     //Cria os detalhes da entrada [InputController::detalhes]
@@ -524,6 +602,138 @@
 
     });
 
+    //Cria os detalhes da alteracao da entrada
+    let btnUpdate = document.querySelector('#btnUpdate');
+
+
+    btnUpdate.addEventListener('click',async(e)=>{
+        e.preventDefault();
+
+        var flagValidate=true;
+        var flagValidateValue=true;
+        var contadorOriginValue=0;
+        var contadorPagamentoValue=0;
+        var value=0;
+
+
+        $('.valor_origin_update').each(function (){
+            console.log('passou aqui origin valor:'+$(this).val());
+            if($(this).val()!=''){
+                value=$(this).val().replace(',', '');
+                value=value.replace('.', '');
+                contadorOriginValue+=parseInt(value);
+            }
+
+        });
+
+        $('.valor_pagamento_update').each(function (){
+            console.log('passou aqui pagamento valor:'+$(this).val());
+            if($(this).val()!=''){
+                value=$(this).val().replace(',', '');
+                value=value.replace('.', '');
+                contadorPagamentoValue+=parseInt(value);
+            }
+        });
+
+        $('.valor_origin_update').each(function() {
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+
+        $('#data-update').each(function() {
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+        $('.valor_pagamento_update').each(function() {
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+        $('.select-pagamento-update').each(function() {
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+        $('.select-origin-update').each(function() {
+            if(!$(this).val()){
+                flagValidate=false;
+                $(this).css("borderColor","red");
+            }else{
+                $(this).css("borderColor","");
+            }
+        });
+
+
+        if(contadorPagamentoValue!=contadorOriginValue){
+            flagValidateValue=false;
+        }else{
+            console.log('N diferente');
+        }
+
+        if(flagValidate==true){
+            $("#empty-inputs-update").hide();
+            if(flagValidateValue==false){
+
+                $("#differ-values-update").show();
+                return;
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "entrada/update",
+                    data:  $("#edit-form").serialize(),
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    Swal.fire(
+                        'Entrada Atualizada com Sucesso!',
+                        data.msg,
+                        'success'
+                    ).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if(result.isConfirmed){
+                            location.reload();
+                        }else if(result.isDismissed){
+                            location.reload();
+                        }
+                    })
+                }).fail(function (data) {
+                    Swal.fire(
+                        'Houve um erro para dar entrada.',
+                        'Entre em contato com nosso suporte.',
+                        'error'
+                    )
+                });
+            }
+
+        }else{
+            $("#empty-inputs-update").show();
+            return;
+        }
+
+
+
+
+
+    });
+
     $('select').change(function (){
         $(this).css("borderColor","");
     });
@@ -542,7 +752,7 @@
 
     $("#addNewLines").click(function (){
         contadorOrigens++
-        var html=gerarHtmlOrigemFormaPagamento(contadorOrigens);
+        var html=gerarHtmlOrigemFormaPagamento(contadorOrigens,1);
         $("#entradas-detalhes-add").append(html);
         $('.valor').mask('#.##0,00', {reverse: true});
         $('select').change(function (){
@@ -555,15 +765,36 @@
 
     });
 
+    $("#addNewLinesUpdate").click(function (){
+        var contadorOrigens=$("#contadorUpdate").val();
+        contadorOrigens++;
+        console.log('teste');
+        console.log(contadorOrigens);
+
+        var html=gerarHtmlOrigemFormaPagamento(contadorOrigens,0);
+
+        $(".edit-container-inputs").append(html);
+        $('.valor').mask('#.##0,00', {reverse: true});
+        $('select').change(function (){
+            $(this).css("borderColor","");
+        });
+
+        $('input').change(function (){
+            $(this).css("borderColor","");
+        });
+        $("#contadorUpdate").val(contadorOrigens);
+    });
 
 
-    function gerarHtmlOrigemFormaPagamento(contadorOrigens){
+
+    function gerarHtmlOrigemFormaPagamento(contadorOrigens,type){
 
         var arrayFormasPagamento=$.parseJSON(sessionStorage.paymentsMethodsData);
         var arrayOrigins=$.parseJSON(sessionStorage.originsData);
 
         arrayFormasPagamento=$.parseJSON(arrayFormasPagamento);
         arrayOrigins=$.parseJSON(arrayOrigins);
+
 
         var htmlFormasPagamento='';
         var htmlOrigins='';
@@ -575,40 +806,79 @@
             htmlOrigins+='<option value="'+item.id+'">'+item.nome+'</option>';
         });
 
-        var origem='<hr><div class="form-row col-sm">' +
-            '<div class="col-sm-8">' +
-            '<label class="form-label">Origens:</label>'+
-            '<select class="select-origin form-select-item select form-control form-control-sm" ' +
-            'name="origins['+contadorOrigens+']" ' +
-            'id="origin_id" searchable="Search here.." required="true">'+
-            ' <option value="">Selecione uma Origem</option>'+
+        if(type){
+            var origem='<hr><div class="form-row col-sm">' +
+                '<div class="col-sm-8">' +
+                '<label class="form-label">Origens:</label>'+
+                '<select class="select-origin form-select-item select form-control form-control-sm" ' +
+                'name="origins['+contadorOrigens+']" ' +
+                'id="origin_id" searchable="Search here.." required="true">'+
+                ' <option value="">Selecione uma Origem</option>'+
                 htmlOrigins+
-            ' </select>'+
-            '</div>'+
-            '<div class="col-sm">'+
-            '<label class="form-label" for="valor">Valor:</label>'+
-            '<input type="text" id="valor_origin" name="origin_valor['+contadorOrigens+']" class="valor valor_origin ' +
-            'form-control-sm form-control o1" ' +
-            'style="display:inline-block" onkeyup="SomatoriaOrigens()">'+
-            '</div>'+
-            '</div>';
+                ' </select>'+
+                '</div>'+
+                '<div class="col-sm">'+
+                '<label class="form-label" for="valor">Valor:</label>'+
+                '<input type="text" id="valor_origin" name="origin_valor['+contadorOrigens+']" class="valor valor_origin ' +
+                'form-control-sm form-control o1" ' +
+                'style="display:inline-block" onblur="SomatoriaOrigens()">'+
+                '</div>'+
+                '</div>';
 
-        var forma_pagamento='<div class="form-row col-sm mt-2">'+
-                            '<div class="col-sm-8">'+
-                            '<label class="form-label">Forma de Recebimento:</label>'+
-                            '<select class="select-pagamento form-select-item select form-control form-control-sm" ' +
-            'name="payment_methods['+contadorOrigens+']"  id="payment_methods_id" searchable="Search here.." required="true">'+
-                            '<option value="">Selecione um recebimento</option>'+
-                             htmlFormasPagamento+
-                            '</select>'+
-                            '</div>'+
-                            '<div class="col-sm">'+
-                            '<label class="form-label" for="valor">Valor:</label>'+
-                            ' <input type="text" id="valor_pagamento" name="payment_valor['+contadorOrigens+']" ' +
-            'class="valor valor_pagamento form-control-sm ' +
-            'form-control o1" style="display:inline-block" onkeyup="SomatoriaOrigens()">'+
-                            '</div>'+
-                            '</div>';
+            var forma_pagamento='<div class="form-row col-sm mt-2">'+
+                '<div class="col-sm-8">'+
+                '<label class="form-label">Forma de Recebimento:</label>'+
+                '<select class="select-pagamento form-select-item select form-control form-control-sm" ' +
+                'name="payment_methods['+contadorOrigens+']"  id="payment_methods_id" searchable="Search here.." required="true">'+
+                '<option value="">Selecione um recebimento</option>'+
+                htmlFormasPagamento+
+                '</select>'+
+                '</div>'+
+                '<div class="col-sm">'+
+                '<label class="form-label" for="valor">Valor:</label>'+
+                ' <input type="text" id="valor_pagamento" name="payment_valor['+contadorOrigens+']" ' +
+                'class="valor valor_pagamento form-control-sm ' +
+                'form-control o1" style="display:inline-block" onblur="SomatoriaOrigens()">'+
+                '</div>'+
+                '</div>';
+        }else{
+            var origem='<hr><div class="form-row col-sm">' +
+                '<div class="col-sm-8">' +
+                '<label class="form-label">Origens:</label>'+
+                '<select class="select-origin-update form-select-item select form-control form-control-sm" ' +
+                'name="origins['+contadorOrigens+']" ' +
+                'id="origin_id" searchable="Search here.." required="true">'+
+                ' <option value="">Selecione uma Origem</option>'+
+                htmlOrigins+
+                ' </select>'+
+                '</div>'+
+                '<div class="col-sm">'+
+                '<label class="form-label" for="valor">Valor:</label>'+
+                '<input type="text" id="valor_origin_update" name="origin_valor['+contadorOrigens+']" class="valor ' +
+                'valor_origin valor_origin_update ' +
+                'form-control-sm form-control o1" ' +
+                'style="display:inline-block" onblur="SomatoriaOrigensUpdate()">'+
+                '</div>'+
+                '</div>';
+
+            var forma_pagamento='<div class="form-row col-sm mt-2">'+
+                '<div class="col-sm-8">'+
+                '<label class="form-label">Forma de Recebimento:</label>'+
+                '<select class="select-pagamento-update form-select-item select form-control form-control-sm" ' +
+                'name="payment_methods['+contadorOrigens+']"  id="payment_methods_id" searchable="Search here.." required="true">'+
+                '<option value="">Selecione um recebimento</option>'+
+                htmlFormasPagamento+
+                '</select>'+
+                '</div>'+
+                '<div class="col-sm">'+
+                '<label class="form-label" for="valor">Valor:</label>'+
+                ' <input type="text" id="valor_pagamento" name="payment_valor['+contadorOrigens+']" ' +
+                'class="valor valor_pagamento_update form-control-sm ' +
+                'form-control o1" style="display:inline-block" onblur="SomatoriaOrigensUpdate()">'+
+                '</div>'+
+                '</div>';
+        }
+
 
         var delButton='<div class="form-row col-sm mt-2">'+
             '<div class="col-sm">'+
@@ -619,6 +889,80 @@
         return '<div id="entradas-detalhes-add-child-'+contadorOrigens+'">'+origem+forma_pagamento+delButton+'</div>';
     }
 
+    function gerarHtmlOrigemFormaPagamentoUpdate(contadorOrigens,objetoInput,origin,payment_methods){
+
+        var arrayFormasPagamento=payment_methods;
+        var arrayOrigins=origin;
+
+        var htmlFormasPagamento='';
+        var htmlOrigins='';
+
+        arrayFormasPagamento.forEach(function(item) {
+            if(objetoInput.payment_method_id==item.id){
+                htmlFormasPagamento+='<option value="'+item.id+'" selected>'+item.nome+'</option>';
+            }else{
+                htmlFormasPagamento+='<option value="'+item.id+'">'+item.nome+'</option>';
+            }
+
+        });
+
+        arrayOrigins.forEach(function(item) {
+            if(objetoInput.origin_id==item.id){
+                htmlOrigins+='<option value="'+item.id+'" selected>'+item.nome+'</option>';
+            }else{
+                htmlOrigins+='<option value="'+item.id+'">'+item.nome+'</option>';
+            }
+
+        });
+
+
+        var origem='<hr><div class="form-row col-sm">' +
+            '<div class="col-sm-8">' +
+            '<label class="form-label">Origens:</label>'+
+            '<select class="select-origin-update form-select-item select form-control form-control-sm" ' +
+            'name="origins['+contadorOrigens+']" ' +
+            'id="origin_id" searchable="Search here.." required="true">'+
+            ' <option value="">Selecione uma Origem</option>'+
+            htmlOrigins+
+            ' </select>'+
+            '</div>'+
+            '<div class="col-sm">'+
+            '<label class="form-label" for="valor">Valor:</label>'+
+            '<input type="text" id="valor_origin" name="origin_valor['+contadorOrigens+']" class="valor ' +
+            'valor_origin_update' +
+            ' ' +
+            'form-control-sm form-control o1" ' +
+            'style="display:inline-block" value="'+objetoInput.origin_valor+'" onblur="SomatoriaOrigensUpdate()">'+
+            '</div>'+
+            '</div>';
+
+        var forma_pagamento='<div class="form-row col-sm mt-2">'+
+            '<div class="col-sm-8">'+
+            '<label class="form-label">Forma de Recebimento:</label>'+
+            '<select class="select-pagamento-update form-select-item select form-control form-control-sm" ' +
+            'name="payment_methods['+contadorOrigens+']"  id="payment_methods_id" searchable="Search here.." required="true">'+
+            '<option value="">Selecione um recebimento</option>'+
+            htmlFormasPagamento+
+            '</select>'+
+            '</div>'+
+            '<div class="col-sm">'+
+            '<label class="form-label" for="valor">Valor:</label>'+
+            ' <input type="text" id="valor_pagamento" name="payment_valor['+contadorOrigens+']" ' +
+            'class="valor valor_pagamento_update form-control-sm ' +
+            'form-control o1" style="display:inline-block" value="'+objetoInput.origin_valor+'" ' +
+            'onblur="SomatoriaOrigensUpdate' +
+            '()">'+
+            '</div>'+
+            '</div>';
+
+        var delButton='<div class="form-row col-sm mt-2">'+
+            '<div class="col-sm">'+
+            '<a class="btn btn-danger" onclick="removerOrigemEPagamento('+contadorOrigens+')"> Remover </a>'+
+            '</div>'+
+            '</div>';
+
+        return '<div id="entradas-detalhes-add-child-'+contadorOrigens+'">'+origem+forma_pagamento+delButton+'</div>';
+    }
 
 
         function removerOrigemEPagamento(contadorOrigemPagamento){
@@ -724,16 +1068,28 @@
 
     });
 
+    $(".close-alert-value").click(function (){
+        $("#differ-values").hide();
+        $("#differ-values-update").hide();
+    })
+
+    $(".close-alert-inputs").click(function (){
+        $("#empty-inputs").hide();
+        $("#empty-inputs-update").hide();
+    })
+
     $("#close-alert-value").click(function (){
         $("#differ-values").hide();
+        $("#differ-values-update").hide();
     })
 
     $("#close-alert-inputs").click(function (){
         $("#empty-inputs").hide();
+        $("#empty-inputs-update").hide();
     })
 
     function editInput(inputId){
-
+        $(".edit-container-inputs").html('');
 
         $.ajax({
             type: "GET",
@@ -745,21 +1101,34 @@
             encode: true,
         }).done(function (data) {
 
-            console.log(data);
-            return;
+            var html_input="";
+            var origin=JSON.parse(data.origins);
+            var info=JSON.parse(data.info);
+            var payment_methods=JSON.parse(data.payment_methods);
+            var inputs=JSON.parse(data.inputs);
+            var contadorUpdate=0;
+            var now = new Date(info.data);
 
-            Swal.fire(
-                'Sucesso!',
-                data.msg,
-                'success'
-            ).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if(result.isConfirmed){
-                    location.reload();
-                }else if(result.isDismissed){
-                    location.reload();
-                }
-            })
+            var day = ("0" + (now.getDate()+1)).slice(-2);
+
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var date = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+            $.each(inputs, function( index, entradas ) {
+                html_input+=gerarHtmlOrigemFormaPagamentoUpdate((index+1),entradas,origin,payment_methods);
+                contadorUpdate++;
+            });
+
+            $("#data-update").val(date);
+            $("#id_input_update").val(info.id);
+            $("#contadorUpdate").val(contadorUpdate);
+            $(".edit-container-inputs").append(html_input);
+            $('.valor').mask('#.##0,00', {reverse: true});
+            $('select').change(function (){
+                $(this).css("borderColor","");
+            });
+            SomatoriaOrigensUpdate();
         }).fail(function (data) {
             Swal.fire(
                 'Houve um erro para dar entrada.',

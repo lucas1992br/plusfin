@@ -84,8 +84,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('pagamento-saidas', OutgoingPaymentController::class);
 
     Route::resource('entradas', InputController::class);
+
     Route::post('entrada/detalhes', [InputController::class,'detalhes']);
     Route::get('entrada/info', [InputController::class,'information']);
+    Route::post('entrada/update', [InputController::class,'update']);
 
     Route::delete('entrada/delete/{id}', [InputController::class,'destroy']);
 
