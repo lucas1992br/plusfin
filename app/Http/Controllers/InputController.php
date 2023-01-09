@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class InputController extends Controller
 {
+
+    //teste commit branch main
     /**
      * Display a listing of the resource.
      *
@@ -34,16 +36,16 @@ class InputController extends Controller
         $origins = Origin::where('status','Ativo')->where('tipo','Entrada')->get();
         $payments_methods = PaymentMethod::where('status','Ativo')->where('tipo','Entrada')->get();
         $payings_sources = PayingSource::all('nome', 'id');
-       
+
         if($request->data_inicial_search && $request->data_final_search){
 
             $data_inicio = $request->data_inicial_search;
             $data_fim    = $request->data_final_search;
 
-            $methods = Input::where('data', '>=', $data_inicio)->where('data', '<=', $data_fim)->get();           
+            $methods = Input::where('data', '>=', $data_inicio)->where('data', '<=', $data_fim)->get();
         }
-        
-       
+
+
         return view('input', compact([
             'methods',
             'origins',
@@ -85,7 +87,7 @@ class InputController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreInputRequest $request)
-    {           
+    {
         $input = new Input();
         $input->data = $request->data;
         $input->status = 'Entrada Pendente';
@@ -95,7 +97,7 @@ class InputController extends Controller
 
         //return Redirect::route('entradas.index');
 
-        
+
     }
 
     /**
@@ -130,10 +132,10 @@ class InputController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateInputRequest $request, $entrada)
-    {  
+    {
         $origin_valor = str_replace('.','',$request->origin_valor);
         $origin_valor = str_replace(',','.',$origin_valor);
-       
+
         $payment_valor = str_replace('.','',$request->payment_valor);
         $payment_valor = str_replace(',','.',$payment_valor);
 
@@ -142,22 +144,22 @@ class InputController extends Controller
         $input->origin_id = $request->get('origin_id');
         $input->origin_valor = $origin_valor;
         $input->save();
-        
+
         $inputPayment = new InputPayment();
         $inputPayment->input_id = $entrada;
         $inputPayment->payment_methods_id = $request->get('payment_methods_id');
         $inputPayment->payment_valor = $payment_valor;
         $inputPayment->save();
-        
+
         return Redirect::route('entradas.index');
-        
+
     }
-    
+
     public function detalhes(UpdateInputRequest $request)
-    {       
+    {
         $origin_valor = str_replace('.','',$request->origin_valor);
         $origin_valor = str_replace(',','.',$origin_valor);
-       
+
         $payment_valor = str_replace('.','',$request->payment_valor);
         $payment_valor = str_replace(',','.',$payment_valor);
 
@@ -186,7 +188,7 @@ class InputController extends Controller
         $item->InputReceipt()->detach();
         $item->InputPayment()->detach();
 
-        return response('Deletado com sucesso.', 200);    
+        return response('Deletado com sucesso.', 200);
         return Redirect::route('entradas.index');
     }
 }
