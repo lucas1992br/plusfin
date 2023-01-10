@@ -47,13 +47,14 @@ class HomeController extends Controller
 
         $outputPayment=DB::select("SELECT pm.nome,sum(valor) as total FROM outputs o join payment_methods pm on pm.id=o.payment_methods_id;");
 
-        $arrayDRE= null;
+        $arrayDRE=null;
 
         foreach ($outputPayment as $output){
             $arrayOutput[$output->nome]=null;
             $arrayOutput[$output->nome]['outputValue']=0;
             $arrayOutput[$output->nome]['paymentName']=$output->nome;
         }
+
 
         foreach ($inputPayment as $input){
             $arrayDRE[$input->nomePagamento]=null;

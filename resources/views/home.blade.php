@@ -176,7 +176,7 @@ use Illuminate\Support\Facades\DB;
                     <meta name="csrf-token" content="{{ csrf_token() }}">
 
                     <div class="table-responsive table-sm">
-
+                        @if($arrayDRE!=null)
                         <table id="table" class="table table-sm table-striped table-bordered table-hover" width="100%" cellspacing="0">
 
                             <thead>
@@ -188,6 +188,7 @@ use Illuminate\Support\Facades\DB;
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @foreach ($arrayDRE as $key)
                                     <tr>
                                         <td>{{$key['paymentName']}}</td>
@@ -207,6 +208,11 @@ use Illuminate\Support\Facades\DB;
                                 @endforeach
                             </tbody>
                         </table>
+                        @else
+                            <div class="col-sm-12 alert alert-secondary" >Nenhuma entrada existente para efetuar o
+                                cálculo.
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
