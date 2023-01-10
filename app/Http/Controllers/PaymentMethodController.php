@@ -23,7 +23,7 @@ class PaymentMethodController extends Controller
     public function index(Request $request) {
         $methods = PaymentMethod::all();
         $activities = Activity::all('nome', 'id');
-        
+
         if($request->tipo_search){
             $methods = PaymentMethod::where('tipo', $request->tipo_search)->get();
         }
@@ -33,9 +33,9 @@ class PaymentMethodController extends Controller
         if($request->atividade_search){
             $methods = PaymentMethod::where('tipo', $request->atividade_search)->get();
         }
-       
-       
-        
+
+
+
         return view('cadastros.payment-method', compact([
             'methods',
             'activities'
@@ -132,4 +132,10 @@ class PaymentMethodController extends Controller
 
         return response('Deletado com sucesso.', 200);
     }
+
+    public function getAllPaymentMethods(Request $request){
+        $methods = PaymentMethod::where('tipo','=','Entrada')->get();
+        return json_encode($methods);
+    }
+
 }

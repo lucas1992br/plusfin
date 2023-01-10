@@ -23,7 +23,7 @@ class OriginController extends Controller
      */
     public function index(Request $request)
     {
-        $methods = Origin::all();            
+        $methods = Origin::all();
         $activities = Activity::all('nome', 'id');
         $costcenters = CostCenter::all('nome', 'id');
 
@@ -39,7 +39,7 @@ class OriginController extends Controller
         if($request->costcenter_search){
             $methods = Origin::where('costcenter_id', $request->costcenter_search)->get();
         }
-        
+
         return view('cadastros.origin', compact([
             'methods',
             'activities',
@@ -142,4 +142,11 @@ class OriginController extends Controller
 
         return response('Deletado com sucesso.', 200);
     }
+
+
+    public function getAllOriginByType($type){
+        $origins=Origin::where('tipo','=',$type)->get();
+        return json_encode($origins);
+    }
+
 }

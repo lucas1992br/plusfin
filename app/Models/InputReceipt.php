@@ -11,7 +11,8 @@ class InputReceipt extends Model
     protected $table = 'input_receipt';
     protected $fillable = [
         'origin_id',
-        'origin_valor'
+        'origin_valor',
+        'payment_method_id'
     ];
 
     protected $with = ['origin','receipts'];
@@ -20,5 +21,9 @@ class InputReceipt extends Model
     }
     public function origin() {
         return $this->hasOne(Origin::class , 'id', 'origin_id');
+    }
+
+    public function payment_method() {
+        return $this->hasOne(PaymentMethod::class , 'id', 'payment_method_id');
     }
 }

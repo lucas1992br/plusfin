@@ -65,9 +65,13 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('forma-pagamento', PaymentMethodController::class);
 
+    Route::get('all-payment-methods', [PaymentMethodController::class,'getAllPaymentMethods'])->name('buscar-metodos-pagamento');
+
     Route::resource('fonte-pagante', PayingSourceController::class);
 
     Route::resource('origem', OriginController::class);
+
+    Route::get('all-origins/{id}', [OriginController::class,'getAllOriginByType']);
 
     Route::resource('saidas', OutputController::class);
 
@@ -80,7 +84,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('pagamento-saidas', OutgoingPaymentController::class);
 
     Route::resource('entradas', InputController::class);
+
     Route::post('entrada/detalhes', [InputController::class,'detalhes']);
+    Route::get('entrada/info', [InputController::class,'information']);
+    Route::post('entrada/update', [InputController::class,'update']);
+
+    Route::delete('entrada/delete/{id}', [InputController::class,'destroy']);
 
     Route::resource('entradas-documentos', UploadDocumentInputController::class);
 
@@ -100,7 +109,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-   
+
 });
 
 Auth::routes();
