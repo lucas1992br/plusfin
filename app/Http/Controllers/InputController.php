@@ -51,6 +51,8 @@ class InputController extends Controller
         }
 
 
+//        dd($methods);
+
         return view('input', compact([
             'methods',
             'origins',

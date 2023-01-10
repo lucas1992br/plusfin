@@ -84,6 +84,7 @@
                         Entradas
                     </tr>
                 </thead>
+                @if(count($methods)>0)
                 <tbody>
                 <tr style="text-align: center;background-color: #98C4CF">
                     <th rowspan="">Data Entrada</th>
@@ -166,6 +167,9 @@
                     <th>R$ {{number_format($totalAll,2)}}</th>
                 </tr>
                 </tbody>
+                @else
+                    <div class="col-sm-12 alert alert-secondary" >Nenhuma entrada existente</div>
+                @endif
             </table>
         </div>
 
